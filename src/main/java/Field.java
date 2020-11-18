@@ -33,18 +33,15 @@ public class Field {
   public void randomize() {
     Random random = new Random();
     float probability = 0.15f;
-//    int counter = 0;
     for (Cell[] outer: area) {
       for (Cell cell : outer) {
         if (random.nextFloat() <= probability) {
           cell.revive();
-//          counter++;
         } else {
           cell.kill();
         }
       }
     }
-//    System.out.println(counter + " cells are alive.");
   }
 
   public ArrayList<Cell> getNeighbours(int x, int y) {
@@ -95,14 +92,4 @@ public class Field {
         .collect(Collectors.toList());
   }
 
-  // for console output
-  public void printArray() {
-    for (Cell[] outer: area) {
-      System.out.println();
-      for (Cell c: outer) {
-        System.out.print(c);
-      }
-    }
-    System.out.println("\n---------------------------------------------");
-  }
 }

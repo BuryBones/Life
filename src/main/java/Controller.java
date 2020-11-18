@@ -19,6 +19,7 @@ public class Controller {
   }
   public void clear() {
     Field.instance.initCells();
+    Main.initArea();
   }
   public void random() {
     Field.instance.randomize();

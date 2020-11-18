@@ -27,29 +27,18 @@ public class Main extends Application {
   static Thread lifeThread;
   static Thread deathThread;
 
+  static Pane canvas;
+
   @Override
   public void start(Stage stage) throws Exception {
     VBox root = new VBox();
-    Pane canvas = new Pane();
+    canvas = new Pane();
     canvas.setBackground(new Background(new BackgroundFill(Configurations.BACKGROUND,null,null)));
     int canvasWidth = Configurations.width*Configurations.CELL_SIZE;
     int canvasHeight = Configurations.height*Configurations.CELL_SIZE +50;
-    ObservableList<Node> children = canvas.getChildren();
 
-    List<Cell> cells = field.getCellsAsList();
-    for (int i = 0; i < cells.size(); i++) {
-      Circle circle = new Circle(Configurations.CELL_SIZE /2);
-      int x = (i%Configurations.width)*Configurations.CELL_SIZE;
-      int y = (i/Configurations.width)*Configurations.CELL_SIZE;
-      circle.fillProperty().bind(cells.get(i).color);
-      int currentCellIndex = i;
-      circle.setOnMouseClicked(mouseEvent -> {
-        cells.get(currentCellIndex).toggle();
-      });
-      circle.setCenterX(x+circle.getRadius());
-      circle.setCenterY(y+circle.getRadius());
-      children.add(circle);
-    }
+    initArea();
+
     ButtonBar buttonBar = new ButtonBar();
     Button start = new Button("Start");
     start.setOnAction(e -> Controller.getInstance().start());
@@ -69,6 +58,25 @@ public class Main extends Application {
     stage.setTitle("Bacteria colony");
     stage.setResizable(false);
     stage.show();
+  }
+
+  public static void initArea() {
+    ObservableList<Node> children = canvas.getChildren();
+
+    List<Cell> cells = field.getCellsAsList();
+    for (int i = 0; i < cells.size(); i++) {
+      Circle circle = new Circle(Configurations.CELL_SIZE /2);
+      int x = (i%Configurations.width)*Configurations.CELL_SIZE;
+      int y = (i/Configurations.width)*Configurations.CELL_SIZE;
+      circle.fillProperty().bind(cells.get(i).color);
+      int currentCellIndex = i;
+      circle.setOnMouseClicked(mouseEvent -> {
+        cells.get(currentCellIndex).toggle();
+      });
+      circle.setCenterX(x+circle.getRadius());
+      circle.setCenterY(y+circle.getRadius());
+      children.add(circle);
+    }
   }
 
   public static void main(String[] args) {
