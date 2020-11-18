@@ -1,6 +1,12 @@
+import javafx.scene.paint.Paint;
+
 public class Configurations {
 
-  public static final int pxs = 15;
+  public static final int CELL_SIZE = 15;
+
+  public static final Paint ALIVE = Paint.valueOf("#84d100");
+  public static final Paint DEAD = Paint.valueOf("#6e6e6e");
+  public static final Paint BACKGROUND = Paint.valueOf("#4a4a4a");
 
   public static int width = 50;  // default
   private static final int MIN_WIDTH = 10;
