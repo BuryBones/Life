@@ -1,16 +1,13 @@
 import java.util.List;
+import java.util.concurrent.CyclicBarrier;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
@@ -19,14 +16,19 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+  static CounterTask counterTask = new CounterTask();
+  public static CyclicBarrier barrier = new CyclicBarrier(2,counterTask);
+
   static Field field;
   static Thread controlThread;
+
+  static LifeTask lifeTask;
+  static DeathTask deathTask;
   static Thread lifeThread;
   static Thread deathThread;
 
   @Override
   public void start(Stage stage) throws Exception {
-//    BorderPane root = new BorderPane();
     VBox root = new VBox();
     Pane canvas = new Pane();
     canvas.setBackground(new Background(new BackgroundFill(Configurations.BACKGROUND,null,null)));
@@ -40,19 +42,12 @@ public class Main extends Application {
       int x = (i%Configurations.width)*Configurations.CELL_SIZE;
       int y = (i/Configurations.width)*Configurations.CELL_SIZE;
       circle.fillProperty().bind(cells.get(i).color);
-      circle.setOnMouseClicked(new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent mouseEvent) {
-          // TODO: use 'i'
-          Circle clicked = (Circle)mouseEvent.getSource();
-          int x = (int) clicked.getCenterX()/Configurations.CELL_SIZE;
-          int y = (int) clicked.getCenterY()/Configurations.CELL_SIZE * Configurations.width;
-          cells.get(x+y).toggle();
-        }
+      int currentCellIndex = i;
+      circle.setOnMouseClicked(mouseEvent -> {
+        cells.get(currentCellIndex).toggle();
       });
       circle.setCenterX(x+circle.getRadius());
       circle.setCenterY(y+circle.getRadius());
-//      System.out.println("X " + x + " <> Y " + y);
       children.add(circle);
     }
     ButtonBar buttonBar = new ButtonBar();
@@ -64,15 +59,9 @@ public class Main extends Application {
     clear.setOnAction(e -> Controller.getInstance().clear());
     Button random = new Button("Random");
     random.setOnAction(e -> Controller.getInstance().random());
-//    Background buttonBackground = new Background(new BackgroundFill(Paint.valueOf("#84d100"),null,null));
-//    start.setBackground(buttonBackground);
-//    stop.setBackground(buttonBackground);
-//    clear.setBackground(buttonBackground);
-//    random.setBackground(buttonBackground);
     buttonBar.getButtons().addAll(start,stop,clear,random);
 
     root.getChildren().addAll(canvas,buttonBar);
-//    root.setBottom(buttonBar);
     root.setBackground(new Background(new BackgroundFill(Paint.valueOf("#4a4a4a"),null,null)));
 
     Scene scene = new Scene(root,canvasWidth,canvasHeight);
@@ -86,37 +75,32 @@ public class Main extends Application {
     try {
       Configurations.setConfigurations(parseArguments(args));
     } catch (InvalidArgumentsException e) {
-      // TODO: show message to user, say that default configs would be applied
+      // TODO: move to JAVAFX thread
+      System.out.println("EXCEPTION!");
+//      Alert alert = new Alert(AlertType.WARNING,Configurations.argumentsWarning, ButtonType.OK,ButtonType.CLOSE);
+//      alert.show();
     }
     field = new Field();
     launch(args);
   }
 
   public static void runLogic() {
+    // TODO: do something with all this statics
+    counterTask.resetCounter();
+
+    // TODO: why do I need control thread at all?!?
+
     Runnable runnable = new Runnable() {
       @Override
       public void run() {
         System.out.println("Started!");
-        LifeRunnable lifeRunnable = new LifeRunnable(field);
-        DeathRunnable deathRunnable = new DeathRunnable(field);
-        lifeThread = new Thread(lifeRunnable);
-        deathThread = new Thread(deathRunnable);
-//        int counter = 0;
-        try {
-          Thread.sleep(Configurations.PERIOD);
-//          while (!Configurations.timeLimit || counter < Configurations.steps) {
-//            List<Cell> toKill = field.prepareDeathList();
-//            List<Cell> toRevive = field.prepareNewbornList();
-//            toKill.forEach(Cell::kill);
-//            toRevive.forEach(Cell::revive);
-            lifeThread.start();
-            deathThread.start();
-//            counter++;
-//            Thread.sleep(Configurations.PERIOD);
-//          }
-        } catch (InterruptedException e) {
-          e.printStackTrace();
-        }
+        lifeTask = new LifeTask(field);
+        deathTask = new DeathTask(field);
+        lifeThread = new Thread(lifeTask);
+        deathThread = new Thread(deathTask);
+
+        lifeThread.start();
+        deathThread.start();
       }
     };
     controlThread = new Thread(runnable);
@@ -125,8 +109,9 @@ public class Main extends Application {
   }
   public static void stopThreads() {
     controlThread.interrupt();
-    lifeThread.interrupt();
-    deathThread.interrupt();
+
+    lifeTask.stop();
+    deathTask.stop();
   }
   private static int[] parseArguments(String[] args) throws InvalidArgumentsException {
     int expectedArguments = 3;  // magic constant

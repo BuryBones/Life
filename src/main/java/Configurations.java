@@ -21,6 +21,10 @@ public class Configurations {
   private static final int MIN_STEPS = 1; //  TODO: why?
   public static final long PERIOD = 1000;
 
+  public static String argumentsWarning = String.format(
+      "Invalid arguments entered. Program will start with default settings:%n"
+          + "Area %d x %d cells, time limit %d steps", width,height,steps);
+
   public static void setConfigurations(int[] args) {
     if (args[0] >= MIN_WIDTH && args[0] <= MAX_WIDTH) {
       width = args[0];
