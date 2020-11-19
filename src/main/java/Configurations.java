@@ -3,6 +3,7 @@ import javafx.scene.paint.Paint;
 public class Configurations {
 
   public static final int CELL_SIZE = 15;
+  public static final float RANDOM_CELLS = 0.10f;
 
   public static final Paint ALIVE = Paint.valueOf("#84d100");
   public static final Paint DEAD = Paint.valueOf("#6e6e6e");

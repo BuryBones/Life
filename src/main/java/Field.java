@@ -6,19 +6,18 @@ import java.util.stream.Collectors;
 
 public class Field {
 
-  // TODO: do normal SINGLETON
-  public static Field instance;
+  private static Field instance = new Field();
+
+  public static Field getInstance() {
+    if (instance == null) {
+      instance = new Field();
+    }
+    return instance;
+  }
 
   Cell[][] area = new Cell[Configurations.height][Configurations.width];
 
-  public Field() {
-    instance = this;
-    initCells();
-//    randomize();
-  }
-
-  public List<Cell> getCellsAsList() {
-    return Arrays.stream(area).flatMap(Arrays::stream).collect(Collectors.toList());
+  private Field() {
   }
 
   public void initCells() {
@@ -26,16 +25,21 @@ public class Field {
 
     for (int outer = 0; outer < area.length; outer++) {
       for (int inner = 0; inner < area[outer].length; inner++) {
-        area[outer][inner] = new Cell(inner, outer, getNeighbours(inner,outer));
+        Cell focus = new Cell(inner, outer, getNeighbours(inner,outer));
+        area[outer][inner] = focus;
       }
     }
   }
+
+  public List<Cell> getCells() {
+    return Arrays.stream(area).flatMap(Arrays::stream).collect(Collectors.toList());
+  }
+
   public void randomize() {
     Random random = new Random();
-    float probability = 0.15f;
     for (Cell[] outer: area) {
       for (Cell cell : outer) {
-        if (random.nextFloat() <= probability) {
+        if (random.nextFloat() <= Configurations.RANDOM_CELLS) {
           cell.revive();
         } else {
           cell.kill();
@@ -44,7 +48,7 @@ public class Field {
     }
   }
 
-  public ArrayList<Cell> getNeighbours(int x, int y) {
+  private ArrayList<Cell> getNeighbours(int x, int y) {
 
     ArrayList<Cell> result = new ArrayList<>();
 
@@ -68,15 +72,15 @@ public class Field {
     return result;
   }
 
-  public int countAliveNeighbours(Cell cell) {
+  private int countAliveNeighbours(Cell cell) {
     return (int) getNeighbours(cell.getX(),cell.getY()).stream().filter(Cell::isIsAliveProp).count();
   }
 
-  public List<Cell> getAliveCells() {
+  private List<Cell> getAliveCells() {
     return Arrays.stream(area).flatMap(Arrays::stream).filter(Cell::isIsAliveProp).collect(Collectors.toList());
   }
 
-  public List<Cell> getDeadCells() {
+  private List<Cell> getDeadCells() {
     return Arrays.stream(area).flatMap(Arrays::stream).filter(c -> !c.isIsAliveProp()).collect(Collectors.toList());
   }
 

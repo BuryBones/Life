@@ -18,10 +18,10 @@ public class Controller {
     Main.stopThreads();
   }
   public void clear() {
-    Field.instance.initCells();
+    Field.getInstance().initCells();
     Main.initArea();
   }
   public void random() {
-    Field.instance.randomize();
+    Field.getInstance().randomize();
   }
 }

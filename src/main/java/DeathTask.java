@@ -4,11 +4,10 @@ import java.util.concurrent.BrokenBarrierException;
 public class DeathTask implements Runnable {
 
   private boolean notStopped = true;
-  private Field field;
+  private Field field = Field.getInstance();
   private List<Cell> toKill;
 
-  public DeathTask(Field field) {
-    this.field = field;
+  public DeathTask() {
   }
 
   @Override

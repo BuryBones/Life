@@ -63,7 +63,7 @@ public class Main extends Application {
   public static void initArea() {
     ObservableList<Node> children = canvas.getChildren();
 
-    List<Cell> cells = field.getCellsAsList();
+    List<Cell> cells = field.getCells();
     for (int i = 0; i < cells.size(); i++) {
       Circle circle = new Circle(Configurations.CELL_SIZE /2);
       int x = (i%Configurations.width)*Configurations.CELL_SIZE;
@@ -88,7 +88,8 @@ public class Main extends Application {
 //      Alert alert = new Alert(AlertType.WARNING,Configurations.argumentsWarning, ButtonType.OK,ButtonType.CLOSE);
 //      alert.show();
     }
-    field = new Field();
+    field = Field.getInstance();
+    field.initCells();
     launch(args);
   }
 
@@ -102,8 +103,8 @@ public class Main extends Application {
       @Override
       public void run() {
         System.out.println("Started!");
-        lifeTask = new LifeTask(field);
-        deathTask = new DeathTask(field);
+        lifeTask = new LifeTask();
+        deathTask = new DeathTask();
         lifeThread = new Thread(lifeTask);
         deathThread = new Thread(deathTask);
 
@@ -115,12 +116,14 @@ public class Main extends Application {
     controlThread.setDaemon(true);
     controlThread.start();
   }
+
   public static void stopThreads() {
     controlThread.interrupt();
 
     lifeTask.stop();
     deathTask.stop();
   }
+
   private static int[] parseArguments(String[] args) throws InvalidArgumentsException {
     int expectedArguments = 3;  // magic constant
     int[] result = new int[expectedArguments];
