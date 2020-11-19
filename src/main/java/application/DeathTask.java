@@ -1,13 +1,15 @@
+package application;
+
 import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 
-public class LifeTask implements Runnable {
+public class DeathTask implements Runnable {
 
   private boolean notStopped = true;
   private Field field = Field.getInstance();
-  private List<Cell> toRevive;
+  private List<Cell> toKill;
 
-  public LifeTask() {
+  public DeathTask() {
   }
 
   @Override
@@ -15,7 +17,7 @@ public class LifeTask implements Runnable {
     try {
       // TODO: refactor Counter task?
       while (notStopped && (!Configurations.timeLimit || CounterTask.counter < Configurations.steps)) {
-        toRevive = field.prepareNewbornList();
+        toKill = field.prepareDeathList();
         Main.barrier.await();
         execute();
         Thread.sleep(Configurations.PERIOD);
@@ -26,7 +28,7 @@ public class LifeTask implements Runnable {
     }
   }
   private void execute() {
-    toRevive.forEach(Cell::revive);
+    toKill.forEach(Cell::kill);
   }
 
   public void stop() {

@@ -1,3 +1,5 @@
+package application;
+
 import java.util.ArrayList;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;

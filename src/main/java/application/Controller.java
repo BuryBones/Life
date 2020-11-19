@@ -1,3 +1,5 @@
+package application;
+
 public class Controller {
 
   public static Controller instance;

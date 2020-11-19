@@ -1,5 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import application.Cell;
+import application.Field;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

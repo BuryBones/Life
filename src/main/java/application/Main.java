@@ -1,3 +1,5 @@
+package application;
+
 import java.util.List;
 import java.util.concurrent.CyclicBarrier;
 import javafx.application.Application;
@@ -73,6 +75,7 @@ public class Main extends Application {
       circle.setOnMouseClicked(mouseEvent -> {
         cells.get(currentCellIndex).toggle();
       });
+      // TODO: move up 'getRadius()'
       circle.setCenterX(x+circle.getRadius());
       circle.setCenterY(y+circle.getRadius());
       children.add(circle);
@@ -85,7 +88,7 @@ public class Main extends Application {
     } catch (InvalidArgumentsException e) {
       // TODO: move to JAVAFX thread
       System.out.println("EXCEPTION!");
-//      Alert alert = new Alert(AlertType.WARNING,Configurations.argumentsWarning, ButtonType.OK,ButtonType.CLOSE);
+//      Alert alert = new Alert(AlertType.WARNING,application.Configurations.argumentsWarning, ButtonType.OK,ButtonType.CLOSE);
 //      alert.show();
     }
     field = Field.getInstance();

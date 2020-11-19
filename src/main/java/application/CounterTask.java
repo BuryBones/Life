@@ -1,3 +1,5 @@
+package application;
+
 public class CounterTask implements Runnable {
 
   static int counter = 0;
