@@ -8,7 +8,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Background;
@@ -29,7 +28,7 @@ public class Main extends Application {
     VBox root = new VBox();
     initPane();
     initArea();
-    ButtonBar buttonBar = initButtons();
+    ButtonBar buttonBar = ControlBar.getInstance();
     root.getChildren().addAll(canvas, buttonBar);
     root.setBackground(new Background(new BackgroundFill(Configurations.BACKGROUND, null, null)));
     int canvasWidth = Configurations.width * Configurations.CELL_SIZE;
@@ -72,21 +71,6 @@ public class Main extends Application {
       circle.setCenterY(y);
       canvasChildren.add(circle);
     }
-  }
-
-  public static ButtonBar initButtons() {
-
-    ButtonBar result = new ButtonBar();
-    Button start = new Button("Start");
-    start.setOnAction(e -> Controller.getInstance().start());
-    Button stop = new Button("Stop");
-    stop.setOnAction(e -> Controller.getInstance().stop());
-    Button clear = new Button("Clear");
-    clear.setOnAction(e -> Controller.getInstance().clear());
-    Button random = new Button("Random");
-    random.setOnAction(e -> Controller.getInstance().random());
-    result.getButtons().addAll(start, stop, clear, random);
-    return result;
   }
 
   public static void showConfigWarning(String message) {

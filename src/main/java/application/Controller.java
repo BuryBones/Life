@@ -15,9 +15,11 @@ public class Controller {
 
   public void start() {
     Logic.runSimulation();
+    ControlBar.getInstance().blockButtons();
   }
   public void stop() {
     Logic.stopSimulation();
+    ControlBar.getInstance().unBlockButtons();
   }
   public void clear() {
     Field.getInstance().initCells();
