@@ -14,10 +14,10 @@ public class Controller {
   private Controller() {}
 
   public void start() {
-    Main.runLogic();
+    Logic.runSimulation();
   }
   public void stop() {
-    Main.stopThreads();
+    Logic.stopSimulation();
   }
   public void clear() {
     Field.getInstance().initCells();

@@ -12,7 +12,8 @@ public class FieldTest {
   public void initCellsTest() {
     Field.getInstance().initCells();
     for (Cell cell : Field.getInstance().getCells()) {
-      assertTrue(cell != null && !cell.isIsAliveProp());
+      assertNotNull(cell);
+      assertFalse(cell.isAlive());
     }
   }
 }
