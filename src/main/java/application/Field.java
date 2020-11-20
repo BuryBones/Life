@@ -17,17 +17,25 @@ public class Field {
     return instance;
   }
 
-  Cell[][] area = new Cell[Configurations.height][Configurations.width];
+  private final Cell[][] area = new Cell[Configurations.height][Configurations.width];
 
   private Field() {
   }
 
   public void initCells() {
-
     for (int outer = 0; outer < area.length; outer++) {
       for (int inner = 0; inner < area[outer].length; inner++) {
-        Cell focus = new Cell(inner, outer, getNeighbours(inner,outer));
+        Cell focus = new Cell(inner, outer);
         area[outer][inner] = focus;
+      }
+    }
+    setAllNeighbours();
+  }
+
+  private void setAllNeighbours() {
+    for (int outer = 0; outer < area.length; outer++) {
+      for (int inner = 0; inner < area[outer].length; inner++) {
+        area[outer][inner].setNeighbours(getNeighbours(inner,outer));
       }
     }
   }
@@ -96,9 +104,8 @@ public class Field {
     return result;
   }
 
-  // TODO: use cell.getNeighbours() instead field's getNeighbours(), when fixed
   private int countAliveNeighbours(Cell cell) {
-    return (int) getNeighbours(cell.getX(),cell.getY())
+    return (int) cell.getNeighbours()
         .stream()
         .filter(Cell::isAlive)
         .count();

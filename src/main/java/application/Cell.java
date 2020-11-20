@@ -10,15 +10,14 @@ public class Cell {
 
   private final int x;
   private final int y;
-  private final ArrayList<Cell> neighbours;
+  private ArrayList<Cell> neighbours;
 
   private final SimpleBooleanProperty isAliveProperty = new SimpleBooleanProperty(false);
   private final ObservableObjectValue<Paint> color;
 
-  public Cell(int x, int y, ArrayList<Cell> neighbours) {
+  public Cell(int x, int y) {
     this.x = x;
     this.y = y;
-    this.neighbours = neighbours;
     color = Bindings.when(isAliveProperty).then(Configurations.ALIVE).otherwise(Configurations.DEAD);
   }
 
@@ -36,6 +35,10 @@ public class Cell {
 
   public ArrayList<Cell> getNeighbours() {
     return neighbours;
+  }
+
+  public void setNeighbours(ArrayList<Cell> neighbours) {
+    this.neighbours = neighbours;
   }
 
   public int getX() {
