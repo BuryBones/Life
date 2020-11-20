@@ -18,15 +18,18 @@ public class Field {
   }
 
   private final Cell[][] area = new Cell[Configurations.height][Configurations.width];
+  private ArrayList<Cell> areaList;
 
   private Field() {
   }
 
   public void initCells() {
+    areaList = new ArrayList<>(Configurations.height * Configurations.width);
     for (int outer = 0; outer < area.length; outer++) {
       for (int inner = 0; inner < area[outer].length; inner++) {
         Cell focus = new Cell(inner, outer);
         area[outer][inner] = focus;
+        areaList.add(focus);
       }
     }
     setAllNeighbours();
@@ -112,15 +115,13 @@ public class Field {
   }
 
   private List<Cell> getAliveCells() {
-    return Arrays.stream(area)
-        .flatMap(Arrays::stream)
+    return areaList.stream()
         .filter(Cell::isAlive)
         .collect(Collectors.toList());
   }
 
   private List<Cell> getDeadCells() {
-    return Arrays.stream(area)
-        .flatMap(Arrays::stream)
+    return areaList.stream()
         .filter(c -> !c.isAlive())
         .collect(Collectors.toList());
   }
