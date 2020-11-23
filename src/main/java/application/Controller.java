@@ -16,11 +16,13 @@ public class Controller {
   public void start() {
     Logic.runSimulation();
     blockButtons();
+    unblockStop();
   }
 
   public void stop() {
     Logic.stopSimulation();
     unblockButtons();
+    blockStop();
   }
 
   public void clear() {
@@ -38,5 +40,13 @@ public class Controller {
 
   public void unblockButtons() {
     ControlBar.getInstance().unblockButtons();
+  }
+
+  public void blockStop() {
+    ControlBar.getInstance().blockStop();
+  }
+
+  public void unblockStop() {
+    ControlBar.getInstance().unblockStop();
   }
 }

@@ -38,6 +38,7 @@ public class ControlBar extends HBox {
     stop.setPrefSize(75,30);
     stop.setOnAction(e -> Controller.getInstance().stop());
     stop.setPadding(new Insets(0,1,0,1));
+    stop.setDisable(true);  // blocked on launch
 
     clear = new Button("Clear");
     clear.setPrefSize(75,30);
@@ -68,4 +69,11 @@ public class ControlBar extends HBox {
     random.setDisable(false);
   }
 
+  public void blockStop() {
+    stop.setDisable(true);
+  }
+
+  public void unblockStop() {
+    stop.setDisable(false);
+  }
 }

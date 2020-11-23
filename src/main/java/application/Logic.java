@@ -16,6 +16,10 @@ public class Logic {
 
   public static void runSimulation() {
     count = 0;
+    
+    if (Field.getInstance().numberOfCellsAlive() == 0) {
+      Field.getInstance().randomize();
+    }
 
     System.out.println("Started!");
     lifeTask = new LifeTask();

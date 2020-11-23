@@ -27,7 +27,10 @@ public abstract class LoopTask implements Runnable {
       e.printStackTrace();
     }
     if (!notFinished) {
-      Platform.runLater(Controller.getInstance()::unblockButtons);
+      Platform.runLater(() -> {
+        Controller.getInstance().unblockButtons();
+        Controller.getInstance().blockStop();
+      });
     }
   }
   abstract void prepareExecuteList();

@@ -158,4 +158,8 @@ public class Field {
         .collect(Collectors.toList());
   }
 
+  public int numberOfCellsAlive() {
+    return getAliveCells().size();
+  }
+
 }
