@@ -8,16 +8,12 @@ import javafx.scene.paint.Paint;
 
 public class Cell {
 
-  private final int x;
-  private final int y;
   private ArrayList<Cell> neighbours;
 
   private final SimpleBooleanProperty isAliveProperty = new SimpleBooleanProperty(false);
   private final ObservableObjectValue<Paint> color;
 
-  public Cell(int x, int y) {
-    this.x = x;
-    this.y = y;
+  public Cell() {
     color = Bindings.when(isAliveProperty).then(Configurations.ALIVE).otherwise(Configurations.DEAD);
   }
 
@@ -39,14 +35,6 @@ public class Cell {
 
   public void setNeighbours(ArrayList<Cell> neighbours) {
     this.neighbours = neighbours;
-  }
-
-  public int getX() {
-    return x;
-  }
-
-  public int getY() {
-    return y;
   }
 
   public boolean isAlive() {

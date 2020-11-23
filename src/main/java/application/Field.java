@@ -17,7 +17,6 @@ public class Field {
     return instance;
   }
 
-  private final Cell[][] area = new Cell[Configurations.height][Configurations.width];
   private ArrayList<Cell> areaList;
 
   private Field() {
@@ -25,86 +24,106 @@ public class Field {
 
   public void initCells() {
     areaList = new ArrayList<>(Configurations.height * Configurations.width);
-    for (int outer = 0; outer < area.length; outer++) {
-      for (int inner = 0; inner < area[outer].length; inner++) {
-        Cell focus = new Cell(inner, outer);
-        area[outer][inner] = focus;
-        areaList.add(focus);
-      }
+    for (int i = 0; i < Configurations.height * Configurations.width; i++) {
+      areaList.add(new Cell());
     }
     setAllNeighbours();
   }
 
   private void setAllNeighbours() {
-    for (int outer = 0; outer < area.length; outer++) {
-      for (int inner = 0; inner < area[outer].length; inner++) {
-        area[outer][inner].setNeighbours(getNeighbours(inner,outer));
-      }
-    }
+    areaList.forEach(cell -> cell.setNeighbours(getNeighbours(areaList.indexOf(cell))));
   }
 
   public List<Cell> getCells() {
-    return Arrays.stream(area)
-        .flatMap(Arrays::stream)
-        .collect(Collectors.toList());
+    return areaList;
   }
 
-  // TODO: refactor
   public void randomize() {
+
     Random random = new Random();
-    for (Cell[] outer: area) {
-      for (Cell cell : outer) {
-        if (random.nextFloat() <= Configurations.RANDOM_CELLS) {
-          cell.revive();
-        } else {
-          cell.kill();
-        }
+    areaList.forEach(cell -> {
+      if (random.nextFloat() <= Configurations.RANDOM_CELLS) {
+        cell.revive();
+      } else {
+        cell.kill();
       }
-    }
+    });
   }
 
-  private ArrayList<Cell> getNeighbours(int x, int y) {
+  private ArrayList<Cell> getNeighbours(int index) {
 
     ArrayList<Cell> result = new ArrayList<>();
+    int size = areaList.size();
 
-    boolean notTop = y > 0;
-    boolean notBottom = y < Configurations.height - 1;
-    boolean notLeft = x > 0;
-    boolean notRight = x < Configurations.width - 1;
+    boolean notTop = index >= Configurations.width;
+    boolean notBottom = index < size - Configurations.width;
+    boolean notLeft = index % Configurations.width != 0;
+    boolean notRight = (index + 1) % Configurations.width != 0;
 
-    // TODO: move to methods
     if (notTop) {
-      result.add(area[y - 1][x]);
+      result.add(getTopNeighbour(index));
     }
 
     if (notBottom) {
-      result.add(area[y + 1][x]);
+      result.add(getBottomNeighbour(index));
     }
 
     if (notLeft) {
-      result.add(area[y][x - 1]);
+      result.add(getLeftNeighbour(index));
     }
 
     if (notRight) {
-      result.add(area[y][x + 1]);
+      result.add(getRightNeighbour(index));
     }
 
     if (notTop && notLeft) {
-      result.add(area[y - 1][x - 1]);
+      result.add(getTopLeftNeighbour(index));
     }
 
     if (notTop && notRight) {
-      result.add(area[y - 1][x + 1]);
+      result.add(getTopRightNeighbour(index));
     }
 
     if (notBottom && notLeft) {
-      result.add(area[y + 1][x - 1]);
+      result.add(getBottomLeftNeighbour(index));
     }
 
     if (notBottom && notRight) {
-      result.add(area[y + 1][x + 1]);
+      result.add(getBottomRightNeighbour(index));
     }
     return result;
+  }
+
+  private Cell getTopNeighbour(int index) {
+    return areaList.get(index - Configurations.width);
+  }
+
+  private Cell getBottomNeighbour(int index) {
+    return areaList.get(index + Configurations.width);
+  }
+
+  private Cell getLeftNeighbour(int index) {
+    return areaList.get(index - 1);
+  }
+
+  private Cell getRightNeighbour(int index) {
+    return areaList.get(index + 1);
+  }
+
+  private Cell getTopLeftNeighbour(int index) {
+    return areaList.get(index - Configurations.width - 1);
+  }
+
+  private Cell getTopRightNeighbour(int index) {
+    return areaList.get(index - Configurations.width + 1);
+  }
+
+  private Cell getBottomLeftNeighbour(int index) {
+    return areaList.get(index + Configurations.width - 1);
+  }
+
+  private Cell getBottomRightNeighbour(int index) {
+    return areaList.get(index + Configurations.width + 1);
   }
 
   private int countAliveNeighbours(Cell cell) {
