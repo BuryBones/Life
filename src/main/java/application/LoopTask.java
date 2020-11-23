@@ -14,7 +14,7 @@ public abstract class LoopTask implements Runnable {
   @Override
   public void run() {
     try {
-      while (notStopped && notFinished) {
+      while (notStopped && notFinished && !isColonyDead()) {
         notFinished = !Configurations.timeLimit || Logic.count < Configurations.steps - 1;
         prepareExecuteList();
         Logic.BARRIER.await();
@@ -26,7 +26,7 @@ public abstract class LoopTask implements Runnable {
       // TODO: exception handling
       e.printStackTrace();
     }
-    if (!notFinished) {
+    if (!notFinished || isColonyDead()) {
       Platform.runLater(() -> {
         Controller.getInstance().unblockButtons();
         Controller.getInstance().blockStop();
@@ -43,4 +43,7 @@ public abstract class LoopTask implements Runnable {
     notStopped = false;
   }
 
+  boolean isColonyDead() {
+    return Field.getInstance().numberOfCellsAlive() == 0;
+  }
 }
