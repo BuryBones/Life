@@ -1,9 +1,11 @@
 package application;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
+import javafx.scene.layout.HBox;
 
-public class ControlBar extends ButtonBar {
+public class ControlBar extends HBox {
 
   private static ControlBar instance = new ControlBar();
 
@@ -20,20 +22,34 @@ public class ControlBar extends ButtonBar {
   private Button random;
 
   private ControlBar() {
+    super(2);
     init();
   }
 
   private void init() {
-    start = new Button("Start");
-    start.setOnAction(e -> Controller.getInstance().start());
-    stop = new Button("Stop");
-    stop.setOnAction(e -> Controller.getInstance().stop());
-    clear = new Button("Clear");
-    clear.setOnAction(e -> Controller.getInstance().clear());
-    random = new Button("Random");
-    random.setOnAction(e -> Controller.getInstance().random());
+    setAlignment(Pos.CENTER);
 
-    getButtons().addAll(start,stop,clear,random);
+    start = new Button("Start");
+    start.setPrefSize(75,30);
+    start.setOnAction(e -> Controller.getInstance().start());
+    start.setPadding(new Insets(0,1,0,1));
+
+    stop = new Button("Stop");
+    stop.setPrefSize(75,30);
+    stop.setOnAction(e -> Controller.getInstance().stop());
+    stop.setPadding(new Insets(0,1,0,1));
+
+    clear = new Button("Clear");
+    clear.setPrefSize(75,30);
+    clear.setOnAction(e -> Controller.getInstance().clear());
+    clear.setPadding(new Insets(0,1,0,1));
+
+    random = new Button("Random");
+    random.setPrefSize(75,30);
+    random.setOnAction(e -> Controller.getInstance().random());
+    random.setPadding(new Insets(0,1,0,1));
+
+    getChildren().addAll(start,stop,clear,random);
   }
 
   public void blockButtons() {

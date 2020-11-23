@@ -8,10 +8,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
@@ -25,11 +25,11 @@ public class Main extends Application {
   @Override
   public void start(Stage stage) {
     setConfigs(arguments);
-    VBox root = new VBox();
+    VBox root = new VBox(5);
     initPane();
     initArea();
-    ButtonBar buttonBar = ControlBar.getInstance();
-    root.getChildren().addAll(canvas, buttonBar);
+    HBox controlBar = ControlBar.getInstance();
+    root.getChildren().addAll(canvas, controlBar);
     root.setBackground(new Background(new BackgroundFill(Configurations.BACKGROUND, null, null)));
     int canvasWidth = Configurations.width * Configurations.CELL_SIZE;
     int canvasHeight = Configurations.height * Configurations.CELL_SIZE + 50;

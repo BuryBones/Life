@@ -28,5 +28,4 @@ public class Logic {
     lifeTask.stop();
     deathTask.stop();
   }
-
 }
