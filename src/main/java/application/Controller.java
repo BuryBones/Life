@@ -15,17 +15,28 @@ public class Controller {
 
   public void start() {
     Logic.runSimulation();
-    ControlBar.getInstance().blockButtons();
+    blockButtons();
   }
+
   public void stop() {
     Logic.stopSimulation();
-    ControlBar.getInstance().unBlockButtons();
+    unblockButtons();
   }
+
   public void clear() {
     Field.getInstance().initCells();
     Main.initArea();
   }
+
   public void random() {
     Field.getInstance().randomize();
+  }
+
+  public void blockButtons() {
+    ControlBar.getInstance().blockButtons();
+  }
+
+  public void unblockButtons() {
+    ControlBar.getInstance().unblockButtons();
   }
 }

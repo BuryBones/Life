@@ -44,7 +44,7 @@ public class ControlBar extends ButtonBar {
     random.setDisable(true);
   }
 
-  public void unBlockButtons() {
+  public void unblockButtons() {
     start.setText("Start");
 
     start.setDisable(false);

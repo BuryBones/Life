@@ -90,6 +90,7 @@ public class Main extends Application {
     arguments = args;
     launch();
   }
+
   private static void exit() {
     System.exit(0);
   }
