@@ -30,6 +30,11 @@ public class Controller {
     Main.initArea();
   }
 
+  // service needs
+  public void toggleAll() {
+    Field.getInstance().getCells().forEach(Cell::toggle);
+  }
+
   public void random() {
     Field.getInstance().randomize();
   }

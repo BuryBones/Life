@@ -4,6 +4,7 @@ import javafx.scene.paint.Paint;
 
 public class Configurations {
 
+  public static final boolean TRACK_MEMORY = false;
   private static final int ARGUMENTS_EXPECTED = 3;
 
   public static final int CELL_SIZE = 15;
@@ -28,7 +29,6 @@ public class Configurations {
 
   public static boolean timeLimit = false; // default
   public static int steps = 100;  // default
-  private static final int MIN_STEPS = 1; //  TODO: why?
   public static final long PERIOD = 1000;
 
   public static String argumentsWarning = String.format(

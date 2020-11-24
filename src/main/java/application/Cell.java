@@ -10,7 +10,8 @@ public class Cell {
 
   private ArrayList<Cell> neighbours;
 
-  private final SimpleBooleanProperty isAliveProperty = new SimpleBooleanProperty(false);
+  private final SimpleBooleanProperty isAliveProperty = new SimpleBooleanProperty();
+//  private final SimpleBooleanProperty isAliveProperty = new SimpleBooleanProperty(false);
   private final ObservableObjectValue<Paint> color;
 
   public Cell() {

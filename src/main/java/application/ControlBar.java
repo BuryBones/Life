@@ -50,7 +50,13 @@ public class ControlBar extends HBox {
     random.setOnAction(e -> Controller.getInstance().random());
     random.setPadding(new Insets(0,1,0,1));
 
-    getChildren().addAll(start,stop,clear,random);
+    // service needs
+    Button toggleAll = new Button("Toggle all");
+    toggleAll.setPrefSize(75,30);
+    toggleAll.setOnAction(e -> Controller.getInstance().toggleAll());
+    toggleAll.setPadding(new Insets(0,1,0,1));
+
+    getChildren().addAll(start,stop,clear,random,toggleAll);
   }
 
   public void blockButtons() {
