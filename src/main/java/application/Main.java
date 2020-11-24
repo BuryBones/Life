@@ -4,27 +4,22 @@ import java.util.List;
 import java.util.Optional;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
@@ -45,7 +40,7 @@ public class Main extends Application {
     root.setBackground(new Background(new BackgroundFill(Configurations.BACKGROUND, null, null)));
     Scene scene = new Scene(root);
     stage.setScene(scene);
-    stage.setTitle("Bacteria colony");
+    stage.setTitle(Configurations.APPLICATION_NAME);
     stage.setResizable(false);
     stage.show();
   }
