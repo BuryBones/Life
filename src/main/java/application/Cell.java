@@ -18,15 +18,15 @@ public class Cell {
     color = Bindings.when(isAliveProperty).then(Configurations.ALIVE).otherwise(Configurations.DEAD);
   }
 
-  void kill() {
+  public void kill() {
     isAliveProperty.set(false);
   }
 
-  void revive() {
+  public void revive() {
     isAliveProperty.set(true);
   }
 
-  void toggle() {
+  public void toggle() {
     isAliveProperty.set(!isAliveProperty.get());
   }
 
