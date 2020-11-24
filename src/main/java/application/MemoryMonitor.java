@@ -7,9 +7,9 @@ public class MemoryMonitor implements Runnable {
     Runtime runtime = Runtime.getRuntime();
     while (true) {
       try {
-        long busyMemory = (runtime.maxMemory() - runtime.freeMemory()) / (1024 * 1024);
+        long busyMemory = (runtime.totalMemory() - runtime.freeMemory()) / (1024 * 1024);
         System.out.println(busyMemory + " MB");
-        if (busyMemory >= 1510) {
+        if (busyMemory >= 50) {
           System.gc();
           System.out.println("GC called!");
         }
