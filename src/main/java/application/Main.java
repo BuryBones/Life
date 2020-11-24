@@ -4,16 +4,27 @@ import java.util.List;
 import java.util.Optional;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.BorderWidths;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
@@ -25,15 +36,14 @@ public class Main extends Application {
   @Override
   public void start(Stage stage) {
     setConfigs(arguments);
-    VBox root = new VBox(5);
+    VBox root = new VBox(2);
     initPane();
     initArea();
     HBox controlBar = ControlBar.getInstance();
     root.getChildren().addAll(canvas, controlBar);
+    root.setAlignment(Pos.TOP_CENTER);
     root.setBackground(new Background(new BackgroundFill(Configurations.BACKGROUND, null, null)));
-    int canvasWidth = Configurations.width * Configurations.CELL_SIZE;
-    int canvasHeight = Configurations.height * Configurations.CELL_SIZE + 50;
-    Scene scene = new Scene(root, canvasWidth, canvasHeight);
+    Scene scene = new Scene(root);
     stage.setScene(scene);
     stage.setTitle("Bacteria colony");
     stage.setResizable(false);
@@ -50,8 +60,23 @@ public class Main extends Application {
   }
 
   public static void initPane() {
+    int canvasWidth = Configurations.width * Configurations.CELL_SIZE + 4;
+    int canvasHeight = Configurations.height * Configurations.CELL_SIZE + 4;
     canvas = new Pane();
-    canvas.setBackground(new Background(new BackgroundFill(Configurations.BACKGROUND, null, null)));
+    canvas.prefHeightProperty().setValue(canvasHeight);
+    canvas.prefWidthProperty().setValue(canvasWidth);
+    canvas.maxHeightProperty().setValue(canvasHeight);
+    canvas.maxWidthProperty().setValue(canvasWidth);
+    canvas.minHeightProperty().setValue(canvasHeight);
+    canvas.minWidthProperty().setValue(canvasWidth);
+
+    canvas.setBackground(new Background(
+        new BackgroundFill(Configurations.BACKGROUND, null, null)));
+    canvas.setBorder(new Border(
+        new BorderStroke(Configurations.BORDER,
+            BorderStrokeStyle.SOLID,
+            CornerRadii.EMPTY,
+            new BorderWidths(2.0))));
   }
 
   public static void initArea() {
@@ -67,8 +92,8 @@ public class Main extends Application {
       circle.setOnMouseClicked(mouseEvent -> {
         cells.get(currentCellIndex).toggle();
       });
-      circle.setCenterX(x);
-      circle.setCenterY(y);
+      circle.setCenterX(2 + x);
+      circle.setCenterY(2 + y);
       canvasChildren.add(circle);
     }
   }

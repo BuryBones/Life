@@ -24,8 +24,12 @@ public class Logic {
     System.out.println("Started!");
     lifeTask = new LifeTask();
     deathTask = new DeathTask();
-    new Thread(lifeTask).start();
-    new Thread(deathTask).start();
+    Thread life = new Thread(lifeTask);
+    Thread death = new Thread(deathTask);
+    life.setDaemon(true);
+    death.setDaemon(true);
+    life.start();
+    death.start();
   }
 
   public static void stopSimulation() {

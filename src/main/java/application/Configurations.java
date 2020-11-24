@@ -12,6 +12,7 @@ public class Configurations {
   public static final Paint ALIVE = Paint.valueOf("#84d100");
   public static final Paint DEAD = Paint.valueOf("#6e6e6e");
   public static final Paint BACKGROUND = Paint.valueOf("#4a4a4a");
+  public static final Paint BORDER = Paint.valueOf("#00aeff");
 
   public static final int BREED = 3;
   public static final int FORLORN = 2;
