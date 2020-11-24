@@ -40,7 +40,7 @@ public class Main extends Application {
     root.setBackground(new Background(new BackgroundFill(Configurations.BACKGROUND, null, null)));
     Scene scene = new Scene(root);
     stage.setScene(scene);
-    stage.setTitle("Bacteria colony");
+    stage.setTitle(Configurations.APPLICATION_NAME);
     stage.setResizable(false);
     stage.show();
   }
