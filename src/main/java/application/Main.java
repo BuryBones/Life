@@ -3,6 +3,8 @@ package application;
 import java.util.List;
 import java.util.Optional;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -20,6 +22,7 @@ import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
@@ -98,6 +101,14 @@ public class Main extends Application {
   public static void bindShapeFillToCellColorProperty(Shape shape, int cellIndex) {
     List<Cell> cells = Field.getInstance().getCells();
     shape.fillProperty().bind(cells.get(cellIndex).colorProperty());
+    shape.fillProperty().addListener(new ChangeListener<Paint>() {
+      @Override
+      public void changed(ObservableValue<? extends Paint> observableValue, Paint paint, Paint t1) {
+        System.out.println(paint);
+        System.out.println(t1);
+        System.out.println(observableValue);
+      }
+    });
   }
 
   public static void showConfigWarning(String message) {

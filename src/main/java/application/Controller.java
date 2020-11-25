@@ -30,13 +30,16 @@ public class Controller {
     Main.initArea();
   }
 
+  // TODO: delete
   // service needs
   public void toggleAll() {
     Field.getInstance().getCells().forEach(Cell::toggle);
   }
 
   public void random() {
+    Field.getInstance().initCells();
     Field.getInstance().randomize();
+    Main.initArea();
   }
 
   public void blockButtons() {

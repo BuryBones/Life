@@ -21,7 +21,6 @@ public class Logic {
       Field.getInstance().randomize();
     }
 
-    System.out.println("Started!");
     lifeTask = new LifeTask();
     deathTask = new DeathTask();
     Thread life = new Thread(lifeTask);
