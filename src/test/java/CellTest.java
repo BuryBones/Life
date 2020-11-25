@@ -31,7 +31,7 @@ public class CellTest {
   }
 
   @Test
-  @DisplayName("Toggle test")
+  @DisplayName("Toggle changes 'isAlive'")
   public void toggleTest() {
     Cell cell = new Cell();
     cell.toggle();
@@ -41,7 +41,7 @@ public class CellTest {
   }
 
   @Test
-  @DisplayName("Revive test")
+  @DisplayName("Revive sets 'isAlive' to true")
   public void reviveTest() {
     Cell cell = new Cell();
     cell.revive();
@@ -49,7 +49,7 @@ public class CellTest {
   }
 
   @Test
-  @DisplayName("Kill test")
+  @DisplayName("Kill sets 'isAlive' to false")
   public void killTest() {
     Cell cell = new Cell();
     cell.revive();
@@ -57,4 +57,14 @@ public class CellTest {
     assertFalse(cell.isAlive());
   }
 
+  @Test
+  @DisplayName("Color reflects 'isAlive' value")
+  public void colorTest() {
+    Cell cell = new Cell();
+    assertSame(cell.colorProperty().get(), Configurations.DEAD);
+    cell.revive();
+    assertSame(cell.colorProperty().get(), Configurations.ALIVE);
+    cell.kill();
+    assertSame(cell.colorProperty().get(), Configurations.DEAD);
+  }
 }

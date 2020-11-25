@@ -21,12 +21,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
-  private static Pane canvas;
-  private static String[] arguments;
+  public static Pane canvas;
+  public static String[] arguments;
 
   @Override
   public void start(Stage stage) {
@@ -80,10 +81,10 @@ public class Main extends Application {
 
     List<Cell> cells = Field.getInstance().getCells();
     for (int i = 0; i < cells.size(); i++) {
-      Circle circle = new Circle(Configurations.CELL_SIZE / 2);
+      Circle circle = new Circle(Configurations.CELL_SIZE / 2.0f);
       int x = ((i % Configurations.width) * Configurations.CELL_SIZE) + (int) circle.getRadius();
       int y = ((i / Configurations.width) * Configurations.CELL_SIZE) + (int) circle.getRadius();
-      circle.fillProperty().bind(cells.get(i).colorProperty());
+      bindShapeFillToCellColorProperty(circle,i);
       int currentCellIndex = i;
       circle.setOnMouseClicked(mouseEvent -> {
         cells.get(currentCellIndex).toggle();
@@ -92,6 +93,11 @@ public class Main extends Application {
       circle.setCenterY(2 + y);
       canvasChildren.add(circle);
     }
+  }
+
+  public static void bindShapeFillToCellColorProperty(Shape shape, int cellIndex) {
+    List<Cell> cells = Field.getInstance().getCells();
+    shape.fillProperty().bind(cells.get(cellIndex).colorProperty());
   }
 
   public static void showConfigWarning(String message) {
