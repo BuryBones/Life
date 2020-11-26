@@ -30,13 +30,6 @@ public class Controller {
     Graphics.getInstance().triggerPaint();
   }
 
-  // TODO: delete
-  // service needs
-  public void toggleAll() {
-    Field.getInstance().getCells().forEach(Cell::toggle);
-    Graphics.getInstance().triggerPaint();
-  }
-
   public void random() {
     Field.getInstance().initCells();
     Field.getInstance().randomize();
