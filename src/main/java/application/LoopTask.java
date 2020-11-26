@@ -11,6 +11,8 @@ public abstract class LoopTask implements Runnable {
   Field field = Field.getInstance();
   List<Cell> toExecute;
 
+  abstract void prepareExecuteList();
+
   @Override
   public void run() {
     try {
@@ -23,8 +25,7 @@ public abstract class LoopTask implements Runnable {
       }
         Thread.currentThread().interrupt();
     } catch (InterruptedException | BrokenBarrierException e) {
-      // TODO: exception handling
-      e.printStackTrace();
+      Platform.runLater(() -> Graphics.getInstance().showErrorMessageAndExit(e.getMessage()));
     }
     if (!notFinished || isColonyDead()) {
       Platform.runLater(() -> {
@@ -33,7 +34,6 @@ public abstract class LoopTask implements Runnable {
       });
     }
   }
-  abstract void prepareExecuteList();
 
   void execute() {
     toExecute.forEach(Cell::toggle);

@@ -116,4 +116,13 @@ public class Graphics {
       System.out.println("Default settings");
     }
   }
+
+  public void showErrorMessageAndExit(String message) {
+    Alert alert = new Alert(
+        AlertType.ERROR,
+        "Error message: " + message + Configurations.ERROR_EXIT_STRING,
+        ButtonType.CLOSE);
+    alert.showAndWait();
+    Main.exit();
+  }
 }

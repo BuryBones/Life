@@ -42,6 +42,7 @@ public class Configurations {
   public static String argumentsWarning = String.format(
       "Invalid arguments entered. Program will start with default settings:%n"
     + "Area %d x %d cells, time limit %d steps", width,height,steps);
+  public static final String ERROR_EXIT_STRING = "\nApplication will be closed!";
     // buttons' strings
   public static final String START_BUTTON_TEXT = "Start";
   public static final String START_BUTTON_RUNNING_TEXT = "Running";

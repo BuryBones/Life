@@ -1,7 +1,6 @@
 package application;
 
-//import javafx.application.Application;
-//import javafx.stage.Stage;
+import javafx.application.Platform;
 
 public class Main {
 
@@ -26,7 +25,7 @@ public class Main {
   }
 
   public static void exit() {
-    System.exit(0);
+    Platform.exit();
   }
 
 }
