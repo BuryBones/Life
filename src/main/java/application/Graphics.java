@@ -2,6 +2,7 @@ package application;
 
 import java.util.List;
 import java.util.Optional;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -36,12 +37,12 @@ public class Graphics {
     return instance;
   }
 
-  public static Pane canvas;
+  public Pane canvas;
 
   public void start(Stage stage) {
     VBox root = new VBox(2);
     initPane();
-    initArea();
+    paint();
     HBox controlBar = ControlBar.getInstance();
     root.getChildren().addAll(canvas, controlBar);
     root.setAlignment(Pos.TOP_CENTER);
@@ -73,19 +74,24 @@ public class Graphics {
             new BorderWidths(2.0))));
   }
 
-  public void initArea() {
+  public void triggerPaint() {
+    Platform.runLater(new PaintTask());
+  }
+
+  public void paint() {
     ObservableList<Node> canvasChildren = canvas.getChildren();
     canvasChildren.removeAll(canvasChildren);
 
     List<Cell> cells = Field.getInstance().getCells();
     for (int i = 0; i < cells.size(); i++) {
       Circle circle = new Circle(Configurations.CELL_SIZE / 2.0f);
+      circle.setFill(cells.get(i).colorProperty().get());
       int x = ((i % Configurations.width) * Configurations.CELL_SIZE) + (int) circle.getRadius();
       int y = ((i / Configurations.width) * Configurations.CELL_SIZE) + (int) circle.getRadius();
-      bindShapeFillToCellColorProperty(circle,i);
       int currentCellIndex = i;
       circle.setOnMouseClicked(mouseEvent -> {
         cells.get(currentCellIndex).toggle();
+        paint();
       });
       circle.setCenterX(2 + x);
       circle.setCenterY(2 + y);

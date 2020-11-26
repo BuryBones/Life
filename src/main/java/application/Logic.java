@@ -5,7 +5,10 @@ import java.util.concurrent.CyclicBarrier;
 public class Logic {
 
   public static int count = 0;
-  public static final CyclicBarrier BARRIER = new CyclicBarrier(2,() -> count++);
+  public static final CyclicBarrier BARRIER = new CyclicBarrier(2,() -> {
+    count++;
+    Graphics.getInstance().triggerPaint();
+  });
 
   private static LoopTask lifeTask;
   private static LoopTask deathTask;

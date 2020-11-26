@@ -27,19 +27,20 @@ public class Controller {
 
   public void clear() {
     Field.getInstance().initCells();
-    Graphics.getInstance().initArea();
+    Graphics.getInstance().triggerPaint();
   }
 
   // TODO: delete
   // service needs
   public void toggleAll() {
     Field.getInstance().getCells().forEach(Cell::toggle);
+    Graphics.getInstance().triggerPaint();
   }
 
   public void random() {
     Field.getInstance().initCells();
     Field.getInstance().randomize();
-    Graphics.getInstance().initArea();
+    Graphics.getInstance().triggerPaint();
   }
 
   public void blockButtons() {
