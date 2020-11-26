@@ -36,7 +36,7 @@ public class Graphics {
     return instance;
   }
 
-  public static Pane canvas;
+  public Pane canvas;
 
   public void start(Stage stage) {
     VBox root = new VBox(2);

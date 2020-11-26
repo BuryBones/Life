@@ -36,7 +36,7 @@ public class GraphicsTest {
     Graphics.getInstance().initPane();
     Graphics.getInstance().initArea();
     assertEquals(Configurations.width * Configurations.height,
-        Graphics.canvas.getChildren().size());
+        Graphics.getInstance().canvas.getChildren().size());
   }
 
 }
