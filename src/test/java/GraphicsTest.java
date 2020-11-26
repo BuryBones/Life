@@ -30,11 +30,11 @@ public class GraphicsTest {
   }
 
   @Test
-  @DisplayName("Init area test")
-  public void initAreaTest() {
+  @DisplayName("Paint method puts width * height cells to canvas")
+  public void paintTest() {
     Field.getInstance().initCells();
     Graphics.getInstance().initPane();
-    Graphics.getInstance().initArea();
+    Graphics.getInstance().paint();
     assertEquals(Configurations.width * Configurations.height,
         Graphics.getInstance().canvas.getChildren().size());
   }
