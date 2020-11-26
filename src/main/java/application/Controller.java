@@ -27,7 +27,7 @@ public class Controller {
 
   public void clear() {
     Field.getInstance().initCells();
-    Main.initArea();
+    Graphics.getInstance().initArea();
   }
 
   // TODO: delete
@@ -39,7 +39,7 @@ public class Controller {
   public void random() {
     Field.getInstance().initCells();
     Field.getInstance().randomize();
-    Main.initArea();
+    Graphics.getInstance().initArea();
   }
 
   public void blockButtons() {

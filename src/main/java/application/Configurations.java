@@ -49,12 +49,13 @@ public class Configurations {
   public static final String CLEAR_BUTTON_TEXT = "Clear";
   public static final String RANDOM_BUTTON_TEXT = "Random";
 
+  // TODO: warning if arguments passed but are beyond the limits
   public static void setConfigurations(String[] args) throws InvalidArgumentsException {
     int[] arguments = parseArguments(args);
     if (arguments[0] >= MIN_WIDTH && arguments[0] <= MAX_WIDTH) {
       width = arguments[0];
     }
-    if (arguments[1] >= MIN_HEIGHT && arguments[0] <= MAX_HEIGHT) {
+    if (arguments[1] >= MIN_HEIGHT && arguments[1] <= MAX_HEIGHT) {
       height = arguments[1];
     }
     if (arguments[2] == 0) {
