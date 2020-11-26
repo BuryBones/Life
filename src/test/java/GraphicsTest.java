@@ -29,14 +29,14 @@ public class GraphicsTest {
     }
   }
 
-//  @Test
-//  @DisplayName("Init area test")
-//  public void initAreaTest() {
-//    Field.getInstance().initCells();
-//    Graphics.getInstance().initPane();
-//    Graphics.getInstance().initArea();
-//    assertEquals(Configurations.width * Configurations.height,
-//        Graphics.canvas.getChildren().size());
-//  }
+  @Test
+  @DisplayName("Init area test")
+  public void initAreaTest() {
+    Field.getInstance().initCells();
+    Graphics.getInstance().initPane();
+    Graphics.getInstance().initArea();
+    assertEquals(Configurations.width * Configurations.height,
+        Graphics.getInstance().canvas.getChildren().size());
+  }
 
 }

@@ -1,17 +1,11 @@
 package application;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+//import javafx.application.Application;
+//import javafx.stage.Stage;
 
-public class Main extends Application {
+public class Main {
 
   public static String[] arguments;
-
-  @Override
-  public void start(Stage stage) {
-    setConfigs(arguments);
-    Graphics.getInstance().start(stage);
-  }
 
   public static void main(String[] args) {
     arguments = args;
@@ -20,12 +14,11 @@ public class Main extends Application {
       memoryTrack.setDaemon(true);
       memoryTrack.start();
     }
-    launch();
+    App.launch(App.class);
   }
-
-  private static void setConfigs(String[] args) {
+  public static void setConfigs() {
     try {
-      Configurations.setConfigurations(args);
+      Configurations.setConfigurations(arguments);
     } catch (InvalidArgumentsException e) {
       Graphics.getInstance().showConfigWarning(e.getMessage());
     }
