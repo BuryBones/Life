@@ -6,8 +6,8 @@ import javafx.application.Platform;
 
 public abstract class LoopTask implements Runnable {
 
-  boolean notStopped = true;
-  boolean notFinished = true;
+  boolean notStopped = true;  // 'stop' button not pressed
+  boolean notFinished = true; // colony has not reached time limit
   Field field = Field.getInstance();
   List<Cell> toExecute;
 
@@ -27,12 +27,10 @@ public abstract class LoopTask implements Runnable {
     } catch (InterruptedException | BrokenBarrierException e) {
       Platform.runLater(() -> Graphics.getInstance().showErrorMessageAndExit(e.getMessage()));
     }
+    // if colony reached time limit or there is no alive cells
     if (!notFinished || isColonyDead()) {
-      Platform.runLater(() -> {
-        Controller.getInstance().unblockButtons();
-        Controller.getInstance().blockStop();
-      });
-    }
+      GraphicsController.getInstance().demandButtonsBlock();
+      }
   }
 
   void execute() {

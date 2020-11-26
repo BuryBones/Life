@@ -21,7 +21,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 public class Graphics {
@@ -38,6 +37,7 @@ public class Graphics {
   }
 
   public Pane canvas;
+  private final PaintTask canvasRepaint = new PaintTask();
 
   public void start(Stage stage) {
     VBox root = new VBox(2);
@@ -75,7 +75,7 @@ public class Graphics {
   }
 
   public void triggerPaint() {
-    Platform.runLater(new PaintTask());
+    Platform.runLater(new Thread(canvasRepaint));
   }
 
   public void paint() {
@@ -99,11 +99,6 @@ public class Graphics {
     }
   }
 
-  public void bindShapeFillToCellColorProperty(Shape shape, int cellIndex) {
-    List<Cell> cells = Field.getInstance().getCells();
-    shape.fillProperty().bind(cells.get(cellIndex).colorProperty());
-  }
-
   public void showConfigWarning(String message) {
     Alert alert = new Alert(
         AlertType.WARNING,
@@ -124,5 +119,13 @@ public class Graphics {
         ButtonType.CLOSE);
     alert.showAndWait();
     Main.exit();
+  }
+
+  public void showInfoMessage(String message) {
+    Alert alert = new Alert(
+        AlertType.INFORMATION,
+        message,
+        ButtonType.OK);
+    alert.showAndWait();
   }
 }

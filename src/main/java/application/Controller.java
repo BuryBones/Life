@@ -27,13 +27,13 @@ public class Controller {
 
   public void clear() {
     Field.getInstance().initCells();
-    Graphics.getInstance().triggerPaint();
+    GraphicsController.getInstance().demandRepaint();
   }
 
   public void random() {
     Field.getInstance().initCells();
     Field.getInstance().randomize();
-    Graphics.getInstance().triggerPaint();
+    GraphicsController.getInstance().demandRepaint();
   }
 
   public void blockButtons() {
