@@ -36,8 +36,8 @@ public class Graphics {
     return instance;
   }
 
-  private final PaintTask canvasRepaint = new PaintTask();
   private Pane canvas;
+  private final PaintTask canvasRepaint = new PaintTask();
 
   public void start(Stage stage) {
     VBox root = new VBox(2);
