@@ -13,7 +13,11 @@ public class Main {
       memoryTrack.setDaemon(true);
       memoryTrack.start();
     }
-    App.launch(App.class);
+    try {
+      App.launch(App.class);
+    } catch (Exception e) {
+      GraphicsController.getInstance().showErrorMessageAndExit(e.getMessage());
+    }
   }
   public static void setConfigs() {
     try {
