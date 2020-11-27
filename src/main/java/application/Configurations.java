@@ -1,5 +1,6 @@
 package application;
 
+import java.util.ArrayList;
 import javafx.scene.paint.Paint;
 
 public class Configurations {
@@ -23,16 +24,17 @@ public class Configurations {
   public static final int CELL_SIZE = 15; // pixels
 
     // width and height sizes are in cells
-  public static int width = 50;  // default
+  public static int width = 41;  // default
   private static final int MIN_WIDTH = 10;
   private static final int MAX_WIDTH = 50;
 
-  public static int height = 40;  // default
+  public static int height = 41;  // default
   private static final int MIN_HEIGHT = 10;
   private static final int MAX_HEIGHT = 50;
 
   public static boolean timeLimit = false; // default
   public static int steps = 100;  // default
+  private static final int MAX_STEPS = 1000;
   public static final long PERIOD = 1000; // in millis
 
   public static final float RANDOM_CELLS = 0.10f; // % of cells to be set as 'alive' by random
@@ -42,6 +44,16 @@ public class Configurations {
   public static String argumentsWarning = String.format(
       "Invalid arguments entered. Program will start with default settings:%n"
     + "Area %d x %d cells, time limit %d steps", width,height,steps);
+  public static final String ERROR_EXIT_STRING = "\nApplication will be closed!";
+  private static final String WIDTH_SET_TO_DEFAULT =
+      "Requested width is not between "
+      + MIN_WIDTH + " and " + MAX_WIDTH + ". Width set to default: " + width;
+  private static final String HEIGHT_SET_TO_DEFAULT =
+      "Requested height is not between "
+          + MIN_HEIGHT + " and " + MAX_HEIGHT + ". Height set to default: " + height;
+  private static final String STEPS_SET_TO_DEFAULT =
+      "Requested steps are greater than "
+          + MAX_STEPS + ". Steps set to default: " + steps;
     // buttons' strings
   public static final String START_BUTTON_TEXT = "Start";
   public static final String START_BUTTON_RUNNING_TEXT = "Running";
@@ -49,20 +61,31 @@ public class Configurations {
   public static final String CLEAR_BUTTON_TEXT = "Clear";
   public static final String RANDOM_BUTTON_TEXT = "Random";
 
-  // TODO: warning if arguments passed but are beyond the limits
   public static void setConfigurations(String[] args) throws InvalidArgumentsException {
     int[] arguments = parseArguments(args);
+    ArrayList<String> messages = new ArrayList<>(3);
     if (arguments[0] >= MIN_WIDTH && arguments[0] <= MAX_WIDTH) {
       width = arguments[0];
+    } else {
+          messages.add(WIDTH_SET_TO_DEFAULT);
     }
     if (arguments[1] >= MIN_HEIGHT && arguments[1] <= MAX_HEIGHT) {
       height = arguments[1];
+    } else {
+      messages.add(HEIGHT_SET_TO_DEFAULT);
     }
     if (arguments[2] == 0) {
       timeLimit = false;
-    } else {
-      timeLimit = true;
+    } else if (arguments[2] <= MAX_STEPS) {
       steps = arguments[2];
+      timeLimit = true;
+    } else {
+      messages.add(STEPS_SET_TO_DEFAULT);
+    }
+    if (messages.size() > 0) {
+      StringBuilder completeMessage = new StringBuilder();
+      messages.forEach(str -> completeMessage.append(str).append("\n"));
+      ViewController.getInstance().showInfoMessage(completeMessage.toString());
     }
   }
 

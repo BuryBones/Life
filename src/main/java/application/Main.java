@@ -1,17 +1,10 @@
 package application;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+import javafx.application.Platform;
 
-public class Main extends Application {
+public class Main {
 
   public static String[] arguments;
-
-  @Override
-  public void start(Stage stage) {
-    setConfigs(arguments);
-    Graphics.getInstance().start(stage);
-  }
 
   public static void main(String[] args) {
     arguments = args;
@@ -20,12 +13,15 @@ public class Main extends Application {
       memoryTrack.setDaemon(true);
       memoryTrack.start();
     }
-    launch();
-  }
-
-  private static void setConfigs(String[] args) {
     try {
-      Configurations.setConfigurations(args);
+      App.launch(App.class);
+    } catch (Exception e) {
+      ViewController.getInstance().showErrorMessageAndExit(e.getMessage());
+    }
+  }
+  public static void setConfigs() {
+    try {
+      Configurations.setConfigurations(arguments);
     } catch (InvalidArgumentsException e) {
       Graphics.getInstance().showConfigWarning(e.getMessage());
     }
@@ -33,7 +29,7 @@ public class Main extends Application {
   }
 
   public static void exit() {
-    System.exit(0);
+    Platform.exit();
   }
 
 }

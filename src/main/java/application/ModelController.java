@@ -1,17 +1,17 @@
 package application;
 
-public class Controller {
+public class ModelController {
 
-  public static Controller instance;
+  public static ModelController instance;
 
-  public static Controller getInstance() {
+  public static ModelController getInstance() {
     if (instance == null) {
-      instance = new Controller();
+      instance = new ModelController();
     }
     return instance;
   }
 
-  private Controller() {}
+  private ModelController() {}
 
   public void start() {
     Logic.runSimulation();
@@ -27,34 +27,28 @@ public class Controller {
 
   public void clear() {
     Field.getInstance().initCells();
-    Graphics.getInstance().initArea();
-  }
-
-  // TODO: delete
-  // service needs
-  public void toggleAll() {
-    Field.getInstance().getCells().forEach(Cell::toggle);
+    ViewController.getInstance().demandRepaint();
   }
 
   public void random() {
     Field.getInstance().initCells();
     Field.getInstance().randomize();
-    Graphics.getInstance().initArea();
+    ViewController.getInstance().demandRepaint();
   }
 
   public void blockButtons() {
-    ControlBar.getInstance().blockButtons();
+    ViewController.getInstance().blockButtons();
   }
 
   public void unblockButtons() {
-    ControlBar.getInstance().unblockButtons();
+    ViewController.getInstance().unblockButtons();
   }
 
   public void blockStop() {
-    ControlBar.getInstance().blockStop();
+    ViewController.getInstance().blockStop();
   }
 
   public void unblockStop() {
-    ControlBar.getInstance().unblockStop();
+    ViewController.getInstance().unblockStop();
   }
 }

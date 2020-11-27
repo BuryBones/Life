@@ -13,28 +13,11 @@ import org.junit.jupiter.api.Test;
 public class GraphicsTest {
 
   @Test
-  @DisplayName("Shape's fill property binds with cell's color")
-  public void bindShapeFillToCellColorPropertyTest() {
-    Field.getInstance().initCells();
-    List<Cell> cellList = Field.getInstance().getCells();
-    for (int i = 0; i < cellList.size(); i++) {
-      Cell cell = cellList.get(i);
-      Circle circle = new Circle();
-      Graphics.getInstance().bindShapeFillToCellColorProperty(circle,i);
-      assertSame(circle.fillProperty().get(),cell.colorProperty().get());
-      cell.toggle();
-      assertSame(circle.fillProperty().get(),cell.colorProperty().get());
-      cell.toggle();
-      assertSame(circle.fillProperty().get(),cell.colorProperty().get());
-    }
-  }
-
-  @Test
-  @DisplayName("Init area test")
-  public void initAreaTest() {
+  @DisplayName("Paint method puts width * height cells to canvas")
+  public void paintTest() {
     Field.getInstance().initCells();
     Graphics.getInstance().initPane();
-    Graphics.getInstance().initArea();
+    Graphics.getInstance().paint();
     assertEquals(Configurations.width * Configurations.height,
         Graphics.getInstance().getCanvas().getChildren().size());
   }
