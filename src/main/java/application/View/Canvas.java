@@ -1,5 +1,8 @@
-package application;
+package application.View;
 
+import application.Configurations;
+import application.Model.Cell;
+import application.Model.Field;
 import java.util.List;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;

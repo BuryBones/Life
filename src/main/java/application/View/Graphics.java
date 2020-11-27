@@ -1,5 +1,6 @@
-package application;
+package application.View;
 
+import application.Configurations;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;

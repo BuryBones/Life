@@ -1,5 +1,6 @@
-package application;
+package application.Model;
 
+import application.Configurations;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

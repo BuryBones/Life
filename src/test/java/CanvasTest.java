@@ -1,8 +1,8 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import application.Canvas;
 import application.Configurations;
-import application.Field;
+import application.Model.Field;
+import application.View.Canvas;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

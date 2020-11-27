@@ -1,4 +1,7 @@
-package application;
+package application.Controller;
+
+import application.Model.Field;
+import application.Model.Logic;
 
 public class ModelController {
 

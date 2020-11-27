@@ -1,5 +1,7 @@
-package application;
+package application.View;
 
+import application.Configurations;
+import application.Controller.ModelController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;

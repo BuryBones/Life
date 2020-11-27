@@ -1,5 +1,7 @@
-package application;
+package application.Controller;
 
+import application.View.ControlBar;
+import application.View.Graphics;
 import javafx.application.Platform;
 
 public class ViewController {
@@ -26,14 +28,6 @@ public class ViewController {
       ModelController.getInstance().unblockButtons();
       ModelController.getInstance().blockStop();
     });
-  }
-
-  public void showInfoMessage(String message) {
-    Platform.runLater(() -> InfoAlert.showInfoMessage(message));
-  }
-
-  public void showErrorMessageAndExit(String message) {
-    Platform.runLater(() -> ErrorAlert.showErrorMessageAndExit(message));
   }
 
   public void blockButtons() {

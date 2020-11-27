@@ -1,5 +1,6 @@
-package application;
+package application.Model;
 
+import application.Controller.ViewController;
 import java.util.concurrent.CyclicBarrier;
 
 public class Logic {

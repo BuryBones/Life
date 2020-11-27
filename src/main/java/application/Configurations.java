@@ -1,5 +1,6 @@
 package application;
 
+import application.Controller.AlertsController;
 import java.util.ArrayList;
 import javafx.scene.paint.Paint;
 
@@ -87,10 +88,10 @@ public class Configurations {
       if (messages.size() > 0) {
         StringBuilder completeMessage = new StringBuilder();
         messages.forEach(str -> completeMessage.append(str).append("\n"));
-        ViewController.getInstance().showInfoMessage(completeMessage.toString());
+        AlertsController.getInstance().showInfoMessage(completeMessage.toString());
       }
     } catch (InvalidArgumentsException e) {
-      ConfigAlert.showConfigWarning(e.getMessage());
+      AlertsController.getInstance().showConfigWarning(e.getMessage());
     }
   }
 

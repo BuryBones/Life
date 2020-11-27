@@ -1,5 +1,7 @@
 package application;
 
+import application.Controller.AlertsController;
+import application.Model.Logic;
 import javafx.application.Platform;
 
 public class Main {
@@ -16,7 +18,7 @@ public class Main {
     try {
       App.launch(App.class);
     } catch (Exception e) {
-      ViewController.getInstance().showErrorMessageAndExit(e.getMessage());
+      AlertsController.getInstance().showErrorMessageAndExit(e.getMessage());
     }
   }
   public static void setConfigs() {

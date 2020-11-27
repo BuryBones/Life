@@ -1,5 +1,8 @@
-package application;
+package application.Model;
 
+import application.Configurations;
+import application.Controller.ViewController;
+import application.View.Alerts.ErrorAlert;
 import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import javafx.application.Platform;
