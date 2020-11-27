@@ -7,7 +7,7 @@ import javafx.scene.paint.Paint;
 public class Configurations {
 
   // common settings
-  public static final boolean TRACK_MEMORY = false;
+  public static final boolean ENABLE_TRACK_MEMORY = false;
   private static final int ARGUMENTS_EXPECTED = 3;
 
   // colors
