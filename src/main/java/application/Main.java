@@ -20,11 +20,8 @@ public class Main {
     }
   }
   public static void setConfigs() {
-    try {
-      Configurations.setConfigurations(arguments);
-    } catch (InvalidArgumentsException e) {
-      ConfigAlert.showConfigWarning(e.getMessage());
-    }
+    // TODO: move to some controller
+    Configurations.setConfigurations(arguments);
     Logic.init();
   }
 

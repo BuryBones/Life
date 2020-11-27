@@ -61,31 +61,36 @@ public class Configurations {
   public static final String CLEAR_BUTTON_TEXT = "Clear";
   public static final String RANDOM_BUTTON_TEXT = "Random";
 
-  public static void setConfigurations(String[] args) throws InvalidArgumentsException {
-    int[] arguments = parseArguments(args);
-    ArrayList<String> messages = new ArrayList<>(3);
-    if (arguments[0] >= MIN_WIDTH && arguments[0] <= MAX_WIDTH) {
-      width = arguments[0];
-    } else {
-          messages.add(WIDTH_SET_TO_DEFAULT);
-    }
-    if (arguments[1] >= MIN_HEIGHT && arguments[1] <= MAX_HEIGHT) {
-      height = arguments[1];
-    } else {
-      messages.add(HEIGHT_SET_TO_DEFAULT);
-    }
-    if (arguments[2] == 0) {
-      timeLimit = false;
-    } else if (arguments[2] <= MAX_STEPS) {
-      steps = arguments[2];
-      timeLimit = true;
-    } else {
-      messages.add(STEPS_SET_TO_DEFAULT);
-    }
-    if (messages.size() > 0) {
-      StringBuilder completeMessage = new StringBuilder();
-      messages.forEach(str -> completeMessage.append(str).append("\n"));
-      ViewController.getInstance().showInfoMessage(completeMessage.toString());
+  public static void setConfigurations(String[] args) {
+    int[] arguments;
+    try {
+      arguments = parseArguments(args);
+      ArrayList<String> messages = new ArrayList<>(3);
+      if (arguments[0] >= MIN_WIDTH && arguments[0] <= MAX_WIDTH) {
+        width = arguments[0];
+      } else {
+            messages.add(WIDTH_SET_TO_DEFAULT);
+      }
+      if (arguments[1] >= MIN_HEIGHT && arguments[1] <= MAX_HEIGHT) {
+        height = arguments[1];
+      } else {
+        messages.add(HEIGHT_SET_TO_DEFAULT);
+      }
+      if (arguments[2] == 0) {
+        timeLimit = false;
+      } else if (arguments[2] <= MAX_STEPS) {
+        steps = arguments[2];
+        timeLimit = true;
+      } else {
+        messages.add(STEPS_SET_TO_DEFAULT);
+      }
+      if (messages.size() > 0) {
+        StringBuilder completeMessage = new StringBuilder();
+        messages.forEach(str -> completeMessage.append(str).append("\n"));
+        ViewController.getInstance().showInfoMessage(completeMessage.toString());
+      }
+    } catch (InvalidArgumentsException e) {
+      ConfigAlert.showConfigWarning(e.getMessage());
     }
   }
 
