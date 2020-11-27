@@ -36,7 +36,7 @@ public class Graphics {
     return instance;
   }
 
-  public Pane canvas;
+  private Pane canvas;
 
   public void start(Stage stage) {
     VBox root = new VBox(2);
@@ -109,5 +109,9 @@ public class Graphics {
     } else if (result.get() == ButtonType.OK) {
       System.out.println("Default settings");
     }
+  }
+
+  public Pane getCanvas() {
+    return canvas;
   }
 }
