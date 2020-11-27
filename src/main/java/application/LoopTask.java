@@ -25,7 +25,7 @@ public abstract class LoopTask implements Runnable {
       }
         Thread.currentThread().interrupt();
     } catch (InterruptedException | BrokenBarrierException e) {
-      Platform.runLater(() -> Graphics.getInstance().showErrorMessageAndExit(e.getMessage()));
+      Platform.runLater(() -> ErrorAlert.showErrorMessageAndExit(e.getMessage()));
     }
     // if colony reached time limit or there is no alive cells
     if (!notFinished || isColonyDead()) {

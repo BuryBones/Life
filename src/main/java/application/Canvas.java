@@ -38,7 +38,9 @@ public class Canvas extends Pane {
             CornerRadii.EMPTY,
             new BorderWidths(2.0))));
   }
+
   public void paint() {
+    // clear children list
     ObservableList<Node> canvasChildren = getChildren();
     canvasChildren.removeAll(canvasChildren);
 

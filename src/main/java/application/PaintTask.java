@@ -2,8 +2,14 @@ package application;
 
 public class PaintTask implements Runnable {
 
+  private Canvas canvas;
+
+  public PaintTask(Canvas canvas) {
+    this.canvas = canvas;
+  }
+
   @Override
   public void run() {
-    Graphics.getInstance().paint();
+    canvas.paint();
   }
 }
