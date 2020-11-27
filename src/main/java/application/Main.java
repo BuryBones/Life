@@ -11,6 +11,7 @@ public class Main {
   public static void main(String[] args) {
     arguments = args;
     if (Configurations.TRACK_MEMORY) {
+      // launches a thread that writes occupied memory to console
       Thread memoryTrack = new Thread(new MemoryMonitor());
       memoryTrack.setDaemon(true);
       memoryTrack.start();

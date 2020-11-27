@@ -3,7 +3,6 @@ package application.Controller;
 import application.View.Alerts.ConfigAlert;
 import application.View.Alerts.ErrorAlert;
 import application.View.Alerts.InfoAlert;
-import javafx.application.Platform;
 
 public class AlertsController {
 
@@ -21,11 +20,11 @@ public class AlertsController {
   }
 
   public void showInfoMessage(String message) {
-    Platform.runLater(() -> InfoAlert.showInfoMessage(message));
+    InfoAlert.showInfoMessage(message);
   }
 
   public void showErrorMessageAndExit(String message) {
-    Platform.runLater(() -> ErrorAlert.showErrorMessageAndExit(message));
+    ErrorAlert.showErrorMessageAndExit(message);
   }
 
   public void showConfigWarning (String message) {

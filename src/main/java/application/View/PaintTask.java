@@ -2,7 +2,7 @@ package application.View;
 
 public class PaintTask implements Runnable {
 
-  private Canvas canvas;
+  private final Canvas canvas;
 
   public PaintTask(Canvas canvas) {
     this.canvas = canvas;
