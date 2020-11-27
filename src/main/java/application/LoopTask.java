@@ -6,10 +6,10 @@ import javafx.application.Platform;
 
 public abstract class LoopTask implements Runnable {
 
-  boolean notStopped = true;  // 'stop' button not pressed
-  boolean notFinished = true; // colony has not reached time limit
-  Field field = Field.getInstance();
-  List<Cell> toExecute;
+  private boolean notStopped = true;  // 'stop' button not pressed
+  private boolean notFinished = true; // colony has not reached time limit
+  protected Field field = Field.getInstance();
+  protected List<Cell> toExecute;
 
   abstract void prepareExecuteList();
 
@@ -17,7 +17,7 @@ public abstract class LoopTask implements Runnable {
   public void run() {
     try {
       while (notStopped && notFinished && !isColonyDead()) {
-        notFinished = !Configurations.timeLimit || Logic.count < Configurations.steps - 1;
+        notFinished = !Configurations.timeLimit || Logic.getCount() < Configurations.steps - 1;
         prepareExecuteList();
         Logic.BARRIER.await();
         execute();
@@ -33,15 +33,15 @@ public abstract class LoopTask implements Runnable {
       }
   }
 
-  void execute() {
+  public void execute() {
     toExecute.forEach(Cell::toggle);
   }
 
-  void stop() {
+  public void stop() {
     notStopped = false;
   }
 
-  boolean isColonyDead() {
+  public boolean isColonyDead() {
     return Field.getInstance().numberOfCellsAlive() == 0;
   }
 }

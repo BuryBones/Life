@@ -4,7 +4,7 @@ import java.util.concurrent.CyclicBarrier;
 
 public class Logic {
 
-  public static int count = 0;
+  private static int count = 0;
   public static final CyclicBarrier BARRIER = new CyclicBarrier(2,() -> {
     count++;
     ViewController.getInstance().demandRepaint();
@@ -37,5 +37,9 @@ public class Logic {
   public static void stopSimulation() {
     lifeTask.stop();
     deathTask.stop();
+  }
+
+  public static int getCount() {
+    return count;
   }
 }

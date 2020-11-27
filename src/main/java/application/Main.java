@@ -4,7 +4,7 @@ import javafx.application.Platform;
 
 public class Main {
 
-  public static String[] arguments;
+  private static String[] arguments;
 
   public static void main(String[] args) {
     arguments = args;

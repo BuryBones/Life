@@ -2,7 +2,7 @@ package application;
 
 public class ModelController {
 
-  public static ModelController instance;
+  private static ModelController instance;
 
   public static ModelController getInstance() {
     if (instance == null) {
