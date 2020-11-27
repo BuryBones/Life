@@ -23,7 +23,7 @@ public class Main {
     try {
       Configurations.setConfigurations(arguments);
     } catch (InvalidArgumentsException e) {
-      Graphics.getInstance().showConfigWarning(e.getMessage());
+      ConfigAlert.showConfigWarning(e.getMessage());
     }
     Logic.init();
   }

@@ -29,11 +29,11 @@ public class ViewController {
   }
 
   public void showInfoMessage(String message) {
-    Platform.runLater(() -> Graphics.getInstance().showInfoMessage(message));
+    Platform.runLater(() -> InfoAlert.showInfoMessage(message));
   }
 
   public void showErrorMessageAndExit(String message) {
-    Platform.runLater(() -> Graphics.getInstance().showErrorMessageAndExit(message));
+    Platform.runLater(() -> ErrorAlert.showErrorMessageAndExit(message));
   }
 
   public void blockButtons() {
