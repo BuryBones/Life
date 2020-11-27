@@ -7,7 +7,7 @@ public class Logic {
   public static int count = 0;
   public static final CyclicBarrier BARRIER = new CyclicBarrier(2,() -> {
     count++;
-    GraphicsController.getInstance().demandRepaint();
+    ViewController.getInstance().demandRepaint();
   });
 
   private static LoopTask lifeTask;

@@ -16,7 +16,7 @@ public class Main {
     try {
       App.launch(App.class);
     } catch (Exception e) {
-      GraphicsController.getInstance().showErrorMessageAndExit(e.getMessage());
+      ViewController.getInstance().showErrorMessageAndExit(e.getMessage());
     }
   }
   public static void setConfigs() {

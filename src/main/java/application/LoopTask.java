@@ -29,7 +29,7 @@ public abstract class LoopTask implements Runnable {
     }
     // if colony reached time limit or there is no alive cells
     if (!notFinished || isColonyDead()) {
-      GraphicsController.getInstance().demandButtonsBlock();
+      ViewController.getInstance().demandButtonsBlock();
       }
   }
 

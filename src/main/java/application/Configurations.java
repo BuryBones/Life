@@ -85,7 +85,7 @@ public class Configurations {
     if (messages.size() > 0) {
       StringBuilder completeMessage = new StringBuilder();
       messages.forEach(str -> completeMessage.append(str).append("\n"));
-      GraphicsController.getInstance().showInfoMessage(completeMessage.toString());
+      ViewController.getInstance().showInfoMessage(completeMessage.toString());
     }
   }
 

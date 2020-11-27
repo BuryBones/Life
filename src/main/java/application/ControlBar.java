@@ -31,23 +31,23 @@ public class ControlBar extends HBox {
 
     start = new Button(Configurations.START_BUTTON_TEXT);
     start.setPrefSize(75,30);
-    start.setOnAction(e -> Controller.getInstance().start());
+    start.setOnAction(e -> ModelController.getInstance().start());
     start.setPadding(new Insets(0,1,0,1));
 
     stop = new Button(Configurations.STOP_BUTTON_TEXT);
     stop.setPrefSize(75,30);
-    stop.setOnAction(e -> Controller.getInstance().stop());
+    stop.setOnAction(e -> ModelController.getInstance().stop());
     stop.setPadding(new Insets(0,1,0,1));
     stop.setDisable(true);  // blocked on launch
 
     clear = new Button(Configurations.CLEAR_BUTTON_TEXT);
     clear.setPrefSize(75,30);
-    clear.setOnAction(e -> Controller.getInstance().clear());
+    clear.setOnAction(e -> ModelController.getInstance().clear());
     clear.setPadding(new Insets(0,1,0,1));
 
     random = new Button(Configurations.RANDOM_BUTTON_TEXT);
     random.setPrefSize(75,30);
-    random.setOnAction(e -> Controller.getInstance().random());
+    random.setOnAction(e -> ModelController.getInstance().random());
     random.setPadding(new Insets(0,1,0,1));
 
     getChildren().addAll(start,stop,clear,random);
