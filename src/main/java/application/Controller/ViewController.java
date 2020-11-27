@@ -25,13 +25,9 @@ public class ViewController {
 
   public void demandButtonsBlock() {
     Platform.runLater(() -> {
-      ModelController.getInstance().unblockButtons();
-      ModelController.getInstance().blockStop();
+      unblockButtons();
+      blockStop();
     });
-  }
-
-  public void blockButtons() {
-    ControlBar.getInstance().blockButtons();
   }
 
   public void unblockButtons() {
@@ -40,10 +36,6 @@ public class ViewController {
 
   public void blockStop() {
     ControlBar.getInstance().blockStop();
-  }
-
-  public void unblockStop() {
-    ControlBar.getInstance().unblockStop();
   }
 
 }
