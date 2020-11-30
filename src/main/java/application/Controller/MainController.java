@@ -5,17 +5,17 @@ import application.Main;
 import application.MemoryMonitor;
 import application.Model.Logic;
 
-public class SetupController {
+public class MainController {
 
-  private static SetupController instance = new SetupController();
+  private static MainController instance = new MainController();
 
-  private SetupController() {
+  private MainController() {
 
   }
 
-  public static SetupController getInstance() {
+  public static MainController getInstance() {
     if (instance == null) {
-      instance = new SetupController();
+      instance = new MainController();
     }
     return instance;
   }
@@ -33,6 +33,10 @@ public class SetupController {
     Thread memoryTrack = new Thread(new MemoryMonitor());
     memoryTrack.setDaemon(true);
     memoryTrack.start();
+  }
+
+  public void exit() {
+    Main.exit();
   }
 
 }

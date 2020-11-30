@@ -1,7 +1,7 @@
 package application.View.Alerts;
 
 import application.Configurations;
-import application.Main;
+import application.Controller.MainController;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
@@ -19,7 +19,7 @@ public class ErrorAlert extends Alert {
   public static void showErrorMessageAndExit(String message) {
     alert = new ErrorAlert(message);
     alert.showAndWait();
-    Main.exit();
+    MainController.getInstance().exit();
   }
 
 }

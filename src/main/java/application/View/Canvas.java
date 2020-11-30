@@ -1,9 +1,7 @@
 package application.View;
 
 import application.Configurations;
-import application.Model.Cell;
-import application.Model.Field;
-import java.util.List;
+import application.Controller.ModelController;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.Background;
@@ -47,15 +45,14 @@ public class Canvas extends Pane {
     ObservableList<Node> canvasChildren = getChildren();
     canvasChildren.removeAll(canvasChildren);
 
-    List<Cell> cells = Field.getInstance().getCells();
-    for (int i = 0; i < cells.size(); i++) {
+    for (int i = 0; i < Configurations.width * Configurations.height; i++) {
       Circle circle = new Circle(Configurations.CELL_SIZE / 2.0f);
-      circle.setFill(cells.get(i).colorProperty().get());
+      circle.setFill(ModelController.getInstance().getCellColorProperty(i));
       int x = ((i % Configurations.width) * Configurations.CELL_SIZE) + (int) circle.getRadius();
       int y = ((i / Configurations.width) * Configurations.CELL_SIZE) + (int) circle.getRadius();
       int currentCellIndex = i;
       circle.setOnMouseClicked(mouseEvent -> {
-        cells.get(currentCellIndex).toggle();
+        ModelController.getInstance().toggleCellByIndex(currentCellIndex);
         paint();
       });
       circle.setCenterX(2 + x);

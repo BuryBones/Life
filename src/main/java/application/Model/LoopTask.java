@@ -1,11 +1,10 @@
 package application.Model;
 
 import application.Configurations;
+import application.Controller.AlertsController;
 import application.Controller.ViewController;
-import application.View.Alerts.ErrorAlert;
 import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
-import javafx.application.Platform;
 
 public abstract class LoopTask implements Runnable {
 
@@ -28,7 +27,7 @@ public abstract class LoopTask implements Runnable {
       }
         Thread.currentThread().interrupt();
     } catch (InterruptedException | BrokenBarrierException e) {
-      Platform.runLater(() -> ErrorAlert.showErrorMessageAndExit(e.getMessage()));
+      AlertsController.getInstance().showErrorMessageAndExit(e.getMessage());
     }
     // if colony reached time limit or there is no alive cells
     if (!notFinished || isColonyDead()) {

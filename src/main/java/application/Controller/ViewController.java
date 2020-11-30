@@ -3,6 +3,7 @@ package application.Controller;
 import application.View.ControlBar;
 import application.View.Graphics;
 import javafx.application.Platform;
+import javafx.stage.Stage;
 
 public class ViewController {
 
@@ -17,6 +18,10 @@ public class ViewController {
       instance = new ViewController();
     }
     return instance;
+  }
+
+  public void startGraphics(Stage stage) {
+    Graphics.getInstance().start(stage);
   }
 
   public void demandRepaint() {
