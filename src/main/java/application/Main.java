@@ -1,7 +1,6 @@
 package application;
 
 import application.controller.AlertsController;
-import application.model.Logic;
 import javafx.application.Platform;
 
 public class Main {
@@ -12,7 +11,6 @@ public class Main {
     if (configurations.isMemoryTrackingEnabled()) {
       launchMemoryTracking();
     }
-    Logic.init();
     try {
       App.launch(App.class);
     } catch (Exception e) {

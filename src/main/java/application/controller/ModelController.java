@@ -17,14 +17,25 @@ public class ModelController {
     return instance;
   }
 
+  private Logic logic;
+  private Field field;
+
   private ModelController() {}
 
+  public void setLogic(Logic logic) {
+    this.logic = logic;
+  }
+
+  public void setField(Field field) {
+    this.field = field;
+  }
+
   public void start() {
-    Logic.runSimulation();
+    logic.runSimulation();
   }
 
   public void stop() {
-    Logic.stopSimulation();
+    logic.stopSimulation();
   }
 
   public void clear() {

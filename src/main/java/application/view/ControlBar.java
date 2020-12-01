@@ -12,15 +12,6 @@ import javafx.scene.layout.HBox;
 
 public class ControlBar extends HBox {
 
-  private static ControlBar instance = new ControlBar();
-
-  public static ControlBar getInstance() {
-    if (instance == null) {
-      instance = new ControlBar();
-    }
-    return instance;
-  }
-
   private Button start;
   private Button stop;
   private Button clear;
@@ -45,7 +36,7 @@ public class ControlBar extends HBox {
   };
 
 
-  private ControlBar() {
+  public ControlBar() {
     super(2);
     init();
   }

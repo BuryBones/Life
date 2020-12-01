@@ -5,28 +5,32 @@ import java.util.concurrent.CyclicBarrier;
 
 public class Logic {
 
-  private static int count = 0;
-  public static final CyclicBarrier BARRIER = new CyclicBarrier(2,() -> {
-    count++;
-    ViewController.getInstance().demandRepaint();
-  });
+  private int count = 0;
+  public final CyclicBarrier barrier;
 
   private static LoopTask lifeTask;
   private static LoopTask deathTask;
 
-  public static void init() {
+  public Logic() {
+    barrier = new CyclicBarrier(2,() -> {
+      count++;
+      ViewController.getInstance().demandRepaint();
+    });
+  }
+
+  public void init() {
     Field.getInstance().initCells();
   }
 
-  public static void runSimulation() {
+  public void runSimulation() {
     count = 0;
     
     if (Field.getInstance().numberOfCellsAlive() == 0) {
       Field.getInstance().randomize();
     }
 
-    lifeTask = new LifeTask();
-    deathTask = new DeathTask();
+    lifeTask = new LifeTask(this);
+    deathTask = new DeathTask(this);
     Thread life = new Thread(lifeTask);
     Thread death = new Thread(deathTask);
     life.setDaemon(true);
@@ -35,12 +39,16 @@ public class Logic {
     death.start();
   }
 
-  public static void stopSimulation() {
+  public void stopSimulation() {
     lifeTask.stop();
     deathTask.stop();
   }
 
-  public static int getCount() {
+  public int getCount() {
     return count;
+  }
+
+  public CyclicBarrier getBarrier() {
+    return barrier;
   }
 }

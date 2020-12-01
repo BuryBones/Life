@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 
 public class ViewController {
 
+  private Graphics graphics;
+  private ControlBar controlBar;
+
   private static ViewController instance = new ViewController();
 
   private ViewController() {
@@ -21,11 +24,13 @@ public class ViewController {
   }
 
   public void startGraphics(Stage stage) {
-    Graphics.getInstance().start(stage);
+    controlBar = new ControlBar();
+    graphics = new Graphics();
+    graphics.start(stage,controlBar);
   }
 
   public void demandRepaint() {
-    Graphics.getInstance().triggerPaint();
+    graphics.triggerPaint();
   }
 
   public void demandButtonsBlock() {
@@ -36,11 +41,11 @@ public class ViewController {
   }
 
   public void unblockButtons() {
-    ControlBar.getInstance().unblockButtons();
+    controlBar.unblockButtons();
   }
 
   public void blockStop() {
-    ControlBar.getInstance().blockStop();
+    controlBar.blockStop();
   }
 
 }

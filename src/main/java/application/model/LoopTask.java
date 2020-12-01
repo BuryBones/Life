@@ -10,19 +10,24 @@ public abstract class LoopTask implements Runnable {
 
   private boolean notStopped = true;  // 'stop' button not pressed
   private boolean notFinished = true; // colony has not reached time limit
+  private final Logic logic;
   public Field field = Field.getInstance();
   protected List<Cell> toExecute;
 
   abstract void prepareExecuteList();
+
+  public LoopTask(Logic logic) {
+    this.logic = logic;
+  }
 
   @Override
   public void run() {
     try {
       while (notStopped && notFinished && !isColonyDead()) {
         notFinished = !Configurations.getCurrentConfigs().isTimeLimit()
-            || Logic.getCount() < Configurations.getCurrentConfigs().getSteps() - 1;
+            || logic.getCount() < Configurations.getCurrentConfigs().getSteps() - 1;
         prepareExecuteList();
-        Logic.BARRIER.await();
+        logic.getBarrier().await();
         execute();
         Thread.sleep(Configurations.getCurrentConfigs().getPeriod());
       }

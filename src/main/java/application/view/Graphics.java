@@ -11,24 +11,12 @@ import javafx.stage.Stage;
 
 public class Graphics {
 
-  private static Graphics instance = new Graphics();
-
-  private Graphics() {}
-
-  public static Graphics getInstance() {
-    if (instance == null) {
-      instance = new Graphics();
-    }
-    return instance;
-  }
-
   private PaintTask canvasRepaint;
 
-  public void start(Stage stage) {
+  public void start(Stage stage, ControlBar controlBar) {
     VBox root = new VBox(2);
     Canvas canvas = new Canvas();
     canvasRepaint = new PaintTask(canvas);
-    ControlBar controlBar = ControlBar.getInstance();
     root.getChildren().addAll(canvas, controlBar);
     root.setAlignment(Pos.TOP_CENTER);
     root.setBackground(new Background(new BackgroundFill(
