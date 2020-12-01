@@ -170,7 +170,7 @@ int cellIndex = Configurations.get().getWidth() + 1;
     int counter = 0;
     Random random = new Random();
     for (Cell cell: field.getCells()) {
-      if (random.nextFloat() <= Configurations.currentConfigs.getRandomCells()) {
+      if (random.nextFloat() <= Configurations.get().getRandomCells()) {
         cell.revive();
       } else {
         counter++;

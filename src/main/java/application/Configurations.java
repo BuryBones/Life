@@ -5,48 +5,48 @@ import javafx.scene.paint.Paint;
 
 public class Configurations {
 
-  public static Configurations currentConfigs;
+  private static Configurations currentConfigs;
 
   // common settings
   public final boolean ENABLE_TRACK_MEMORY = false;
   private final int ARGUMENTS_EXPECTED = 3;
 
   // colors
-  public final Paint ALIVE = Paint.valueOf("#84d100");
-  public final Paint DEAD = Paint.valueOf("#6e6e6e");
-  public final Paint BACKGROUND = Paint.valueOf("#4a4a4a");
-  public final Paint BORDER = Paint.valueOf("#00aeff");
+  private final Paint ALIVE = Paint.valueOf("#84d100");
+  private final Paint DEAD = Paint.valueOf("#6e6e6e");
+  private final Paint BACKGROUND = Paint.valueOf("#4a4a4a");
+  private final Paint BORDER = Paint.valueOf("#00aeff");
 
   // simulations rules
-  public final int BREED = 3;
-  public final int FORLORN = 2;
-  public final int OVERCROWD = 4;
+  private final int BREED = 3;
+  private final int FORLORN = 2;
+  private final int OVERCROWD = 4;
 
   // field and cell settings
-  public final int CELL_SIZE = 15; // pixels
+  private final int CELL_SIZE = 15; // pixels
 
     // width and height sizes are in cells
-  public int width = 41;  // default
+  private int width = 41;  // default
   private final int MIN_WIDTH = 10;
   private final int MAX_WIDTH = 50;
 
-  public int height = 41;  // default
+  private int height = 41;  // default
   private final int MIN_HEIGHT = 10;
   private final int MAX_HEIGHT = 50;
 
-  public boolean timeLimit = false; // default
-  public int steps = 100;  // default
+  private boolean timeLimit = false; // default
+  private int steps = 100;  // default
   private final int MAX_STEPS = 1000;
-  public  final long PERIOD = 1000; // in millis
+  private  final long PERIOD = 1000; // in millis
 
-  public final float RANDOM_CELLS = 0.10f; // % of cells to be set as 'alive' by random
+  private final float RANDOM_CELLS = 0.10f; // % of cells to be set as 'alive' by random
 
   // string constants
-  public final String APPLICATION_NAME = "Bacteria colony";
-  public String argumentsWarning = String.format(
+  private final String APPLICATION_NAME = "Bacteria colony";
+  private String argumentsWarning = String.format(
       "Invalid arguments entered. Program will start with default settings:%n"
     + "Area %d x %d cells, time limit %d steps", width,height,steps);
-  public final String ERROR_EXIT_STRING = "\nApplication will be closed!";
+  private final String ERROR_EXIT_STRING = "\nApplication will be closed!";
   private final String WIDTH_SET_TO_DEFAULT =
       "Requested width is not between "
       + MIN_WIDTH + " and " + MAX_WIDTH + ". Width set to default: " + width;
@@ -57,14 +57,14 @@ public class Configurations {
       "Requested steps are greater than "
           + MAX_STEPS + ". Steps set to default: " + steps;
     // buttons' strings
-  public final String START_BUTTON_TEXT = "Start";
-  public final String START_BUTTON_RUNNING_TEXT = "Running";
-  public final String STOP_BUTTON_TEXT = "Stop";
-  public final String CLEAR_BUTTON_TEXT = "Clear";
-  public final String RANDOM_BUTTON_TEXT = "Random";
+  private final String START_BUTTON_TEXT = "Start";
+  private final String START_BUTTON_RUNNING_TEXT = "Running";
+  private final String STOP_BUTTON_TEXT = "Stop";
+  private final String CLEAR_BUTTON_TEXT = "Clear";
+  private final String RANDOM_BUTTON_TEXT = "Random";
 
-  public boolean invalidArguments = false;
-  public String setupMessage = "";
+  private boolean invalidArguments = false;
+  private String setupMessage = "";
 
   public Configurations() {
     currentConfigs = this;

@@ -9,7 +9,7 @@ public class ErrorAlert extends Alert {
   public ErrorAlert(String message) {
     super(
         AlertType.ERROR,
-        "Error message: " + message + Configurations.currentConfigs.getErrorExitString(),
+        "Error message: " + message + Configurations.get().getErrorExitString(),
         ButtonType.CLOSE);
   }
 
