@@ -8,16 +8,24 @@ import application.Configurations;
 import application.model.Cell;
 import application.model.Field;
 import application.model.Logic;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class CellTest {
 
+  static Field field;
+
+  @BeforeEach
+  public void init() {
+    new Configurations();
+    Logic logic = new Logic();
+    field = logic.initField();
+  }
+
   @Test
   @DisplayName("No null neighbours")
   public void getNeighboursNoNullCellsTest() {
-    Logic logic = new Logic();
-    Field field = logic.initField();
     field.initCells();
     for (Cell cell: field.getCells()) {
       for (Cell neighbour: cell.getNeighbours()) {

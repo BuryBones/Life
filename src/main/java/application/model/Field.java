@@ -24,7 +24,7 @@ public class Field {
     setAllNeighbours();
   }
 
-  private void setAllNeighbours() {
+  public void setAllNeighbours() {
     areaList.forEach(cell -> cell.setNeighbours(getNeighbours(areaList.indexOf(cell))));
   }
 
@@ -47,12 +47,12 @@ public class Field {
   private ArrayList<Cell> getNeighbours(int index) {
 
     ArrayList<Cell> result = new ArrayList<>();
-    int size = areaList.size();
 
-    boolean notTop = index >= Configurations.get().getWidth();
-    boolean notBottom = index < size - Configurations.get().getWidth();
-    boolean notLeft = index % Configurations.get().getWidth() != 0;
-    boolean notRight = (index + 1) % Configurations.get().getWidth() != 0;
+    boolean[] constraints = defineConstraints(index,areaList.size());
+    boolean notTop = constraints[0];
+    boolean notBottom = constraints[1];
+    boolean notLeft = constraints[2];
+    boolean notRight = constraints[3];
 
     if (notTop) {
       result.add(getTopNeighbour(index));
@@ -88,52 +88,61 @@ public class Field {
     return result;
   }
 
-  private Cell getTopNeighbour(int index) {
+  public boolean[] defineConstraints(int index, int size) {
+    boolean[] result = new boolean[4];
+    result[0] = index >= Configurations.get().getWidth();             // notTop
+    result[1] = index < size - Configurations.get().getWidth();       // notBottom
+    result[2] = index % Configurations.get().getWidth() != 0;         // notLeft
+    result[3] = (index + 1) % Configurations.get().getWidth() != 0;   // notRight
+    return result;
+  }
+
+  public Cell getTopNeighbour(int index) {
     return areaList.get(index - Configurations.get().getWidth());
   }
 
-  private Cell getBottomNeighbour(int index) {
+  public Cell getBottomNeighbour(int index) {
     return areaList.get(index + Configurations.get().getWidth());
   }
 
-  private Cell getLeftNeighbour(int index) {
+  public Cell getLeftNeighbour(int index) {
     return areaList.get(index - 1);
   }
 
-  private Cell getRightNeighbour(int index) {
+  public Cell getRightNeighbour(int index) {
     return areaList.get(index + 1);
   }
 
-  private Cell getTopLeftNeighbour(int index) {
+  public Cell getTopLeftNeighbour(int index) {
     return areaList.get(index - Configurations.get().getWidth() - 1);
   }
 
-  private Cell getTopRightNeighbour(int index) {
+  public Cell getTopRightNeighbour(int index) {
     return areaList.get(index - Configurations.get().getWidth() + 1);
   }
 
-  private Cell getBottomLeftNeighbour(int index) {
+  public Cell getBottomLeftNeighbour(int index) {
     return areaList.get(index + Configurations.get().getWidth() - 1);
   }
 
-  private Cell getBottomRightNeighbour(int index) {
+  public Cell getBottomRightNeighbour(int index) {
     return areaList.get(index + Configurations.get().getWidth() + 1);
   }
 
-  private int countAliveNeighbours(Cell cell) {
+  public int countAliveNeighbours(Cell cell) {
     return (int) cell.getNeighbours()
         .stream()
         .filter(Cell::isAlive)
         .count();
   }
 
-  private List<Cell> getAliveCells() {
+  public List<Cell> getAliveCells() {
     return areaList.stream()
         .filter(Cell::isAlive)
         .collect(Collectors.toList());
   }
 
-  private List<Cell> getDeadCells() {
+  public List<Cell> getDeadCells() {
     return areaList.stream()
         .filter(c -> !c.isAlive())
         .collect(Collectors.toList());
