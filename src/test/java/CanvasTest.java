@@ -15,7 +15,7 @@ public class CanvasTest {
     logic.initField().initCells();
     Canvas canvas = new Canvas();
     canvas.paint();
-    assertEquals(Configurations.getCurrentConfigs().getWidth() * Configurations.getCurrentConfigs().getHeight(),
+    assertEquals(Configurations.get().getWidth() * Configurations.get().getHeight(),
         canvas.getChildren().size());
   }
 

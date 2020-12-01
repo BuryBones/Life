@@ -25,12 +25,12 @@ public abstract class LoopTask implements Runnable {
   public void run() {
     try {
       while (notStopped && notFinished && !isColonyDead()) {
-        notFinished = !Configurations.getCurrentConfigs().isTimeLimit()
-            || logic.getCount() < Configurations.getCurrentConfigs().getSteps() - 1;
+        notFinished = !Configurations.get().isTimeLimit()
+            || logic.getCount() < Configurations.get().getSteps() - 1;
         prepareExecuteList();
         logic.getBarrier().await();
         execute();
-        Thread.sleep(Configurations.getCurrentConfigs().getPeriod());
+        Thread.sleep(Configurations.get().getPeriod());
       }
         Thread.currentThread().interrupt();
     } catch (InterruptedException | BrokenBarrierException e) {

@@ -126,7 +126,7 @@ public class Configurations {
     return result;
   }
 
-  public static Configurations getCurrentConfigs() {
+  public static Configurations get() {
     return currentConfigs;
   }
 

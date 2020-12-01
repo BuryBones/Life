@@ -20,10 +20,10 @@ public class Graphics {
     root.getChildren().addAll(canvas, controlBar);
     root.setAlignment(Pos.TOP_CENTER);
     root.setBackground(new Background(new BackgroundFill(
-        Configurations.getCurrentConfigs().getBackground(), null, null)));
+        Configurations.get().getBackground(), null, null)));
     Scene scene = new Scene(root);
     stage.setScene(scene);
-    stage.setTitle(Configurations.getCurrentConfigs().getApplicationName());
+    stage.setTitle(Configurations.get().getApplicationName());
     stage.setResizable(false);
     stage.show();
   }

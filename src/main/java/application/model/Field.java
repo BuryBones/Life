@@ -15,10 +15,10 @@ public class Field {
   }
 
   public void initCells() {
-    areaList = new ArrayList<>(Configurations.getCurrentConfigs().getHeight()
-        * Configurations.getCurrentConfigs().getWidth());
-    for (int i = 0; i < Configurations.getCurrentConfigs().getHeight()
-        * Configurations.getCurrentConfigs().getWidth(); i++) {
+    areaList = new ArrayList<>(Configurations.get().getHeight()
+        * Configurations.get().getWidth());
+    for (int i = 0; i < Configurations.get().getHeight()
+        * Configurations.get().getWidth(); i++) {
       areaList.add(new Cell());
     }
     setAllNeighbours();
@@ -36,7 +36,7 @@ public class Field {
 
     Random random = new Random();
     areaList.forEach(cell -> {
-      if (random.nextFloat() <= Configurations.getCurrentConfigs().getRandomCells()) {
+      if (random.nextFloat() <= Configurations.get().getRandomCells()) {
         cell.revive();
       } else {
         cell.kill();
@@ -49,10 +49,10 @@ public class Field {
     ArrayList<Cell> result = new ArrayList<>();
     int size = areaList.size();
 
-    boolean notTop = index >= Configurations.getCurrentConfigs().getWidth();
-    boolean notBottom = index < size - Configurations.getCurrentConfigs().getWidth();
-    boolean notLeft = index % Configurations.getCurrentConfigs().getWidth() != 0;
-    boolean notRight = (index + 1) % Configurations.getCurrentConfigs().getWidth() != 0;
+    boolean notTop = index >= Configurations.get().getWidth();
+    boolean notBottom = index < size - Configurations.get().getWidth();
+    boolean notLeft = index % Configurations.get().getWidth() != 0;
+    boolean notRight = (index + 1) % Configurations.get().getWidth() != 0;
 
     if (notTop) {
       result.add(getTopNeighbour(index));
@@ -89,11 +89,11 @@ public class Field {
   }
 
   private Cell getTopNeighbour(int index) {
-    return areaList.get(index - Configurations.getCurrentConfigs().getWidth());
+    return areaList.get(index - Configurations.get().getWidth());
   }
 
   private Cell getBottomNeighbour(int index) {
-    return areaList.get(index + Configurations.getCurrentConfigs().getWidth());
+    return areaList.get(index + Configurations.get().getWidth());
   }
 
   private Cell getLeftNeighbour(int index) {
@@ -105,19 +105,19 @@ public class Field {
   }
 
   private Cell getTopLeftNeighbour(int index) {
-    return areaList.get(index - Configurations.getCurrentConfigs().getWidth() - 1);
+    return areaList.get(index - Configurations.get().getWidth() - 1);
   }
 
   private Cell getTopRightNeighbour(int index) {
-    return areaList.get(index - Configurations.getCurrentConfigs().getWidth() + 1);
+    return areaList.get(index - Configurations.get().getWidth() + 1);
   }
 
   private Cell getBottomLeftNeighbour(int index) {
-    return areaList.get(index + Configurations.getCurrentConfigs().getWidth() - 1);
+    return areaList.get(index + Configurations.get().getWidth() - 1);
   }
 
   private Cell getBottomRightNeighbour(int index) {
-    return areaList.get(index + Configurations.getCurrentConfigs().getWidth() + 1);
+    return areaList.get(index + Configurations.get().getWidth() + 1);
   }
 
   private int countAliveNeighbours(Cell cell) {
@@ -141,14 +141,14 @@ public class Field {
 
   public List<Cell> prepareDeathList() {
     return getAliveCells().stream()
-        .filter(cell -> countAliveNeighbours(cell) > Configurations.getCurrentConfigs().getOvercrowd()
-            || countAliveNeighbours(cell) < Configurations.getCurrentConfigs().getForlorn())
+        .filter(cell -> countAliveNeighbours(cell) > Configurations.get().getOvercrowd()
+            || countAliveNeighbours(cell) < Configurations.get().getForlorn())
         .collect(Collectors.toList());
   }
 
   public List<Cell> prepareNewbornList() {
     return getDeadCells().stream()
-        .filter(cell -> countAliveNeighbours(cell) == Configurations.getCurrentConfigs().getBreed())
+        .filter(cell -> countAliveNeighbours(cell) == Configurations.get().getBreed())
         .collect(Collectors.toList());
   }
 

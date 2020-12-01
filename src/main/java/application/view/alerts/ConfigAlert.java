@@ -11,7 +11,7 @@ public class ConfigAlert extends Alert {
   public ConfigAlert(String message) {
     super(
         AlertType.WARNING,
-        message + "\n" + Configurations.getCurrentConfigs().getArgumentsWarning(),
+        message + "\n" + Configurations.get().getArgumentsWarning(),
         ButtonType.OK, ButtonType.CLOSE);
   }
 

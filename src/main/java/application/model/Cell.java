@@ -16,8 +16,8 @@ public class Cell {
 
   public Cell() {
     color = Bindings.when(isAliveProperty)
-        .then(Configurations.getCurrentConfigs().getAlive())
-        .otherwise(Configurations.getCurrentConfigs().getDead());
+        .then(Configurations.get().getAlive())
+        .otherwise(Configurations.get().getDead());
   }
 
   public void kill() {

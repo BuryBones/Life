@@ -12,9 +12,9 @@ public class App extends Application {
 
   @Override
   public void start(Stage stage) throws Exception {
-    String setupMessage = Configurations.getCurrentConfigs().getSetupMessage();
+    String setupMessage = Configurations.get().getSetupMessage();
     if (!setupMessage.isEmpty()) {
-      if (Configurations.getCurrentConfigs().invalidArguments) {
+      if (Configurations.get().isInvalidArguments()) {
         AlertsController.getInstance().getConfigAlert(setupMessage).pop();
       } else {
         AlertsController.getInstance().getInfoAlert(setupMessage).pop();

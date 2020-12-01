@@ -44,23 +44,23 @@ public class ControlBar extends HBox {
   private void init() {
     setAlignment(Pos.CENTER);
 
-    start = new Button(Configurations.getCurrentConfigs().getStartButtonText());
+    start = new Button(Configurations.get().getStartButtonText());
     start.setPrefSize(75,30);
     start.setOnAction(startAction);
     start.setPadding(new Insets(0,1,0,1));
 
-    stop = new Button(Configurations.getCurrentConfigs().getStopButtonText());
+    stop = new Button(Configurations.get().getStopButtonText());
     stop.setPrefSize(75,30);
     stop.setOnAction(stopAction);
     stop.setPadding(new Insets(0,1,0,1));
     stop.setDisable(true);  // blocked on launch
 
-    clear = new Button(Configurations.getCurrentConfigs().getClearButtonText());
+    clear = new Button(Configurations.get().getClearButtonText());
     clear.setPrefSize(75,30);
     clear.setOnAction(clearAction);
     clear.setPadding(new Insets(0,1,0,1));
 
-    random = new Button(Configurations.getCurrentConfigs().getRandomButtonText());
+    random = new Button(Configurations.get().getRandomButtonText());
     random.setPrefSize(75,30);
     random.setOnAction(randomAction);
     random.setPadding(new Insets(0,1,0,1));
@@ -69,7 +69,7 @@ public class ControlBar extends HBox {
   }
 
   public void blockButtons() {
-    start.setText(Configurations.getCurrentConfigs().getStartButtonRunningText());
+    start.setText(Configurations.get().getStartButtonRunningText());
 
     start.setDisable(true);
     clear.setDisable(true);
@@ -77,7 +77,7 @@ public class ControlBar extends HBox {
   }
 
   public void unblockButtons() {
-    start.setText(Configurations.getCurrentConfigs().getStartButtonText());
+    start.setText(Configurations.get().getStartButtonText());
 
     start.setDisable(false);
     clear.setDisable(false);

@@ -34,7 +34,7 @@ public class CellTest {
     assertFalse(cell.isAlive());
     assertNull(cell.getNeighbours());
     assertNotNull(cell.colorProperty());
-    assertSame(cell.colorProperty().get(), Configurations.getCurrentConfigs().getDead());
+    assertSame(cell.colorProperty().get(), Configurations.get().getDead());
   }
 
   @Test
@@ -68,10 +68,10 @@ public class CellTest {
   @DisplayName("Color reflects 'isAlive' value")
   public void colorTest() {
     Cell cell = new Cell();
-    assertSame(cell.colorProperty().get(), Configurations.getCurrentConfigs().getDead());
+    assertSame(cell.colorProperty().get(), Configurations.get().getDead());
     cell.revive();
-    assertSame(cell.colorProperty().get(), Configurations.getCurrentConfigs().getAlive());
+    assertSame(cell.colorProperty().get(), Configurations.get().getAlive());
     cell.kill();
-    assertSame(cell.colorProperty().get(), Configurations.getCurrentConfigs().getDead());
+    assertSame(cell.colorProperty().get(), Configurations.get().getDead());
   }
 }
