@@ -5,8 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import application.Configurations;
-import application.Model.Cell;
-import application.Model.Field;
+import application.model.Cell;
+import application.model.Field;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ public class CellTest {
     assertFalse(cell.isAlive());
     assertNull(cell.getNeighbours());
     assertNotNull(cell.colorProperty());
-    assertSame(cell.colorProperty().get(), Configurations.DEAD);
+    assertSame(cell.colorProperty().get(), Configurations.getCurrentConfigs().getDead());
   }
 
   @Test
@@ -65,10 +65,10 @@ public class CellTest {
   @DisplayName("Color reflects 'isAlive' value")
   public void colorTest() {
     Cell cell = new Cell();
-    assertSame(cell.colorProperty().get(), Configurations.DEAD);
+    assertSame(cell.colorProperty().get(), Configurations.getCurrentConfigs().getDead());
     cell.revive();
-    assertSame(cell.colorProperty().get(), Configurations.ALIVE);
+    assertSame(cell.colorProperty().get(), Configurations.getCurrentConfigs().getAlive());
     cell.kill();
-    assertSame(cell.colorProperty().get(), Configurations.DEAD);
+    assertSame(cell.colorProperty().get(), Configurations.getCurrentConfigs().getDead());
   }
 }

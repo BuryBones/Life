@@ -1,8 +1,8 @@
-package application.Model;
+package application.model;
 
 import application.Configurations;
-import application.Controller.AlertsController;
-import application.Controller.ViewController;
+import application.controller.AlertsController;
+import application.controller.ViewController;
 import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 
@@ -10,7 +10,7 @@ public abstract class LoopTask implements Runnable {
 
   private boolean notStopped = true;  // 'stop' button not pressed
   private boolean notFinished = true; // colony has not reached time limit
-  protected Field field = Field.getInstance();
+  public Field field = Field.getInstance();
   protected List<Cell> toExecute;
 
   abstract void prepareExecuteList();
@@ -19,20 +19,21 @@ public abstract class LoopTask implements Runnable {
   public void run() {
     try {
       while (notStopped && notFinished && !isColonyDead()) {
-        notFinished = !Configurations.timeLimit || Logic.getCount() < Configurations.steps - 1;
+        notFinished = !Configurations.getCurrentConfigs().isTimeLimit()
+            || Logic.getCount() < Configurations.getCurrentConfigs().getSteps() - 1;
         prepareExecuteList();
         Logic.BARRIER.await();
         execute();
-        Thread.sleep(Configurations.PERIOD);
+        Thread.sleep(Configurations.getCurrentConfigs().getPeriod());
       }
         Thread.currentThread().interrupt();
     } catch (InterruptedException | BrokenBarrierException e) {
-      AlertsController.getInstance().showErrorMessageAndExit(e.getMessage());
+      AlertsController.getInstance().getErrorAlert(e.getMessage()).pop();
     }
     // if colony reached time limit or there is no alive cells
     if (!notFinished || isColonyDead()) {
       ViewController.getInstance().demandButtonsBlock();
-      }
+    }
   }
 
   public void execute() {
@@ -45,5 +46,9 @@ public abstract class LoopTask implements Runnable {
 
   public boolean isColonyDead() {
     return Field.getInstance().numberOfCellsAlive() == 0;
+  }
+
+  public List<Cell> getExecuteList() {
+    return toExecute;
   }
 }

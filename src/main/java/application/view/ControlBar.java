@@ -1,8 +1,8 @@
-package application.View;
+package application.view;
 
 import application.Configurations;
-import application.Controller.ModelController;
-import application.Controller.ViewController;
+import application.controller.ModelController;
+import application.controller.ViewController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -32,7 +32,7 @@ public class ControlBar extends HBox {
   private void init() {
     setAlignment(Pos.CENTER);
 
-    start = new Button(Configurations.START_BUTTON_TEXT);
+    start = new Button(Configurations.getCurrentConfigs().getStartButtonText());
     start.setPrefSize(75,30);
     start.setOnAction(e -> {
       blockButtons();
@@ -41,7 +41,7 @@ public class ControlBar extends HBox {
     });
     start.setPadding(new Insets(0,1,0,1));
 
-    stop = new Button(Configurations.STOP_BUTTON_TEXT);
+    stop = new Button(Configurations.getCurrentConfigs().getStopButtonText());
     stop.setPrefSize(75,30);
     stop.setOnAction(e -> {
       blockStop();
@@ -51,7 +51,7 @@ public class ControlBar extends HBox {
     stop.setPadding(new Insets(0,1,0,1));
     stop.setDisable(true);  // blocked on launch
 
-    clear = new Button(Configurations.CLEAR_BUTTON_TEXT);
+    clear = new Button(Configurations.getCurrentConfigs().getClearButtonText());
     clear.setPrefSize(75,30);
     clear.setOnAction(e -> {
       ModelController.getInstance().clear();
@@ -59,7 +59,7 @@ public class ControlBar extends HBox {
     });
     clear.setPadding(new Insets(0,1,0,1));
 
-    random = new Button(Configurations.RANDOM_BUTTON_TEXT);
+    random = new Button(Configurations.getCurrentConfigs().getRandomButtonText());
     random.setPrefSize(75,30);
     random.setOnAction(e -> {
       ModelController.getInstance().random();
@@ -71,7 +71,7 @@ public class ControlBar extends HBox {
   }
 
   public void blockButtons() {
-    start.setText(Configurations.START_BUTTON_RUNNING_TEXT);
+    start.setText(Configurations.getCurrentConfigs().getStartButtonRunningText());
 
     start.setDisable(true);
     clear.setDisable(true);
@@ -79,7 +79,7 @@ public class ControlBar extends HBox {
   }
 
   public void unblockButtons() {
-    start.setText(Configurations.START_BUTTON_TEXT);
+    start.setText(Configurations.getCurrentConfigs().getStartButtonText());
 
     start.setDisable(false);
     clear.setDisable(false);

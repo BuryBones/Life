@@ -1,7 +1,7 @@
-package application.View;
+package application.view;
 
 import application.Configurations;
-import application.Controller.ModelController;
+import application.controller.ModelController;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.Background;
@@ -22,8 +22,10 @@ public class Canvas extends Pane {
   }
 
   private void init() {
-    int canvasWidth = Configurations.width * Configurations.CELL_SIZE + 4;
-    int canvasHeight = Configurations.height * Configurations.CELL_SIZE + 4;
+    int canvasWidth = Configurations.getCurrentConfigs().getWidth()
+        * Configurations.getCurrentConfigs().getCellSize() + 4;
+    int canvasHeight = Configurations.getCurrentConfigs().getHeight()
+        * Configurations.getCurrentConfigs().getCellSize() + 4;
     prefHeightProperty().setValue(canvasHeight);
     prefWidthProperty().setValue(canvasWidth);
     maxHeightProperty().setValue(canvasHeight);
@@ -32,9 +34,9 @@ public class Canvas extends Pane {
     minWidthProperty().setValue(canvasWidth);
 
     setBackground(new Background(
-        new BackgroundFill(Configurations.BACKGROUND, null, null)));
+        new BackgroundFill(Configurations.getCurrentConfigs().getBackground(), null, null)));
     setBorder(new Border(
-        new BorderStroke(Configurations.BORDER,
+        new BorderStroke(Configurations.getCurrentConfigs().getBorder(),
             BorderStrokeStyle.SOLID,
             CornerRadii.EMPTY,
             new BorderWidths(2.0))));
@@ -45,11 +47,11 @@ public class Canvas extends Pane {
     ObservableList<Node> canvasChildren = getChildren();
     canvasChildren.removeAll(canvasChildren);
 
-    for (int i = 0; i < Configurations.width * Configurations.height; i++) {
-      Circle circle = new Circle(Configurations.CELL_SIZE / 2.0f);
+    for (int i = 0; i < Configurations.getCurrentConfigs().getWidth() * Configurations.getCurrentConfigs().getHeight(); i++) {
+      Circle circle = new Circle(Configurations.getCurrentConfigs().getCellSize() / 2.0f);
       circle.setFill(ModelController.getInstance().getCellColorProperty(i));
-      int x = ((i % Configurations.width) * Configurations.CELL_SIZE) + (int) circle.getRadius();
-      int y = ((i / Configurations.width) * Configurations.CELL_SIZE) + (int) circle.getRadius();
+      int x = ((i % Configurations.getCurrentConfigs().getWidth()) * Configurations.getCurrentConfigs().getCellSize()) + (int) circle.getRadius();
+      int y = ((i / Configurations.getCurrentConfigs().getWidth()) * Configurations.getCurrentConfigs().getCellSize()) + (int) circle.getRadius();
       int currentCellIndex = i;
       circle.setOnMouseClicked(mouseEvent -> {
         ModelController.getInstance().toggleCellByIndex(currentCellIndex);

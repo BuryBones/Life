@@ -1,4 +1,4 @@
-package application.View;
+package application.view;
 
 public class PaintTask implements Runnable {
 

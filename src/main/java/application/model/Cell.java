@@ -1,4 +1,4 @@
-package application.Model;
+package application.model;
 
 import application.Configurations;
 import java.util.ArrayList;
@@ -15,7 +15,9 @@ public class Cell {
   private final ObservableObjectValue<Paint> color;
 
   public Cell() {
-    color = Bindings.when(isAliveProperty).then(Configurations.ALIVE).otherwise(Configurations.DEAD);
+    color = Bindings.when(isAliveProperty)
+        .then(Configurations.getCurrentConfigs().getAlive())
+        .otherwise(Configurations.getCurrentConfigs().getDead());
   }
 
   public void kill() {

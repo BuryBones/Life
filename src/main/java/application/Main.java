@@ -1,26 +1,35 @@
 package application;
 
-import application.Controller.AlertsController;
+import application.controller.AlertsController;
+import application.model.Logic;
 import javafx.application.Platform;
 
 public class Main {
 
-  private static String[] arguments;
-
   public static void main(String[] args) {
-    arguments = args;
+    Configurations configurations = new Configurations();
+    configurations.setConfigurations(args);
+    if (configurations.isMemoryTrackingEnabled()) {
+      launchMemoryTracking();
+    }
+    Logic.init();
     try {
       App.launch(App.class);
     } catch (Exception e) {
-      AlertsController.getInstance().showErrorMessageAndExit(e.getMessage());
+      AlertsController.getInstance().getErrorAlert(e.getMessage()).pop();
+      exit();
     }
+  }
+
+  public static void launchMemoryTracking() {
+    // launches a thread that writes occupied memory to console if enabled
+    Thread memoryTrack = new Thread(new MemoryMonitor());
+    memoryTrack.setDaemon(true);
+    memoryTrack.start();
   }
 
   public static void exit() {
     Platform.exit();
   }
 
-  public static String[] getArguments() {
-    return arguments;
-  }
 }

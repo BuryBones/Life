@@ -1,4 +1,4 @@
-package application.View.Alerts;
+package application.view.alerts;
 
 import application.Configurations;
 import application.Main;
@@ -8,18 +8,15 @@ import javafx.scene.control.ButtonType;
 
 public class ConfigAlert extends Alert {
 
-  private static ConfigAlert alert;
-
-  private ConfigAlert(String message) {
+  public ConfigAlert(String message) {
     super(
         AlertType.WARNING,
-        message + "\n" + Configurations.argumentsWarning,
+        message + "\n" + Configurations.getCurrentConfigs().getArgumentsWarning(),
         ButtonType.OK, ButtonType.CLOSE);
   }
 
-  public static void showConfigWarning(String message) {
-    alert = new ConfigAlert(message);
-    Optional<ButtonType> result = alert.showAndWait();
+  public void pop() {
+    Optional<ButtonType> result = showAndWait();
     if (result.isEmpty() || result.get() == ButtonType.CLOSE) {
       Main.exit();
     } else if (result.get() == ButtonType.OK) {

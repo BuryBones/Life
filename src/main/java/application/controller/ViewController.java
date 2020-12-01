@@ -1,7 +1,7 @@
-package application.Controller;
+package application.controller;
 
-import application.View.ControlBar;
-import application.View.Graphics;
+import application.view.ControlBar;
+import application.view.Graphics;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 

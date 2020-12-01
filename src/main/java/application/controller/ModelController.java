@@ -1,8 +1,8 @@
-package application.Controller;
+package application.controller;
 
-import application.Model.Cell;
-import application.Model.Field;
-import application.Model.Logic;
+import application.model.Cell;
+import application.model.Field;
+import application.model.Logic;
 import java.util.List;
 import javafx.scene.paint.Paint;
 
