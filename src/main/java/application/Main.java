@@ -1,6 +1,5 @@
 package application;
 
-import application.controller.AlertsController;
 import javafx.application.Platform;
 
 public class Main {
@@ -14,7 +13,7 @@ public class Main {
     try {
       App.launch(App.class);
     } catch (Exception e) {
-      AlertsController.getInstance().getErrorAlert(e.getMessage()).pop();
+      e.printStackTrace();
       exit();
     }
   }

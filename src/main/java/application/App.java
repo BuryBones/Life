@@ -3,6 +3,7 @@ package application;
 import application.controller.AlertsController;
 import application.controller.ModelController;
 import application.controller.ViewController;
+import application.model.Field;
 import application.model.Logic;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -20,8 +21,9 @@ public class App extends Application {
       }
     }
     Logic logic = new Logic();
-    logic.init();
+    Field field = logic.initField();
     ModelController.getInstance().setLogic(logic);
+    ModelController.getInstance().setField(field);
     ViewController.getInstance().startGraphics(stage);
   }
 }

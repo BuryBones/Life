@@ -8,18 +8,10 @@ import java.util.stream.Collectors;
 
 public class Field {
 
-  private static Field instance = new Field();
-
-  public static Field getInstance() {
-    if (instance == null) {
-      instance = new Field();
-    }
-    return instance;
-  }
-
   private ArrayList<Cell> areaList;
 
-  private Field() {
+  public Field() {
+    initCells();
   }
 
   public void initCells() {

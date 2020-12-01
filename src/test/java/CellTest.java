@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import application.Configurations;
 import application.model.Cell;
 import application.model.Field;
+import application.model.Logic;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -15,8 +16,10 @@ public class CellTest {
   @Test
   @DisplayName("No null neighbours")
   public void getNeighboursNoNullCellsTest() {
-    Field.getInstance().initCells();
-    for (Cell cell: Field.getInstance().getCells()) {
+    Logic logic = new Logic();
+    Field field = logic.initField();
+    field.initCells();
+    for (Cell cell: field.getCells()) {
       for (Cell neighbour: cell.getNeighbours()) {
         assertNotNull(neighbour);
       }

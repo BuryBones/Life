@@ -8,8 +8,9 @@ public class Logic {
   private int count = 0;
   public final CyclicBarrier barrier;
 
-  private static LoopTask lifeTask;
-  private static LoopTask deathTask;
+  private LoopTask lifeTask;
+  private LoopTask deathTask;
+  private Field field;
 
   public Logic() {
     barrier = new CyclicBarrier(2,() -> {
@@ -18,19 +19,20 @@ public class Logic {
     });
   }
 
-  public void init() {
-    Field.getInstance().initCells();
+  public Field initField() {
+    field = new Field();
+    return field;
   }
 
   public void runSimulation() {
     count = 0;
     
-    if (Field.getInstance().numberOfCellsAlive() == 0) {
-      Field.getInstance().randomize();
+    if (field.numberOfCellsAlive() == 0) {
+      field.randomize();
     }
 
-    lifeTask = new LifeTask(this);
-    deathTask = new DeathTask(this);
+    lifeTask = new LifeTask(this, field);
+    deathTask = new DeathTask(this, field);
     Thread life = new Thread(lifeTask);
     Thread death = new Thread(deathTask);
     life.setDaemon(true);

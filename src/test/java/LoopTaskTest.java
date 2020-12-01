@@ -17,10 +17,11 @@ public class LoopTaskTest {
   @Test
   public void runTest() {
     Logic logic = new Logic();
-    Field.getInstance().initCells();
-    Field.getInstance().randomize();
-    DeathTask deathTask = new DeathTask(logic);
-    LifeTask lifeTask = new LifeTask(logic);
+    Field field = logic.initField();
+    field.initCells();
+    field.randomize();
+    DeathTask deathTask = new DeathTask(logic,field);
+    LifeTask lifeTask = new LifeTask(logic,field);
     DeathTask deathSpy = spy(deathTask);
     LifeTask lifeSpy = spy(lifeTask);
 
@@ -46,10 +47,11 @@ public class LoopTaskTest {
   @DisplayName("Cells' isAlive value toggles upon invoking execute()")
   public void executeTest() {
     Logic logic = new Logic();
-    Field.getInstance().initCells();
-    Field.getInstance().randomize();
-    DeathTask deathTask = new DeathTask(logic);
-    LifeTask lifeTask = new LifeTask(logic);
+    Field field = logic.initField();
+    field.initCells();
+    field.randomize();
+    DeathTask deathTask = new DeathTask(logic,field);
+    LifeTask lifeTask = new LifeTask(logic,field);
     deathTask.prepareExecuteList();
     lifeTask.prepareExecuteList();
     for (Cell cell: deathTask.getExecuteList()) {
@@ -73,12 +75,13 @@ public class LoopTaskTest {
   @DisplayName("Checks if there are any alive cells")
   public void isColonyDeadTest() {
     Logic logic = new Logic();
-    Field.getInstance().initCells();
-    DeathTask deathTask = new DeathTask(logic);
-    LifeTask lifeTask = new LifeTask(logic);
+    Field field = logic.initField();
+    field.initCells();
+    DeathTask deathTask = new DeathTask(logic,field);
+    LifeTask lifeTask = new LifeTask(logic,field);
     assertTrue(deathTask.isColonyDead());
     assertTrue(lifeTask.isColonyDead());
-    Field.getInstance().randomize();
+    field.randomize();
     assertFalse(deathTask.isColonyDead());
     assertFalse(lifeTask.isColonyDead());
   }

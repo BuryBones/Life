@@ -39,15 +39,15 @@ public class ModelController {
   }
 
   public void clear() {
-    Field.getInstance().initCells();
+    field.initCells();
   }
 
   public void random() {
-    Field.getInstance().randomize();
+    field.randomize();
   }
 
   public List<Cell> getCells() {
-    return Field.getInstance().getCells();
+    return field.getCells();
   }
 
   public void toggleCellByIndex(int index) {

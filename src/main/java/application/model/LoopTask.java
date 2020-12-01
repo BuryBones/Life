@@ -11,13 +11,14 @@ public abstract class LoopTask implements Runnable {
   private boolean notStopped = true;  // 'stop' button not pressed
   private boolean notFinished = true; // colony has not reached time limit
   private final Logic logic;
-  public Field field = Field.getInstance();
+  public final Field field;
   protected List<Cell> toExecute;
 
   abstract void prepareExecuteList();
 
-  public LoopTask(Logic logic) {
+  public LoopTask(Logic logic, Field field) {
     this.logic = logic;
+    this.field = field;
   }
 
   @Override
@@ -50,7 +51,7 @@ public abstract class LoopTask implements Runnable {
   }
 
   public boolean isColonyDead() {
-    return Field.getInstance().numberOfCellsAlive() == 0;
+    return field.numberOfCellsAlive() == 0;
   }
 
   public List<Cell> getExecuteList() {
