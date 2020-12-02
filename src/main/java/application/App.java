@@ -15,7 +15,9 @@ public class App extends Application {
     String setupMessage = Configurations.get().getSetupMessage();
     if (!setupMessage.isEmpty()) {
       if (Configurations.get().isInvalidArguments()) {
-        AlertsController.getInstance().getConfigAlert(setupMessage).pop();
+        if (AlertsController.getInstance().getConfigAlert(setupMessage).popAndAskForExit()) {
+          Main.exit();
+        }
       } else {
         AlertsController.getInstance().getInfoAlert(setupMessage).pop();
       }

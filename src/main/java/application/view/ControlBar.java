@@ -1,8 +1,6 @@
 package application.view;
 
 import application.Configurations;
-import application.controller.ModelController;
-import application.controller.ViewController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -16,28 +14,22 @@ public class ControlBar extends HBox {
   private Button stop;
   private Button clear;
   private Button random;
-  private final EventHandler<ActionEvent> startAction = event -> {
-    blockButtons();
-    unblockStop();
-    ModelController.getInstance().start();
-  };
-  private final EventHandler<ActionEvent> stopAction = event -> {
-    blockStop();
-    unblockButtons();
-    ModelController.getInstance().stop();
-  };
-  private final EventHandler<ActionEvent> clearAction = event -> {
-    ModelController.getInstance().clear();
-    ViewController.getInstance().demandRepaint();
-  };
-  private final EventHandler<ActionEvent> randomAction = event -> {
-    ModelController.getInstance().random();
-    ViewController.getInstance().demandRepaint();
-  };
+  private final EventHandler<ActionEvent> startAction;
+  private final EventHandler<ActionEvent> stopAction;
+  private final EventHandler<ActionEvent> clearAction;
+  private final EventHandler<ActionEvent> randomAction;
 
-
-  public ControlBar() {
+  public ControlBar(
+      EventHandler<ActionEvent> forStart,
+      EventHandler<ActionEvent> forStop,
+      EventHandler<ActionEvent>forClear,
+      EventHandler<ActionEvent>forRandom
+      ) {
     super(2);
+    startAction = forStart;
+    stopAction = forStop;
+    clearAction = forClear;
+    randomAction = forRandom;
     init();
   }
 

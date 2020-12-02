@@ -1,7 +1,6 @@
 package application.view.alerts;
 
 import application.Configurations;
-import application.Main;
 import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -15,12 +14,13 @@ public class ConfigAlert extends Alert {
         ButtonType.OK, ButtonType.CLOSE);
   }
 
-  public void pop() {
+  public boolean popAndAskForExit() {
     Optional<ButtonType> result = showAndWait();
     if (result.isEmpty() || result.get() == ButtonType.CLOSE) {
-      Main.exit();
+      return true;
     } else if (result.get() == ButtonType.OK) {
       System.out.println("Default settings");
     }
+    return false;
   }
 }
