@@ -3,6 +3,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 
 import application.Configurations;
 import application.model.Cell;
@@ -26,7 +28,7 @@ public class FieldTest {
 
   @BeforeEach
   public void init() {
-    new Configurations();
+    new Configurations(4,4);
     Logic logic = new Logic();
     field = logic.initField();
   }
@@ -51,7 +53,7 @@ public class FieldTest {
   @Test
   @DisplayName("Gets top neighbour")
   public void getTopNeighbourTest() {
-int cellIndex = Configurations.get().getWidth() + 1;
+    int cellIndex = Configurations.get().getWidth() + 1;
     assertEquals(field.getCells().get(cellIndex - Configurations.get().getWidth()),
         field.getTopNeighbour(cellIndex));
   }
@@ -110,6 +112,70 @@ int cellIndex = Configurations.get().getWidth() + 1;
     int cellIndex = 0;
     assertEquals(field.getCells().get(cellIndex + Configurations.get().getWidth() + 1),
         field.getBottomRightNeighbour(cellIndex));
+  }
+
+  @Test
+  @DisplayName("getNeighbours() invokes defineConstraints()")
+  public void getNeighboursInvokesDefineConstraintsTest() {
+    Field spy = spy(Field.class);
+
+    spy.getNeighbours(0);
+    verify(spy).getBottomNeighbour(0);
+    verify(spy).getRightNeighbour(0);
+    verify(spy).getBottomRightNeighbour(0);
+
+    spy.getNeighbours(12);
+    verify(spy).getTopNeighbour(12);
+    verify(spy).getTopRightNeighbour(12);
+    verify(spy).getRightNeighbour(12);
+
+    spy.getNeighbours(3);
+    verify(spy).getLeftNeighbour(3);
+    verify(spy).getBottomNeighbour(3);
+    verify(spy).getBottomLeftNeighbour(3);
+
+    spy.getNeighbours(15);
+    verify(spy).getTopNeighbour(15);
+    verify(spy).getTopLeftNeighbour(15);
+    verify(spy).getLeftNeighbour(15);
+
+    spy.getNeighbours(4);
+    verify(spy).getTopNeighbour(4);
+    verify(spy).getTopRightNeighbour(4);
+    verify(spy).getRightNeighbour(4);
+    verify(spy).getBottomRightNeighbour(4);
+    verify(spy).getBottomNeighbour(4);
+
+    spy.getNeighbours(1);
+    verify(spy).getLeftNeighbour(1);
+    verify(spy).getBottomLeftNeighbour(1);
+    verify(spy).getBottomNeighbour(1);
+    verify(spy).getRightNeighbour(1);
+    verify(spy).getBottomRightNeighbour(1);
+
+    spy.getNeighbours(7);
+    verify(spy).getTopNeighbour(7);
+    verify(spy).getTopLeftNeighbour(7);
+    verify(spy).getLeftNeighbour(7);
+    verify(spy).getBottomNeighbour(7);
+    verify(spy).getBottomLeftNeighbour(7);
+
+    spy.getNeighbours(13);
+    verify(spy).getTopNeighbour(13);
+    verify(spy).getTopLeftNeighbour(13);
+    verify(spy).getTopRightNeighbour(13);
+    verify(spy).getLeftNeighbour(13);
+    verify(spy).getRightNeighbour(13);
+
+    spy.getNeighbours(6);
+    verify(spy).getTopNeighbour(6);
+    verify(spy).getTopLeftNeighbour(6);
+    verify(spy).getTopRightNeighbour(6);
+    verify(spy).getLeftNeighbour(6);
+    verify(spy).getRightNeighbour(6);
+    verify(spy).getBottomNeighbour(6);
+    verify(spy).getBottomLeftNeighbour(6);
+    verify(spy).getBottomRightNeighbour(6);
   }
 
   @ParameterizedTest
@@ -235,121 +301,53 @@ int cellIndex = Configurations.get().getWidth() + 1;
   }
 
   public static Stream<? extends Arguments> defineConstrainsTestParams() {
-    int size = Configurations.get().getWidth() * Configurations.get().getHeight();
-    int topLeftIndex = 0;
-    int topRightIndex = Configurations.get().getWidth() - 1;
-    int topIndex = 1;
-    int bottomLeftIndex = Configurations.get().getWidth() * (Configurations.get().getHeight() - 1);
-    int bottomRightIndex = size - 1;
-    int bottomIndex = size - 2;
-    int leftIndex = Configurations.get().getWidth();
-    int rightIndex = Configurations.get().getWidth() * 2 - 1;
-    int middleIndex = (int)(size / 2);
     return Stream.of(
-        Arguments.of(topLeftIndex, size,
+        Arguments.of(0, 16,
             new boolean[]{false,true,false,true}),  // top-left position
-        Arguments.of(topIndex, size,
+        Arguments.of(1, 16,
             new boolean[]{false,true,true,true}),   // top position
-        Arguments.of(topRightIndex, size,
+        Arguments.of(3, 16,
             new boolean[]{false,true,true,false}),  // top-right position
-        Arguments.of(middleIndex, size,
+        Arguments.of(5, 16,
             new boolean[]{true,true,true,true}),  // middle position
-        Arguments.of(leftIndex, size,
+        Arguments.of(8, 16,
             new boolean[]{true,true,false,true}), // left position
-        Arguments.of(rightIndex, size,
+        Arguments.of(11, 16,
             new boolean[]{true,true,true,false}), // right position
-        Arguments.of(bottomLeftIndex, size,
+        Arguments.of(12, 16,
             new boolean[]{true,false,false,true}),  // bottom-left position
-        Arguments.of(bottomIndex, size,
+        Arguments.of(14, 16,
             new boolean[]{true,false,true,true}),  // bottom position
-        Arguments.of(bottomRightIndex, size,
+        Arguments.of(15, 16,
             new boolean[]{true,false,true,false})   // bottom-right position
     );
   }
 
   public static Stream<? extends Arguments> getNeighboursTestParams() {
-    int topLeftIndex = 0;
-    int topRightIndex = Configurations.get().getWidth() - 1;
-    int topIndex = 1;
-    int bottomLeftIndex = Configurations.get().getWidth() * (Configurations.get().getHeight() - 1);
-    int bottomRightIndex = Configurations.get().getWidth() * Configurations.get().getHeight() - 1;
-    int bottomIndex = Configurations.get().getWidth() * Configurations.get().getHeight() - 2;
-    int leftIndex = Configurations.get().getWidth();
-    int rightIndex = Configurations.get().getWidth() * 2 - 1;
-    int middleIndex = (int)(Configurations.get().getWidth() * Configurations.get().getHeight() / 2);
     return Stream.of(
       /*
       1 - focus cell index
       2 - neighbours number
       3 - neighbours expected indexes
        */
-        Arguments.of(topLeftIndex, 3,
-            new int[] {
-                topLeftIndex + 1,
-                topLeftIndex + Configurations.get().getWidth(),
-                topLeftIndex + Configurations.get().getWidth() + 1
-            }),
-        Arguments.of(topRightIndex, 3,
-            new int[] {
-                topRightIndex - 1,
-                topRightIndex + Configurations.get().getWidth(),
-                topRightIndex + Configurations.get().getWidth() - 1
-            }),
-        Arguments.of(topIndex, 5,
-            new int[] {
-                topIndex - 1,
-                topIndex + 1,
-                topIndex + Configurations.get().getWidth(),
-                topIndex + Configurations.get().getWidth() + 1,
-                topIndex + Configurations.get().getWidth() - 1
-            }),
-        Arguments.of(bottomLeftIndex, 3,
-            new int[] {
-                bottomLeftIndex - Configurations.get().getWidth(),
-                bottomLeftIndex - Configurations.get().getWidth() + 1,
-                bottomLeftIndex + 1
-            }),
-        Arguments.of(bottomRightIndex, 3,
-            new int[] {
-                bottomRightIndex - Configurations.get().getWidth(),
-                bottomRightIndex - Configurations.get().getWidth() - 1,
-                bottomRightIndex - 1
-            }),
-        Arguments.of(bottomIndex, 5,
-            new int[] {
-                bottomIndex - 1,
-                bottomIndex + 1,
-                bottomIndex - Configurations.get().getWidth() - 1,
-                bottomIndex - Configurations.get().getWidth(),
-                bottomIndex - Configurations.get().getWidth() + 1
-            }),
-        Arguments.of(leftIndex, 5,
-            new int[] {
-                leftIndex - Configurations.get().getWidth(),
-                leftIndex - Configurations.get().getWidth() + 1,
-                leftIndex + Configurations.get().getWidth(),
-                leftIndex + Configurations.get().getWidth() + 1,
-                leftIndex + 1
-            }),
-        Arguments.of(rightIndex, 5,
-            new int[] {
-                rightIndex - Configurations.get().getWidth(),
-                rightIndex - Configurations.get().getWidth() - 1,
-                rightIndex + Configurations.get().getWidth(),
-                rightIndex + Configurations.get().getWidth() - 1,
-                rightIndex - 1
-            }),
-        Arguments.of(middleIndex, 8,
-            new int[] {
-                middleIndex - 1,
-                middleIndex + 1,
-                middleIndex - Configurations.get().getWidth(),
-                middleIndex - Configurations.get().getWidth() + 1,
-                middleIndex - Configurations.get().getWidth() - 1,
-                middleIndex + Configurations.get().getWidth(),
-                middleIndex + Configurations.get().getWidth() + 1,
-                middleIndex + Configurations.get().getWidth() - 1,
-            })
+        Arguments.of(0, 3,
+            new int[] {1,4,5}),
+        Arguments.of(3, 3,
+            new int[] {2,6,7}),
+        Arguments.of(1, 5,
+            new int[] {0,4,5,6,2}),
+        Arguments.of(12, 3,
+            new int[] {8,9,13}),
+        Arguments.of(15, 3,
+            new int[] {14,10,11}),
+        Arguments.of(14, 5,
+            new int[] {13,9,10,11,15}),
+        Arguments.of(4, 5,
+            new int[] {0,1,5,9,8}),
+        Arguments.of(11, 5,
+            new int[] {7,6,10,14,15}),
+        Arguments.of(10, 8,
+            new int[] {5,6,7,9,11,13,14,15})
     );
   }
 }

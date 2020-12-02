@@ -44,7 +44,7 @@ public class Field {
     });
   }
 
-  private ArrayList<Cell> getNeighbours(int index) {
+  public ArrayList<Cell> getNeighbours(int index) {
 
     ArrayList<Cell> result = new ArrayList<>();
 

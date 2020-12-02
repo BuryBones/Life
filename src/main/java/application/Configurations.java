@@ -70,6 +70,11 @@ public class Configurations {
     currentConfigs = this;
   }
 
+  public Configurations(int width, int height) {
+    this.width = width;
+    this.height = height;
+    currentConfigs = this;
+  }
   public void setConfigurations(String[] args) {
     int[] arguments;
     try {
