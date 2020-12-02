@@ -1,4 +1,3 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -21,16 +20,6 @@ public class LogicTest {
     assertNotNull(field);
   }
 
-  @Test
-  @DisplayName("Resets count to zero")
-  public void runSimulationTimerResetTest() {
-    new Configurations(4,4);
-    Logic logic = new Logic();
-    logic.initField();
-    logic.runSimulation();
-    assertEquals(logic.getCount(), 0);
-  }
-
   // TODO: throws an exception!
   @Test
   @DisplayName("Initializes tasks")
@@ -50,7 +39,6 @@ public class LogicTest {
     Logic logic = new Logic();
     logic.initField();
     logic.runSimulation();
-
     LoopTask lifeSpy = spy(logic.getLifeTask());
     LoopTask deathSpy = spy(logic.getDeathTask());
     logic.stopSimulation();

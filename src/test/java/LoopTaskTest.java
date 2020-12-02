@@ -40,14 +40,20 @@ public class LoopTaskTest {
 //  }
 
   @Test
+  @DisplayName("Tasks ask field for according lists")
   public void prepareExecuteListTest() {
     new Configurations(4,4);
     Logic logic = new Logic();
-    Field field = logic.initField();
-    DeathTask deathTask = new DeathTask(logic,field);
-    Field fieldSpy = spy(field);
+    Field fieldSpy = spy(logic.initField());
+
+    DeathTask deathTask = new DeathTask(logic,fieldSpy);
+    LifeTask lifeTask = new LifeTask(logic,fieldSpy);
+
     deathTask.prepareExecuteList();
-    verify(fieldSpy).getAliveCells();
+    verify(fieldSpy).prepareDeathList();
+
+    lifeTask.prepareExecuteList();
+    verify(fieldSpy).prepareNewbornList();
   }
 
   @Test
