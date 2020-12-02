@@ -1,10 +1,9 @@
 package application.controller;
 
+import application.view.ButtonService;
 import application.view.ControlBar;
 import application.view.Graphics;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.stage.Stage;
 
 public class ViewController {
@@ -14,21 +13,20 @@ public class ViewController {
 
   private static ViewController instance = new ViewController();
 
-  private final EventHandler<ActionEvent> startAction = event -> {
-    blockButtons();
-    unblockStop();
+  private final ButtonService startAction = () -> {
     ModelController.getInstance().start();
   };
-  private final EventHandler<ActionEvent> stopAction = event -> {
-    blockStop();
-    unblockButtons();
+
+  private final ButtonService stopAction = () -> {
     ModelController.getInstance().stop();
   };
-  private final EventHandler<ActionEvent> clearAction = event -> {
+
+  private final ButtonService clearAction = () -> {
     ModelController.getInstance().clear();
     ViewController.getInstance().demandRepaint();
   };
-  private final EventHandler<ActionEvent> randomAction = event -> {
+
+  private final ButtonService randomAction = () -> {
     ModelController.getInstance().random();
     ViewController.getInstance().demandRepaint();
   };
@@ -61,20 +59,12 @@ public class ViewController {
     });
   }
 
-  public void blockButtons() {
-    controlBar.blockButtons();
-  }
-
   public void unblockButtons() {
     controlBar.unblockButtons();
   }
 
   public void blockStop() {
     controlBar.blockStop();
-  }
-
-  public void unblockStop() {
-    controlBar.unblockStop();
   }
 
 }
