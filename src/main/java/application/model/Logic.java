@@ -11,11 +11,13 @@ public class Logic {
   private LoopTask lifeTask;
   private LoopTask deathTask;
   private Field field;
+  private final ViewController viewController;
 
-  public Logic() {
+  public Logic(ViewController viewController) {
+    this.viewController = viewController;
     barrier = new CyclicBarrier(2,() -> {
       count++;
-      ViewController.getInstance().demandRepaint();
+      viewController.demandRepaint();
     });
   }
 
@@ -52,6 +54,10 @@ public class Logic {
 
   public CyclicBarrier getBarrier() {
     return barrier;
+  }
+
+  public void reportTaskStop() {
+    viewController.demandButtonsBlock();
   }
 
   public LoopTask getLifeTask() {

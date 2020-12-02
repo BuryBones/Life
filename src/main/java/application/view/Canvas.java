@@ -16,7 +16,10 @@ import javafx.scene.shape.Circle;
 
 public class Canvas extends Pane {
 
-  public Canvas() {
+  private ModelController modelController;
+
+  public Canvas(ModelController modelController) {
+    this.modelController = modelController;
     init();
     paint();
   }
@@ -49,12 +52,12 @@ public class Canvas extends Pane {
 
     for (int i = 0; i < Configurations.get().getWidth() * Configurations.get().getHeight(); i++) {
       Circle circle = new Circle(Configurations.get().getCellSize() / 2.0f);
-      circle.setFill(ModelController.getInstance().getCellColorProperty(i));
+      circle.setFill(modelController.getCellColorProperty(i));
       int x = ((i % Configurations.get().getWidth()) * Configurations.get().getCellSize()) + (int) circle.getRadius();
       int y = ((i / Configurations.get().getWidth()) * Configurations.get().getCellSize()) + (int) circle.getRadius();
       int currentCellIndex = i;
       circle.setOnMouseClicked(mouseEvent -> {
-        ModelController.getInstance().toggleCellByIndex(currentCellIndex);
+        modelController.toggleCellByIndex(currentCellIndex);
         paint();
       });
       circle.setCenterX(2 + x);

@@ -8,19 +8,10 @@ import javafx.scene.paint.Paint;
 
 public class ModelController {
 
-  private static ModelController instance;
-
-  public static ModelController getInstance() {
-    if (instance == null) {
-      instance = new ModelController();
-    }
-    return instance;
-  }
-
   private Logic logic;
   private Field field;
 
-  private ModelController() {}
+  public ModelController() {}
 
   public void setLogic(Logic logic) {
     this.logic = logic;

@@ -2,7 +2,6 @@ package application.model;
 
 import application.Configurations;
 import application.controller.AlertsController;
-import application.controller.ViewController;
 import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 
@@ -38,7 +37,7 @@ public abstract class LoopTask implements Runnable {
     }
     // if colony reached time limit or there is no alive cells
     if (!notFinished || isColonyDead()) {
-      ViewController.getInstance().demandButtonsBlock();
+      logic.reportTaskStop();
     }
   }
 

@@ -10,42 +10,34 @@ public class ViewController {
 
   private Graphics graphics;
   private ControlBar controlBar;
-
-  private static ViewController instance = new ViewController();
+  private ModelController modelController;
 
   private final ButtonService startAction = () -> {
-    ModelController.getInstance().start();
+    modelController.start();
   };
 
   private final ButtonService stopAction = () -> {
-    ModelController.getInstance().stop();
+    modelController.stop();
   };
 
   private final ButtonService clearAction = () -> {
-    ModelController.getInstance().clear();
-    ViewController.getInstance().demandRepaint();
+    modelController.clear();
+    demandRepaint();
   };
 
   private final ButtonService randomAction = () -> {
-    ModelController.getInstance().random();
-    ViewController.getInstance().demandRepaint();
+    modelController.random();
+    demandRepaint();
   };
 
-  private ViewController() {
-
-  }
-
-  public static ViewController getInstance() {
-    if (instance == null) {
-      instance = new ViewController();
-    }
-    return instance;
+  public ViewController(ModelController modelController) {
+    this.modelController = modelController;
   }
 
   public void startGraphics(Stage stage) {
     controlBar = new ControlBar(startAction,stopAction,clearAction,randomAction);
     graphics = new Graphics();
-    graphics.start(stage,controlBar);
+    graphics.start(stage,controlBar,modelController);
   }
 
   public void demandRepaint() {
