@@ -7,6 +7,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 import application.Configurations;
+import application.controller.ModelController;
+import application.controller.ViewController;
 import application.model.Cell;
 import application.model.Field;
 import application.model.Logic;
@@ -24,13 +26,20 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class FieldTest {
 
-  static Field field;
+  ModelController modelController;
+  ViewController viewController;
+  Logic logic;
+  Field field;
 
   @BeforeEach
   public void init() {
     new Configurations(4,4);
-    Logic logic = new Logic();
+    modelController = new ModelController();
+    viewController = new ViewController(modelController);
+    logic = new Logic(viewController);
     field = logic.initField();
+    modelController.setLogic(logic);
+    modelController.setField(field);
   }
 
   @Test

@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import application.Configurations;
+import application.controller.ModelController;
+import application.controller.ViewController;
 import application.model.Cell;
 import application.model.Field;
 import application.model.Logic;
@@ -14,13 +16,20 @@ import org.junit.jupiter.api.Test;
 
 public class CellTest {
 
-  static Field field;
+  ModelController modelController;
+  ViewController viewController;
+  Logic logic;
+  Field field;
 
   @BeforeEach
   public void init() {
     new Configurations(4,4);
-    Logic logic = new Logic();
+    modelController = new ModelController();
+    viewController = new ViewController(modelController);
+    logic = new Logic(viewController);
     field = logic.initField();
+    modelController.setLogic(logic);
+    modelController.setField(field);
   }
 
   @Test
