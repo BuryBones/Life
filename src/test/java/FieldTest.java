@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import application.Configurations;
+import application.controller.ModelController;
+import application.controller.ViewController;
 import application.model.Cell;
 import application.model.Field;
 import application.model.Logic;
@@ -22,13 +24,17 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class FieldTest {
 
-  static Field field;
+  Field field;
 
   @BeforeEach
   public void init() {
     new Configurations();
-    Logic logic = new Logic();
+    ModelController modelController = new ModelController();
+    ViewController viewController = new ViewController(modelController);
+    Logic logic = new Logic(viewController);
     field = logic.initField();
+    modelController.setLogic(logic);
+    modelController.setField(field);
   }
 
   @Test

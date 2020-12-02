@@ -1,6 +1,7 @@
 package application.view;
 
 import application.Configurations;
+import application.controller.ModelController;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,9 +14,9 @@ public class Graphics {
 
   private PaintTask canvasRepaint;
 
-  public void start(Stage stage, ControlBar controlBar) {
+  public void start(Stage stage, ControlBar controlBar, ModelController modelController) {
     VBox root = new VBox(2);
-    Canvas canvas = new Canvas();
+    Canvas canvas = new Canvas(modelController);
     canvasRepaint = new PaintTask(canvas);
     root.getChildren().addAll(canvas, controlBar);
     root.setAlignment(Pos.TOP_CENTER);

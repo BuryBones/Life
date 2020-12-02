@@ -22,10 +22,12 @@ public class App extends Application {
         AlertsController.getInstance().getInfoAlert(setupMessage).pop();
       }
     }
-    Logic logic = new Logic();
+    ModelController modelController = new ModelController();
+    ViewController viewController = new ViewController(modelController);
+    Logic logic = new Logic(viewController);
     Field field = logic.initField();
-    ModelController.getInstance().setLogic(logic);
-    ModelController.getInstance().setField(field);
-    ViewController.getInstance().startGraphics(stage);
+    modelController.setLogic(logic);
+    modelController.setField(field);
+    viewController.startGraphics(stage);
   }
 }

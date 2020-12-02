@@ -4,21 +4,36 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
+import application.Configurations;
+import application.controller.ModelController;
+import application.controller.ViewController;
 import application.model.Cell;
 import application.model.DeathTask;
 import application.model.Field;
 import application.model.LifeTask;
 import application.model.Logic;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class LoopTaskTest {
 
+  Logic logic;
+  Field field;
+
+  @BeforeEach
+  public void init() {
+    new Configurations();
+    ModelController modelController = new ModelController();
+    ViewController viewController = new ViewController(modelController);
+    logic = new Logic(viewController);
+    field = logic.initField();
+    modelController.setLogic(logic);
+    modelController.setField(field);
+  }
+
   @Test
   public void runTest() {
-    Logic logic = new Logic();
-    Field field = logic.initField();
-    field.initCells();
     field.randomize();
     DeathTask deathTask = new DeathTask(logic,field);
     LifeTask lifeTask = new LifeTask(logic,field);
@@ -46,9 +61,6 @@ public class LoopTaskTest {
   @Test
   @DisplayName("Cells' isAlive value toggles upon invoking execute()")
   public void executeTest() {
-    Logic logic = new Logic();
-    Field field = logic.initField();
-    field.initCells();
     field.randomize();
     DeathTask deathTask = new DeathTask(logic,field);
     LifeTask lifeTask = new LifeTask(logic,field);
@@ -74,9 +86,6 @@ public class LoopTaskTest {
   @Test
   @DisplayName("Checks if there are any alive cells")
   public void isColonyDeadTest() {
-    Logic logic = new Logic();
-    Field field = logic.initField();
-    field.initCells();
     DeathTask deathTask = new DeathTask(logic,field);
     LifeTask lifeTask = new LifeTask(logic,field);
     assertTrue(deathTask.isColonyDead());
