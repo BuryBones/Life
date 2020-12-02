@@ -53,4 +53,12 @@ public class Logic {
   public CyclicBarrier getBarrier() {
     return barrier;
   }
+
+  public LoopTask getLifeTask() {
+    return lifeTask;
+  }
+
+  public LoopTask getDeathTask() {
+    return deathTask;
+  }
 }

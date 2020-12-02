@@ -18,7 +18,7 @@ public class CellTest {
 
   @BeforeEach
   public void init() {
-    new Configurations();
+    new Configurations(4,4);
     Logic logic = new Logic();
     field = logic.initField();
   }

@@ -1,6 +1,7 @@
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import application.Configurations;
+import application.controller.ModelController;
 import application.model.Field;
 import application.model.Logic;
 import application.view.Canvas;
@@ -14,9 +15,11 @@ public class CanvasTest {
 
   @BeforeEach
   public void init() {
-    new Configurations();
+    new Configurations(4,4);
     Logic logic = new Logic();
     field = logic.initField();
+    ModelController.getInstance().setField(field);
+    ModelController.getInstance().setLogic(logic);
   }
 
   @Test

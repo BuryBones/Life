@@ -14,7 +14,7 @@ public abstract class LoopTask implements Runnable {
   public final Field field;
   protected List<Cell> toExecute;
 
-  abstract void prepareExecuteList();
+  public abstract void prepareExecuteList();
 
   public LoopTask(Logic logic, Field field) {
     this.logic = logic;

@@ -1,9 +1,9 @@
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
+import application.Configurations;
 import application.model.Cell;
 import application.model.DeathTask;
 import application.model.Field;
@@ -14,41 +14,48 @@ import org.junit.jupiter.api.Test;
 
 public class LoopTaskTest {
 
-  @Test
-  public void runTest() {
-    Logic logic = new Logic();
-    Field field = logic.initField();
-    field.initCells();
-    field.randomize();
-    DeathTask deathTask = new DeathTask(logic,field);
-    LifeTask lifeTask = new LifeTask(logic,field);
-    DeathTask deathSpy = spy(deathTask);
-    LifeTask lifeSpy = spy(lifeTask);
+//  @Mock
+//  ViewController viewController;
+//  AlertsController alertsController;
+//  Logic logic;
+//  Field field;
+//
+//  @InjectMocks
+//  DeathTask deathTask;
+//  LifeTask lifeTask;
 
-    doNothing().when(lifeSpy).prepareExecuteList();
-    doNothing().when(deathSpy).prepareExecuteList();
-//    DeathTask deathTask = Mockito.mock(DeathTask.class);
-//    doNothing().doCallRealMethod().when(deathTask).prepareExecuteList();
-//    doNothing().when(deathTask).prepareExecuteList();
-//    deathTask.run();
-//    verify(deathTask, times(1)).prepareExecuteList();
-    new Thread(deathTask).start();
-    new Thread(lifeTask).start();
-    verify(lifeSpy).isColonyDead();
-    verify(deathSpy).isColonyDead();
-  }
+//  @Test
+//  public void runTest() {
+////    Logic logic = new Logic();
+////    Field field = logic.initField();
+////    field.initCells();
+////    field.randomize();
+////    DeathTask deathTask = new DeathTask(logic,field);
+////    LifeTask lifeTask = new LifeTask(logic,field);
+//    DeathTask deathSpy = spy(deathTask);
+//    LifeTask lifeSpy = spy(lifeTask);
+//
+//    verify(lifeSpy).isColonyDead();
+//    verify(deathSpy).isColonyDead();
+//  }
 
   @Test
   public void prepareExecuteListTest() {
-
+    new Configurations(4,4);
+    Logic logic = new Logic();
+    Field field = logic.initField();
+    DeathTask deathTask = new DeathTask(logic,field);
+    Field fieldSpy = spy(field);
+    deathTask.prepareExecuteList();
+    verify(fieldSpy).getAliveCells();
   }
 
   @Test
   @DisplayName("Cells' isAlive value toggles upon invoking execute()")
   public void executeTest() {
+    new Configurations(4,4);
     Logic logic = new Logic();
     Field field = logic.initField();
-    field.initCells();
     field.randomize();
     DeathTask deathTask = new DeathTask(logic,field);
     LifeTask lifeTask = new LifeTask(logic,field);
@@ -74,9 +81,9 @@ public class LoopTaskTest {
   @Test
   @DisplayName("Checks if there are any alive cells")
   public void isColonyDeadTest() {
+    new Configurations(4,4);
     Logic logic = new Logic();
     Field field = logic.initField();
-    field.initCells();
     DeathTask deathTask = new DeathTask(logic,field);
     LifeTask lifeTask = new LifeTask(logic,field);
     assertTrue(deathTask.isColonyDead());
