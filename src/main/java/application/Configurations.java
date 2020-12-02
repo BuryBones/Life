@@ -8,60 +8,60 @@ public class Configurations {
   private static Configurations currentConfigs;
 
   // common settings
-  public final boolean ENABLE_TRACK_MEMORY = false;
-  private final int ARGUMENTS_EXPECTED = 3;
+  public final boolean enableTrackMemory = false;
+  private final int argumentsExpected = 3;
 
   // colors
-  private final Paint ALIVE = Paint.valueOf("#84d100");
-  private final Paint DEAD = Paint.valueOf("#6e6e6e");
-  private final Paint BACKGROUND = Paint.valueOf("#4a4a4a");
-  private final Paint BORDER = Paint.valueOf("#00aeff");
+  private final Paint alive = Paint.valueOf("#84d100");
+  private final Paint dead = Paint.valueOf("#6e6e6e");
+  private final Paint background = Paint.valueOf("#4a4a4a");
+  private final Paint border = Paint.valueOf("#00aeff");
 
   // simulations rules
-  private final int BREED = 3;
-  private final int FORLORN = 2;
-  private final int OVERCROWD = 4;
+  private final int breed = 3;
+  private final int forlorn = 2;
+  private final int overcrowd = 4;
 
   // field and cell settings
-  private final int CELL_SIZE = 15; // pixels
+  private final int cellSize = 15; // pixels
 
     // width and height sizes are in cells
   private int width = 41;  // default
-  private final int MIN_WIDTH = 10;
-  private final int MAX_WIDTH = 50;
+  private final int minWidth = 10;
+  private final int maxWidth = 50;
 
   private int height = 41;  // default
-  private final int MIN_HEIGHT = 10;
-  private final int MAX_HEIGHT = 50;
+  private final int minHeight = 10;
+  private final int maxHeight = 50;
 
   private boolean timeLimit = false; // default
   private int steps = 100;  // default
-  private final int MAX_STEPS = 1000;
-  private  final long PERIOD = 1000; // in millis
+  private final int maxSteps = 1000;
+  private  final long period = 1000; // in millis
 
-  private final float RANDOM_CELLS = 0.10f; // % of cells to be set as 'alive' by random
+  private final float randomCells = 0.10f; // % of cells to be set as 'alive' by random
 
   // string constants
-  private final String APPLICATION_NAME = "Bacteria colony";
+  private final String applicationName = "Bacteria colony";
   private String argumentsWarning = String.format(
       "Invalid arguments entered. Program will start with default settings:%n"
     + "Area %d x %d cells, time limit %d steps", width,height,steps);
-  private final String ERROR_EXIT_STRING = "\nApplication will be closed!";
-  private final String WIDTH_SET_TO_DEFAULT =
+  private final String errorExitString = "\nApplication will be closed!";
+  private final String widthSetToDefault =
       "Requested width is not between "
-      + MIN_WIDTH + " and " + MAX_WIDTH + ". Width set to default: " + width;
-  private final String HEIGHT_SET_TO_DEFAULT =
+      + minWidth + " and " + maxWidth + ". Width set to default: " + width;
+  private final String heightSetToDefault =
       "Requested height is not between "
-          + MIN_HEIGHT + " and " + MAX_HEIGHT + ". Height set to default: " + height;
-  private final String STEPS_SET_TO_DEFAULT =
+          + minHeight + " and " + maxHeight + ". Height set to default: " + height;
+  private final String stepsSetToDefault =
       "Requested steps are greater than "
-          + MAX_STEPS + ". Steps set to default: " + steps;
+          + maxSteps + ". Steps set to default: " + steps;
     // buttons' strings
-  private final String START_BUTTON_TEXT = "Start";
-  private final String START_BUTTON_RUNNING_TEXT = "Running";
-  private final String STOP_BUTTON_TEXT = "Stop";
-  private final String CLEAR_BUTTON_TEXT = "Clear";
-  private final String RANDOM_BUTTON_TEXT = "Random";
+  private final String startButtonText = "Start";
+  private final String startButtonRunningText = "Running";
+  private final String stopButtonText = "Stop";
+  private final String clearButtonText = "Clear";
+  private final String randomButtonText = "Random";
 
   private boolean invalidArguments = false;
   private String setupMessage = "";
@@ -80,23 +80,23 @@ public class Configurations {
     try {
       arguments = parseArguments(args);
       ArrayList<String> messages = new ArrayList<>(3);
-      if (arguments[0] >= MIN_WIDTH && arguments[0] <= MAX_WIDTH) {
+      if (arguments[0] >= minWidth && arguments[0] <= maxWidth) {
         width = arguments[0];
       } else {
-        messages.add(WIDTH_SET_TO_DEFAULT);
+        messages.add(widthSetToDefault);
       }
-      if (arguments[1] >= MIN_HEIGHT && arguments[1] <= MAX_HEIGHT) {
+      if (arguments[1] >= minHeight && arguments[1] <= maxHeight) {
         height = arguments[1];
       } else {
-        messages.add(HEIGHT_SET_TO_DEFAULT);
+        messages.add(heightSetToDefault);
       }
       if (arguments[2] == 0) {
         timeLimit = false;
-      } else if (arguments[2] <= MAX_STEPS) {
+      } else if (arguments[2] <= maxSteps) {
         steps = arguments[2];
         timeLimit = true;
       } else {
-        messages.add(STEPS_SET_TO_DEFAULT);
+        messages.add(stepsSetToDefault);
       }
       if (messages.size() > 0) {
         StringBuilder completeMessage = new StringBuilder();
@@ -111,7 +111,7 @@ public class Configurations {
   }
 
   public int[] parseArguments(String[] args) throws InvalidArgumentsException {
-    int expectedArguments = ARGUMENTS_EXPECTED;
+    int expectedArguments = argumentsExpected;
     int[] result = new int[expectedArguments];
     if (args.length != expectedArguments) {
       throw new InvalidArgumentsException("Found " + args.length + " arguments, expected " + expectedArguments);
@@ -136,39 +136,39 @@ public class Configurations {
   }
 
   public boolean isMemoryTrackingEnabled() {
-    return ENABLE_TRACK_MEMORY;
+    return enableTrackMemory;
   }
 
   public Paint getAlive() {
-    return ALIVE;
+    return alive;
   }
 
   public Paint getDead() {
-    return DEAD;
+    return dead;
   }
 
   public Paint getBackground() {
-    return BACKGROUND;
+    return background;
   }
 
   public Paint getBorder() {
-    return BORDER;
+    return border;
   }
 
   public int getBreed() {
-    return BREED;
+    return breed;
   }
 
   public int getForlorn() {
-    return FORLORN;
+    return forlorn;
   }
 
   public int getOvercrowd() {
-    return OVERCROWD;
+    return overcrowd;
   }
 
   public int getCellSize() {
-    return CELL_SIZE;
+    return cellSize;
   }
 
   public int getWidth() {
@@ -188,15 +188,15 @@ public class Configurations {
   }
 
   public long getPeriod() {
-    return PERIOD;
+    return period;
   }
 
   public float getRandomCells() {
-    return RANDOM_CELLS;
+    return randomCells;
   }
 
   public String getApplicationName() {
-    return APPLICATION_NAME;
+    return applicationName;
   }
 
   public String getArgumentsWarning() {
@@ -204,27 +204,27 @@ public class Configurations {
   }
 
   public String getErrorExitString() {
-    return ERROR_EXIT_STRING;
+    return errorExitString;
   }
 
   public String getStartButtonText() {
-    return START_BUTTON_TEXT;
+    return startButtonText;
   }
 
   public String getStartButtonRunningText() {
-    return START_BUTTON_RUNNING_TEXT;
+    return startButtonRunningText;
   }
 
   public String getStopButtonText() {
-    return STOP_BUTTON_TEXT;
+    return stopButtonText;
   }
 
   public String getClearButtonText() {
-    return CLEAR_BUTTON_TEXT;
+    return clearButtonText;
   }
 
   public String getRandomButtonText() {
-    return RANDOM_BUTTON_TEXT;
+    return randomButtonText;
   }
 
   public boolean isInvalidArguments() {
