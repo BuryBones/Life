@@ -3,7 +3,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import application.Configurations;
@@ -29,7 +28,7 @@ public class LoopTaskTest {
 
   @BeforeEach
   public void init() {
-    new Configurations(10,10,2);
+    new Configurations(20,20,2);
     modelController = mock(ModelController.class);
     viewController = mock(ViewController.class);
     logic = new Logic(viewController);
@@ -39,22 +38,25 @@ public class LoopTaskTest {
   }
 
   @Test
-  @DisplayName("Tasks ask field for according lists")
+  @DisplayName("Tasks get field for according lists")
   public void prepareExecuteListTest() {
+    field.randomize();
     Field fieldSpy = spy(field);
 
     DeathTask deathTask = new DeathTask(logic,fieldSpy);
     LifeTask lifeTask = new LifeTask(logic,fieldSpy);
 
     deathTask.prepareExecuteList();
+    assertFalse(deathTask.getExecuteList().isEmpty());
     verify(fieldSpy).prepareDeathList();
 
     lifeTask.prepareExecuteList();
+    assertFalse(lifeTask.getExecuteList().isEmpty());
     verify(fieldSpy).prepareNewbornList();
   }
 
   @Test
-  @DisplayName("Cells' isAlive value toggles upon invoking execute()")
+  @DisplayName("Toggles cell's state")
   public void executeTest() {
     field.randomize();
     DeathTask deathTask = new DeathTask(logic,field);
@@ -79,7 +81,7 @@ public class LoopTaskTest {
   }
 
   @Test
-  @DisplayName("Checks if there are any alive cells")
+  @DisplayName("Checks if there no living cells")
   public void isColonyDeadTest() {
     DeathTask deathTask = new DeathTask(logic,field);
     LifeTask lifeTask = new LifeTask(logic,field);
@@ -100,7 +102,7 @@ public class LoopTaskTest {
     new Thread(spyDeathTask).start();
     CountDownLatch waiter = new CountDownLatch(1);
     try {
-      waiter.await(3, TimeUnit.SECONDS);
+      waiter.await(2, TimeUnit.SECONDS);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -114,39 +116,43 @@ public class LoopTaskTest {
 
   @Test
   public void tasksStopWhenColonyIsDead() {
-    Logic logicSpy = spy(new Logic(viewController));
-    LifeTask spyLifeTask = spy(new LifeTask(logicSpy,field));
-    DeathTask spyDeathTask = spy(new DeathTask(logicSpy,field));
-    new Thread(spyLifeTask).start();
-    new Thread(spyDeathTask).start();
+    LifeTask lifeTask = new LifeTask(logic,field);
+    DeathTask deathTask = new DeathTask(logic,field);
+    Thread lifeThread = new Thread(lifeTask);
+    Thread deathThread = new Thread(deathTask);
+    lifeThread.start();
+    deathThread.start();
+    assertTrue(lifeThread.isAlive());
+    assertTrue(deathThread.isAlive());
     CountDownLatch waiter = new CountDownLatch(1);
     try {
       waiter.await(1, TimeUnit.SECONDS);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    verify(spyLifeTask,atLeastOnce()).isColonyDead();
-    verify(spyDeathTask,atLeastOnce()).isColonyDead();
-    verify(logicSpy,times(2)).reportTaskStop();
+    assertTrue(lifeThread.isInterrupted());
+    assertTrue(deathThread.isInterrupted());
   }
 
   @Test
   public void tasksStopWhenTimeLimitReached() {
-    new Configurations(10,10,2);
+    new Configurations(20,20,2);
     field.randomize();
-    Logic logicSpy = spy(new Logic(viewController));
-    LifeTask spyLifeTask = spy(new LifeTask(logicSpy,field));
-    DeathTask spyDeathTask = spy(new DeathTask(logicSpy,field));
-    new Thread(spyLifeTask).start();
-    new Thread(spyDeathTask).start();
+    LifeTask lifeTask = new LifeTask(logic,field);
+    DeathTask deathTask = new DeathTask(logic,field);
+    Thread lifeThread = new Thread(lifeTask);
+    Thread deathThread = new Thread(deathTask);
+    lifeThread.start();
+    deathThread.start();
+    assertTrue(lifeThread.isAlive());
+    assertTrue(deathThread.isAlive());
     CountDownLatch waiter = new CountDownLatch(1);
     try {
-      waiter.await(5, TimeUnit.SECONDS);
+      waiter.await(3, TimeUnit.SECONDS);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    verify(spyLifeTask,atLeastOnce()).isColonyDead();
-    verify(spyDeathTask,atLeastOnce()).isColonyDead();
-    verify(logicSpy,times(2)).reportTaskStop();
+    assertTrue(lifeThread.isInterrupted());
+    assertTrue(deathThread.isInterrupted());
   }
 }

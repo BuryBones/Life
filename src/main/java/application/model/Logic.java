@@ -10,6 +10,8 @@ public class Logic {
 
   private LifeTask lifeTask;
   private DeathTask deathTask;
+  private Thread lifeThread;
+  private Thread deathThread;
   private Field field;
   private final ViewController viewController;
 
@@ -32,12 +34,12 @@ public class Logic {
 
     lifeTask = new LifeTask(this, field);
     deathTask = new DeathTask(this, field);
-    Thread life = new Thread(lifeTask);
-    Thread death = new Thread(deathTask);
-    life.setDaemon(true);
-    death.setDaemon(true);
-    life.start();
-    death.start();
+    lifeThread = new Thread(lifeTask);
+    deathThread = new Thread(deathTask);
+    lifeThread.setDaemon(true);
+    deathThread.setDaemon(true);
+    lifeThread.start();
+    deathThread.start();
   }
 
   public void stopSimulation() {
@@ -68,5 +70,13 @@ public class Logic {
 
   public DeathTask getDeathTask() {
     return deathTask;
+  }
+
+  public Thread getLifeThread() {
+    return lifeThread;
+  }
+
+  public Thread getDeathThread() {
+    return deathThread;
   }
 }

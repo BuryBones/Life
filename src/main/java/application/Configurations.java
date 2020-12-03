@@ -34,7 +34,7 @@ public class Configurations {
   private final int minHeight = 10;
   private final int maxHeight = 50;
 
-  private boolean timeLimit = false; // default
+  private boolean timeLimit = true; // default
   private int steps = 100;  // default
   private final int maxSteps = 1000;
   private  final long period = 1000; // in millis

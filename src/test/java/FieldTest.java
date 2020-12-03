@@ -309,6 +309,16 @@ public class FieldTest {
     assertEquals(expected,field.numberOfCellsAlive());
   }
 
+  @Test
+  @DisplayName("Makes some, but not all cells alive")
+  public void randomizeTest() {
+    new Configurations(30,30);
+    field = logic.initField();
+    field.randomize();
+    assertTrue(field.getCells().stream().anyMatch(cell -> cell.isAlive()));
+    assertTrue(field.getCells().stream().anyMatch(cell -> !cell.isAlive()));
+  }
+
   public static Stream<? extends Arguments> defineConstrainsTestParams() {
     return Stream.of(
         Arguments.of(0, 16,
