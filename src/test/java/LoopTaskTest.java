@@ -3,6 +3,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import application.Configurations;
@@ -13,6 +14,8 @@ import application.model.DeathTask;
 import application.model.Field;
 import application.model.LifeTask;
 import application.model.Logic;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -87,14 +90,20 @@ public class LoopTaskTest {
     assertFalse(lifeTask.isColonyDead());
   }
 
-  // ONLY PASSES IF RUNS ALONE
   @Test
+  @DisplayName("Tasks go through all stages")
   public void runTest() {
     field.randomize();
     LifeTask spyLifeTask = spy(new LifeTask(logic,field));
     DeathTask spyDeathTask = spy(new DeathTask(logic,field));
     new Thread(spyLifeTask).start();
     new Thread(spyDeathTask).start();
+    CountDownLatch waiter = new CountDownLatch(1);
+    try {
+      waiter.await(3, TimeUnit.SECONDS);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
     verify(spyLifeTask,atLeastOnce()).isColonyDead();
     verify(spyDeathTask,atLeastOnce()).isColonyDead();
     verify(spyLifeTask,atLeastOnce()).prepareExecuteList();
@@ -103,4 +112,41 @@ public class LoopTaskTest {
     verify(spyDeathTask,atLeastOnce()).execute();
   }
 
+  @Test
+  public void tasksStopWhenColonyIsDead() {
+    Logic logicSpy = spy(new Logic(viewController));
+    LifeTask spyLifeTask = spy(new LifeTask(logicSpy,field));
+    DeathTask spyDeathTask = spy(new DeathTask(logicSpy,field));
+    new Thread(spyLifeTask).start();
+    new Thread(spyDeathTask).start();
+    CountDownLatch waiter = new CountDownLatch(1);
+    try {
+      waiter.await(1, TimeUnit.SECONDS);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    verify(spyLifeTask,atLeastOnce()).isColonyDead();
+    verify(spyDeathTask,atLeastOnce()).isColonyDead();
+    verify(logicSpy,times(2)).reportTaskStop();
+  }
+
+  @Test
+  public void tasksStopWhenTimeLimitReached() {
+    new Configurations(10,10,2);
+    field.randomize();
+    Logic logicSpy = spy(new Logic(viewController));
+    LifeTask spyLifeTask = spy(new LifeTask(logicSpy,field));
+    DeathTask spyDeathTask = spy(new DeathTask(logicSpy,field));
+    new Thread(spyLifeTask).start();
+    new Thread(spyDeathTask).start();
+    CountDownLatch waiter = new CountDownLatch(1);
+    try {
+      waiter.await(5, TimeUnit.SECONDS);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    verify(spyLifeTask,atLeastOnce()).isColonyDead();
+    verify(spyDeathTask,atLeastOnce()).isColonyDead();
+    verify(logicSpy,times(2)).reportTaskStop();
+  }
 }

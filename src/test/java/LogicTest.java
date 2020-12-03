@@ -1,3 +1,4 @@
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -10,6 +11,8 @@ import application.controller.ViewController;
 import application.model.Field;
 import application.model.Logic;
 import application.model.LoopTask;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -82,5 +85,25 @@ public class LogicTest {
     logicSpy.runSimulation();
     verify(logicSpy,atLeastOnce()).barrierAction();
   }
+
+  @Test
+  public void counterTest() {
+    new Configurations(4,4,3);
+    ModelController modelController = mock(ModelController.class);
+    ViewController viewController = mock(ViewController.class);
+    Logic logic = new Logic(viewController);
+    Field field = logic.initField();
+    field.randomize();
+    int initialCounter = logic.getCount();
+    logic.runSimulation();
+    CountDownLatch waiter = new CountDownLatch(1);
+    try {
+      waiter.await(1, TimeUnit.SECONDS);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    assertNotEquals(initialCounter,logic.getCount());
+  }
+
 
 }
