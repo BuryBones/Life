@@ -8,17 +8,14 @@ public class Logic {
   private int count = 0;
   public final CyclicBarrier barrier;
 
-  private LoopTask lifeTask;
-  private LoopTask deathTask;
+  private LifeTask lifeTask;
+  private DeathTask deathTask;
   private Field field;
   private final ViewController viewController;
 
   public Logic(ViewController viewController) {
     this.viewController = viewController;
-    barrier = new CyclicBarrier(2,() -> {
-      count++;
-      viewController.demandRepaint();
-    });
+    barrier = new CyclicBarrier(2, this::barrierAction);
   }
 
   public Field initField() {
@@ -48,6 +45,11 @@ public class Logic {
     deathTask.stop();
   }
 
+  public void barrierAction() {
+    count++;
+    viewController.demandRepaint();
+  }
+
   public int getCount() {
     return count;
   }
@@ -57,14 +59,14 @@ public class Logic {
   }
 
   public void reportTaskStop() {
-    viewController.demandButtonsBlock();
+    viewController.demandButtonsUnblock();
   }
 
-  public LoopTask getLifeTask() {
+  public LifeTask getLifeTask() {
     return lifeTask;
   }
 
-  public LoopTask getDeathTask() {
+  public DeathTask getDeathTask() {
     return deathTask;
   }
 }

@@ -44,7 +44,7 @@ public class ViewController {
     graphics.triggerPaint();
   }
 
-  public void demandButtonsBlock() {
+  public void demandButtonsUnblock() {
     Platform.runLater(() -> {
       unblockButtons();
       blockStop();

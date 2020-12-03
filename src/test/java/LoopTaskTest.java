@@ -1,5 +1,7 @@
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -24,39 +26,14 @@ public class LoopTaskTest {
 
   @BeforeEach
   public void init() {
-    new Configurations(4,4);
-    modelController = new ModelController();
-    viewController = new ViewController(modelController);
+    new Configurations(10,10,2);
+    modelController = mock(ModelController.class);
+    viewController = mock(ViewController.class);
     logic = new Logic(viewController);
     field = logic.initField();
     modelController.setLogic(logic);
     modelController.setField(field);
   }
-
-//  @Mock
-//  ViewController viewController;
-//  AlertsController alertsController;
-//  Logic logic;
-//  Field field;
-//
-//  @InjectMocks
-//  DeathTask deathTask;
-//  LifeTask lifeTask;
-
-//  @Test
-//  public void runTest() {
-////    Logic logic = new Logic();
-////    Field field = logic.initField();
-////    field.initCells();
-////    field.randomize();
-////    DeathTask deathTask = new DeathTask(logic,field);
-////    LifeTask lifeTask = new LifeTask(logic,field);
-//    DeathTask deathSpy = spy(deathTask);
-//    LifeTask lifeSpy = spy(lifeTask);
-//
-//    verify(lifeSpy).isColonyDead();
-//    verify(deathSpy).isColonyDead();
-//  }
 
   @Test
   @DisplayName("Tasks ask field for according lists")
@@ -108,6 +85,22 @@ public class LoopTaskTest {
     field.randomize();
     assertFalse(deathTask.isColonyDead());
     assertFalse(lifeTask.isColonyDead());
+  }
+
+  // ONLY PASSES IF RUNS ALONE
+  @Test
+  public void runTest() {
+    field.randomize();
+    LifeTask spyLifeTask = spy(new LifeTask(logic,field));
+    DeathTask spyDeathTask = spy(new DeathTask(logic,field));
+    new Thread(spyLifeTask).start();
+    new Thread(spyDeathTask).start();
+    verify(spyLifeTask,atLeastOnce()).isColonyDead();
+    verify(spyDeathTask,atLeastOnce()).isColonyDead();
+    verify(spyLifeTask,atLeastOnce()).prepareExecuteList();
+    verify(spyDeathTask,atLeastOnce()).prepareExecuteList();
+    verify(spyLifeTask,atLeastOnce()).execute();
+    verify(spyDeathTask,atLeastOnce()).execute();
   }
 
 }

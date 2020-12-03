@@ -75,6 +75,14 @@ public class Configurations {
     this.height = height;
     currentConfigs = this;
   }
+
+  public Configurations(int width, int height, int steps) {
+    this.width = width;
+    this.height = height;
+    this.steps = steps;
+    timeLimit = true;
+    currentConfigs = this;
+  }
   public void setConfigurations(String[] args) {
     int[] arguments;
     try {
