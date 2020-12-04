@@ -27,14 +27,12 @@ public class LoopTaskTest {
   Field field;
 
   @BeforeEach
-  public void init() {
+  public void setup() {
     new Configurations(20,20,2);
     modelController = mock(ModelController.class);
     viewController = mock(ViewController.class);
     logic = new Logic(viewController);
     field = logic.initField();
-    modelController.setLogic(logic);
-    modelController.setField(field);
   }
 
   @Test
@@ -63,6 +61,7 @@ public class LoopTaskTest {
     LifeTask lifeTask = new LifeTask(logic,field);
     deathTask.prepareExecuteList();
     lifeTask.prepareExecuteList();
+
     for (Cell cell: deathTask.getExecuteList()) {
       assertTrue(cell.isAlive());
     }
@@ -85,9 +84,12 @@ public class LoopTaskTest {
   public void isColonyDeadTest() {
     DeathTask deathTask = new DeathTask(logic,field);
     LifeTask lifeTask = new LifeTask(logic,field);
+
     assertTrue(deathTask.isColonyDead());
     assertTrue(lifeTask.isColonyDead());
+
     field.randomize();
+
     assertFalse(deathTask.isColonyDead());
     assertFalse(lifeTask.isColonyDead());
   }
@@ -98,14 +100,17 @@ public class LoopTaskTest {
     field.randomize();
     LifeTask spyLifeTask = spy(new LifeTask(logic,field));
     DeathTask spyDeathTask = spy(new DeathTask(logic,field));
+
     new Thread(spyLifeTask).start();
     new Thread(spyDeathTask).start();
+
     CountDownLatch waiter = new CountDownLatch(1);
     try {
-      waiter.await(2, TimeUnit.SECONDS);
+      waiter.await(100, TimeUnit.MILLISECONDS);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+
     verify(spyLifeTask,atLeastOnce()).isColonyDead();
     verify(spyDeathTask,atLeastOnce()).isColonyDead();
     verify(spyLifeTask,atLeastOnce()).prepareExecuteList();
@@ -115,26 +120,31 @@ public class LoopTaskTest {
   }
 
   @Test
+  @DisplayName("Tasks stop themselves if no more cells are alive")
   public void tasksStopWhenColonyIsDead() {
     LifeTask lifeTask = new LifeTask(logic,field);
     DeathTask deathTask = new DeathTask(logic,field);
     Thread lifeThread = new Thread(lifeTask);
     Thread deathThread = new Thread(deathTask);
+
     lifeThread.start();
     deathThread.start();
     assertTrue(lifeThread.isAlive());
     assertTrue(deathThread.isAlive());
+
     CountDownLatch waiter = new CountDownLatch(1);
     try {
-      waiter.await(1, TimeUnit.SECONDS);
+      waiter.await(100, TimeUnit.MILLISECONDS);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+
     assertTrue(lifeThread.isInterrupted());
     assertTrue(deathThread.isInterrupted());
   }
 
   @Test
+  @DisplayName("Tasks stop themselves if time limit is reached")
   public void tasksStopWhenTimeLimitReached() {
     new Configurations(20,20,2);
     field.randomize();
@@ -144,14 +154,17 @@ public class LoopTaskTest {
     Thread deathThread = new Thread(deathTask);
     lifeThread.start();
     deathThread.start();
+
     assertTrue(lifeThread.isAlive());
     assertTrue(deathThread.isAlive());
+
     CountDownLatch waiter = new CountDownLatch(1);
     try {
-      waiter.await(3, TimeUnit.SECONDS);
+      waiter.await(150, TimeUnit.MILLISECONDS);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
+
     assertTrue(lifeThread.isInterrupted());
     assertTrue(deathThread.isInterrupted());
   }

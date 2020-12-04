@@ -7,11 +7,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 import application.Configurations;
-import application.controller.ModelController;
-import application.controller.ViewController;
 import application.model.Cell;
 import application.model.Field;
-import application.model.Logic;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,20 +23,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 public class FieldTest {
 
-  ModelController modelController;
-  ViewController viewController;
-  Logic logic;
   Field field;
 
   @BeforeEach
-  public void init() {
+  public void setup() {
     new Configurations(4,4);
-    modelController = new ModelController();
-    viewController = new ViewController(modelController);
-    logic = new Logic(viewController);
-    field = logic.initField();
-    modelController.setLogic(logic);
-    modelController.setField(field);
+    field = new Field();
   }
 
   @Test
@@ -313,8 +302,9 @@ public class FieldTest {
   @DisplayName("Makes some, but not all cells alive")
   public void randomizeTest() {
     new Configurations(30,30);
-    field = logic.initField();
+    field.initCells();
     field.randomize();
+
     assertTrue(field.getCells().stream().anyMatch(cell -> cell.isAlive()));
     assertTrue(field.getCells().stream().anyMatch(cell -> !cell.isAlive()));
   }

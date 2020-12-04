@@ -5,37 +5,18 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import application.Configurations;
-import application.controller.ModelController;
-import application.controller.ViewController;
 import application.model.Cell;
 import application.model.Field;
-import application.model.Logic;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class CellTest {
 
-  ModelController modelController;
-  ViewController viewController;
-  Logic logic;
-  Field field;
-
-  @BeforeEach
-  public void init() {
-    new Configurations(4,4);
-    modelController = new ModelController();
-    viewController = new ViewController(modelController);
-    logic = new Logic(viewController);
-    field = logic.initField();
-    modelController.setLogic(logic);
-    modelController.setField(field);
-  }
-
   @Test
   @DisplayName("No null neighbours")
   public void getNeighboursNoNullCellsTest() {
-    field.initCells();
+    new Configurations(4,4);
+    Field field = new Field();
     for (Cell cell: field.getCells()) {
       for (Cell neighbour: cell.getNeighbours()) {
         assertNotNull(neighbour);
@@ -58,8 +39,10 @@ public class CellTest {
   @DisplayName("Toggle changes 'isAlive'")
   public void toggleTest() {
     Cell cell = new Cell();
+
     cell.toggle();
     assertTrue(cell.isAlive());
+
     cell.toggle();
     assertFalse(cell.isAlive());
   }
@@ -86,8 +69,10 @@ public class CellTest {
   public void colorTest() {
     Cell cell = new Cell();
     assertSame(cell.colorProperty().get(), Configurations.get().getDead());
+
     cell.revive();
     assertSame(cell.colorProperty().get(), Configurations.get().getAlive());
+
     cell.kill();
     assertSame(cell.colorProperty().get(), Configurations.get().getDead());
   }

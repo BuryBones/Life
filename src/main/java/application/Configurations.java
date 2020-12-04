@@ -37,7 +37,7 @@ public class Configurations {
   private boolean timeLimit = true; // default
   private int steps = 100;  // default
   private final int maxSteps = 1000;
-  private  final long period = 1000; // in millis
+  private long period = 1000; // in millis
 
   private final float randomCells = 0.10f; // % of cells to be set as 'alive' by random
 
@@ -73,6 +73,7 @@ public class Configurations {
   public Configurations(int width, int height) {
     this.width = width;
     this.height = height;
+    period = 50;
     currentConfigs = this;
   }
 
@@ -81,6 +82,7 @@ public class Configurations {
     this.height = height;
     this.steps = steps;
     timeLimit = true;
+    period = 50;
     currentConfigs = this;
   }
   public void setConfigurations(String[] args) {

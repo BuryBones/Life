@@ -24,8 +24,8 @@ public class LogicTest {
     ModelController modelController = new ModelController();
     ViewController viewController = new ViewController(modelController);
     Logic logic = new Logic(viewController);
-    Field field = logic.initField();
 
+    Field field = logic.initField();
     assertNotNull(field);
   }
 
@@ -36,7 +36,9 @@ public class LogicTest {
     ViewController viewController = mock(ViewController.class);
     Logic logic = new Logic(viewController);
     logic.initField();
+
     logic.runSimulation();
+
     assertNotNull(logic.getLifeTask());
     assertNotNull(logic.getDeathTask());
   }
@@ -48,31 +50,35 @@ public class LogicTest {
     ViewController viewController = mock(ViewController.class);
     Logic logic = new Logic(viewController);
     logic.initField();
+
     logic.reportTaskStop();
+
     verify(viewController).demandButtonsUnblock();
   }
 
-  // TODO: Test if stable (no)
   @Test
   @DisplayName("Simulation starts and stops")
   public void simulationStartAndStopTest() {
-    new Configurations(20,20);
+    new Configurations(30,30);
     ViewController viewController = mock(ViewController.class);
     Logic logic = new Logic(viewController);
     Field field = logic.initField();
     field.randomize();
 
     logic.runSimulation();
+
     Thread lifeThread = logic.getLifeThread();
     Thread deathThread = logic.getDeathThread();
 
-    assertTrue(lifeThread.isAlive());
-    assertTrue(deathThread.isAlive());
-    logic.stopSimulation();
-
     CountDownLatch waiter = new CountDownLatch(1);
     try {
-      waiter.await(2, TimeUnit.SECONDS);
+      waiter.await(100,TimeUnit.MILLISECONDS);
+
+      assertTrue(lifeThread.isAlive());
+      assertTrue(deathThread.isAlive());
+      logic.stopSimulation();
+
+      waiter.await(150,TimeUnit.MILLISECONDS);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -80,7 +86,6 @@ public class LogicTest {
     assertTrue(deathThread.isInterrupted());
   }
 
-  // TODO: Test if stable
   @Test
   @DisplayName("Barrier action counts and demands repaint")
   public void barrierActionTest() {
@@ -90,10 +95,11 @@ public class LogicTest {
     Field field = logic.initField();
     field.randomize();
     int initialCounter = logic.getCount();
+
     logic.runSimulation();
     CountDownLatch waiter = new CountDownLatch(1);
     try {
-      waiter.await(3, TimeUnit.SECONDS);
+      waiter.await(150, TimeUnit.MILLISECONDS);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }

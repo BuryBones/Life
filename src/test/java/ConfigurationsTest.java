@@ -14,6 +14,7 @@ public class ConfigurationsTest {
   public void parseCorrectArgumentsTest() throws InvalidArgumentsException {
     String[] args = {"30","20","15"};
     Configurations config = new Configurations();
+
     int[] result = config.parseArguments(args);
     assertEquals(result[0],30);
     assertEquals(result[1],20);
@@ -57,6 +58,7 @@ public class ConfigurationsTest {
   public void setConfigurationsNoDefaultTest() {
     Configurations config = new Configurations();
     String[] args = {"35","30","50"};
+
     config.setConfigurations(args);
     assertFalse(config.isInvalidArguments());
     assertTrue(config.isTimeLimit());
@@ -69,6 +71,7 @@ public class ConfigurationsTest {
   public void setConfigurationsNoDefaultNoTimeLimitTest() {
     Configurations config = new Configurations();
     String[] args = {"35","30","0"};
+
     config.setConfigurations(args);
     assertFalse(config.isInvalidArguments());
     assertFalse(config.isTimeLimit());
@@ -81,6 +84,7 @@ public class ConfigurationsTest {
   public void setConfigurationsWithDefaultWidthTest() {
     Configurations config = new Configurations();
     String[] args = {"100","30","50"};
+
     config.setConfigurations(args);
     assertFalse(config.isInvalidArguments());
     assertTrue(config.isTimeLimit());
@@ -93,6 +97,7 @@ public class ConfigurationsTest {
   public void setConfigurationsWithDefaultHeightTest() {
     Configurations config = new Configurations();
     String[] args = {"30","100","50"};
+
     config.setConfigurations(args);
     assertFalse(config.isInvalidArguments());
     assertTrue(config.isTimeLimit());
@@ -105,6 +110,7 @@ public class ConfigurationsTest {
   public void setConfigurationsWithDefaultStepsTest() {
     Configurations config = new Configurations();
     String[] args = {"25","35","1001"};
+
     config.setConfigurations(args);
     assertFalse(config.isInvalidArguments());
     assertTrue(config.isTimeLimit());
@@ -117,6 +123,7 @@ public class ConfigurationsTest {
   public void setConfigurationsWithDefaultEverythingTest() {
     Configurations config = new Configurations();
     String[] args = {"5","1","12000"};
+
     config.setConfigurations(args);
     assertFalse(config.isInvalidArguments());
     assertTrue(config.isTimeLimit());
@@ -129,6 +136,7 @@ public class ConfigurationsTest {
   public void setConfigurationsWithInvalidArgumentsTest() {
     Configurations config = new Configurations();
     String[] args = {"not","valid","arguments"};
+
     config.setConfigurations(args);
     assertTrue(config.isInvalidArguments());
     assertTrue(config.isTimeLimit());

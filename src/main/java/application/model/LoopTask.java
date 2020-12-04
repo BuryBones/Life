@@ -31,7 +31,7 @@ public abstract class LoopTask implements Runnable {
         execute();
         Thread.sleep(Configurations.get().getPeriod());
       }
-        Thread.currentThread().interrupt();
+      Thread.currentThread().interrupt();
     } catch (InterruptedException | BrokenBarrierException e) {
       AlertsController.getInstance().getErrorAlert(e.getMessage()).pop();
     }
