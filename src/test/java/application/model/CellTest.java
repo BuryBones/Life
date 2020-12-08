@@ -1,4 +1,4 @@
-package model;
+package application.model;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -7,8 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import application.Configurations;
-import application.model.Cell;
-import application.model.Field;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

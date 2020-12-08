@@ -1,17 +1,16 @@
-package model;
+package application.model;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import application.Configurations;
 import application.controller.ModelController;
 import application.controller.ViewController;
-import application.model.Field;
-import application.model.Logic;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.DisplayName;
@@ -80,12 +79,13 @@ public class LogicTest {
       assertTrue(deathThread.isAlive());
       logic.stopSimulation();
 
-      waiter.await(150,TimeUnit.MILLISECONDS);
+      waiter.await(200,TimeUnit.MILLISECONDS);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    assertTrue(lifeThread.isInterrupted());
-    assertTrue(deathThread.isInterrupted());
+
+    assertFalse(lifeThread.isAlive());
+    assertFalse(deathThread.isAlive());
   }
 
   @Test
@@ -105,7 +105,7 @@ public class LogicTest {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    verify(viewController,times(2)).demandRepaint();
+    verify(viewController,atLeastOnce()).demandRepaint();
     assertNotEquals(initialCounter,logic.getCount());
   }
 

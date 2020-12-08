@@ -1,4 +1,4 @@
-package model;
+package application.model;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -9,8 +9,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 import application.Configurations;
-import application.model.Cell;
-import application.model.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -73,6 +73,7 @@ public class Configurations {
   public Configurations(int width, int height) {
     this.width = width;
     this.height = height;
+    timeLimit = false;
     period = 50;
     currentConfigs = this;
   }

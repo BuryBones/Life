@@ -1,4 +1,4 @@
-package view;
+package application.view;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,7 +7,6 @@ import application.controller.ModelController;
 import application.controller.ViewController;
 import application.model.Field;
 import application.model.Logic;
-import application.view.Canvas;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -3,13 +3,11 @@ package application.model;
 import application.Configurations;
 import application.controller.AlertsController;
 import java.util.List;
-import java.util.concurrent.BrokenBarrierException;
 
 public abstract class LoopTask implements Runnable {
 
-  private boolean notStopped = true;  // 'stop' button not pressed
-  private boolean notFinished = true; // colony has not reached time limit
-  private final Logic logic;
+  protected volatile boolean notStopped = true;  // 'stop' button not pressed
+  protected final Logic logic;
   public final Field field;
   protected List<Cell> toExecute;
 
@@ -22,23 +20,31 @@ public abstract class LoopTask implements Runnable {
 
   @Override
   public void run() {
+    logic.getBarrier().register();
     try {
-      while (notStopped && notFinished && !isColonyDead()) {
-        notFinished = !Configurations.get().isTimeLimit()
-            || logic.getCount() < Configurations.get().getSteps() - 1;
+      while (notStopped && timeLimitNotReached() && !isColonyDead()) {
         prepareExecuteList();
-        logic.getBarrier().await();
+        logic.getBarrier().arriveAndAwaitAdvance();
         execute();
         Thread.sleep(Configurations.get().getPeriod());
       }
-      Thread.currentThread().interrupt();
-    } catch (InterruptedException | BrokenBarrierException e) {
+    } catch (InterruptedException e) {
       AlertsController.getInstance().getErrorAlert(e.getMessage()).pop();
     }
-    // if colony reached time limit or there is no alive cells
-    if (!notFinished || isColonyDead()) {
+    logic.getBarrier().arriveAndDeregister();
+    if (notStopped) {
       logic.reportTaskStop();
+      stop();
     }
+  }
+
+  public boolean timeLimitNotReached() {
+    return !Configurations.get().isTimeLimit() ||               // if time limit is true
+        logic.getCount() < Configurations.get().getSteps();     // check counter < limit
+  }
+
+  public boolean isColonyDead() {
+    return field.numberOfCellsAlive() == 0;
   }
 
   public void execute() {
@@ -47,10 +53,6 @@ public abstract class LoopTask implements Runnable {
 
   public void stop() {
     notStopped = false;
-  }
-
-  public boolean isColonyDead() {
-    return field.numberOfCellsAlive() == 0;
   }
 
   public List<Cell> getExecuteList() {

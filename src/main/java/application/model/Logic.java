@@ -1,12 +1,18 @@
 package application.model;
 
 import application.controller.ViewController;
-import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Phaser;
 
 public class Logic {
 
   private int count = 0;
-  public final CyclicBarrier barrier;
+  private final Phaser barrier = new Phaser() {
+    @Override
+    protected boolean onAdvance(int phase, int registeredParties) {
+      barrierAction();
+      return false;
+    }
+  };
 
   private LifeTask lifeTask;
   private DeathTask deathTask;
@@ -17,7 +23,6 @@ public class Logic {
 
   public Logic(ViewController viewController) {
     this.viewController = viewController;
-    barrier = new CyclicBarrier(2, this::barrierAction);
   }
 
   public Field initField() {
@@ -56,7 +61,7 @@ public class Logic {
     return count;
   }
 
-  public CyclicBarrier getBarrier() {
+  public Phaser getBarrier() {
     return barrier;
   }
 
