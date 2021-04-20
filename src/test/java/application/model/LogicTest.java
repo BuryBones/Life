@@ -8,78 +8,93 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import application.BasicModule;
 import application.Configurations;
-import application.controller.ModelController;
 import application.controller.ViewController;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
+import com.google.inject.util.Modules;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class LogicTest {
 
-  @Test
-  @DisplayName("Initializes Field")
-  public void initFieldTest() {
-    new Configurations(4,4);
-    ModelController modelController = new ModelController();
-    ViewController viewController = new ViewController(modelController);
-    Logic logic = new Logic(viewController);
+  private Field field;
+  private ViewController viewController;
+  private Logic logic;
 
-    Field field = logic.initField();
-    assertNotNull(field);
+  @BeforeEach
+  void setup() {
+
+    Module testModule = Modules.override(new BasicModule()).with(new AbstractModule() {
+      @Override
+      protected void configure() {
+        bind(ViewController.class).toInstance(mock(ViewController.class));
+      }
+    });
+
+    Injector injector = Guice.createInjector(testModule);
+
+    field = injector.getInstance(Field.class);
+    viewController = injector.getInstance(ViewController.class);
+    logic = injector.getInstance(Logic.class);
   }
 
   @Test
   @DisplayName("Initializes tasks")
-  public void runSimulationInitializesTasksTest() {
-    new Configurations(4,4);
-    ViewController viewController = mock(ViewController.class);
-    Logic logic = new Logic(viewController);
-    logic.initField();
+  void runSimulationInitializesTasksTest() {
+    // given
+    new Configurations(4, 4);
 
+    // when
     logic.runSimulation();
 
+    // then
     assertNotNull(logic.getLifeTask());
     assertNotNull(logic.getDeathTask());
   }
 
   @Test
   @DisplayName("Logic demands to block buttons when reported about task stop")
-  public void reportTaskStopTest() {
-    new Configurations(4,4);
-    ViewController viewController = mock(ViewController.class);
-    Logic logic = new Logic(viewController);
-    logic.initField();
+  void reportTaskStopTest() {
+    // given
+    new Configurations(4, 4);
 
+    // when
     logic.reportTaskStop();
 
+    // then
     verify(viewController).demandButtonsUnblock();
   }
 
   @Test
   @DisplayName("Simulation starts and stops")
-  public void simulationStartAndStopTest() {
-    new Configurations(30,30);
-    ViewController viewController = mock(ViewController.class);
-    Logic logic = new Logic(viewController);
-    Field field = logic.initField();
+  void simulationStartAndStopTest() {
+    // given
+    new Configurations(30, 30);
     field.randomize();
 
+    // when
     logic.runSimulation();
 
     Thread lifeThread = logic.getLifeThread();
     Thread deathThread = logic.getDeathThread();
 
+    // then
     CountDownLatch waiter = new CountDownLatch(1);
     try {
-      waiter.await(100,TimeUnit.MILLISECONDS);
+      waiter.await(100, TimeUnit.MILLISECONDS);
 
       assertTrue(lifeThread.isAlive());
       assertTrue(deathThread.isAlive());
       logic.stopSimulation();
 
-      waiter.await(200,TimeUnit.MILLISECONDS);
+      waiter.await(200, TimeUnit.MILLISECONDS);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -90,23 +105,23 @@ public class LogicTest {
 
   @Test
   @DisplayName("Barrier action counts and demands repaint")
-  public void barrierActionTest() {
-    new Configurations(30,30,2);
-    ViewController viewController = mock(ViewController.class);
-    Logic logic = new Logic(viewController);
-    Field field = logic.initField();
+  void barrierActionTest() {
+    // given
+    new Configurations(30, 30, 2);
     field.randomize();
     int initialCounter = logic.getCount();
 
+    // when
     logic.runSimulation();
+
+    // then
     CountDownLatch waiter = new CountDownLatch(1);
     try {
       waiter.await(150, TimeUnit.MILLISECONDS);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    verify(viewController,atLeastOnce()).demandRepaint();
-    assertNotEquals(initialCounter,logic.getCount());
+    verify(viewController, atLeastOnce()).demandRepaint();
+    assertNotEquals(initialCounter, logic.getCount());
   }
-
 }

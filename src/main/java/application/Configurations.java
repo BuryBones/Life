@@ -5,7 +5,7 @@ import javafx.scene.paint.Paint;
 
 public class Configurations {
 
-  private static Configurations currentConfigs;
+  private static Configurations currentConfigs = new Configurations();
 
   // common settings
   public final boolean enableTrackMemory = false;
