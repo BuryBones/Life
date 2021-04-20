@@ -29,15 +29,9 @@ public class Logic {
     this.viewController = viewController;
   }
 
-  public Field initField() {
-//    field = new Field();
-//    return field;
-    return null;
-  }
-
   public void runSimulation() {
     count = 0;
-    
+
     if (field.numberOfCellsAlive() == 0) {
       field.randomize();
     }
