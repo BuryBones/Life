@@ -19,6 +19,7 @@ import com.google.inject.util.Modules;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -136,6 +137,31 @@ public class LoopTaskTest {
   @Test
   @DisplayName("Tasks stop themselves if no more cells are alive")
   public void tasksStopWhenColonyIsDead() {
+    LifeTask lifeTask = new LifeTask(logic, field);
+    DeathTask deathTask = new DeathTask(logic, field);
+    Thread lifeThread = new Thread(lifeTask);
+    Thread deathThread = new Thread(deathTask);
+
+    lifeThread.start();
+    deathThread.start();
+    assertTrue(lifeThread.isAlive());
+    assertTrue(deathThread.isAlive());
+
+    CountDownLatch waiter = new CountDownLatch(1);
+    try {
+      waiter.await(200, TimeUnit.MILLISECONDS);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    assertFalse(lifeThread.isAlive());
+    assertFalse(deathThread.isAlive());
+  }
+
+  @Disabled("not yet implemented")
+  @Test
+  @DisplayName("Tasks stop themselves if no cells changes")
+  public void tasksStopWhenColonyIsStable() {
     LifeTask lifeTask = new LifeTask(logic, field);
     DeathTask deathTask = new DeathTask(logic, field);
     Thread lifeThread = new Thread(lifeTask);
