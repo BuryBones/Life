@@ -7,9 +7,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
+import application.BasicModule;
 import application.Configurations;
 import application.controller.ModelController;
 import application.controller.ViewController;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
+import com.google.inject.util.Modules;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,18 +24,29 @@ import org.junit.jupiter.api.Test;
 
 public class LoopTaskTest {
 
-  ModelController modelController;
-  ViewController viewController;
-  Logic logic;
-  Field field;
+  private ModelController modelController;
+  private ViewController viewController;
+  private Logic logic;
+  private Field field;
 
   @BeforeEach
   public void setup() {
-    new Configurations(20,20,2);
-    modelController = mock(ModelController.class);
-    viewController = mock(ViewController.class);
-    logic = new Logic(viewController);
-    field = logic.initField();
+    new Configurations(20, 20, 2);
+
+    Module testModule = Modules.override(new BasicModule()).with(new AbstractModule() {
+      @Override
+      protected void configure() {
+        bind(ViewController.class).toInstance(mock(ViewController.class));
+        bind(ModelController.class).toInstance(mock(ModelController.class));
+      }
+    });
+
+    Injector injector = Guice.createInjector(testModule);
+
+    field = injector.getInstance(Field.class);
+    viewController = injector.getInstance(ViewController.class);
+    modelController = injector.getInstance(ModelController.class);
+    logic = injector.getInstance(Logic.class);
   }
 
   @Test
@@ -38,8 +55,8 @@ public class LoopTaskTest {
     field.randomize();
     Field fieldSpy = spy(field);
 
-    DeathTask deathTask = new DeathTask(logic,fieldSpy);
-    LifeTask lifeTask = new LifeTask(logic,fieldSpy);
+    DeathTask deathTask = new DeathTask(logic, fieldSpy);
+    LifeTask lifeTask = new LifeTask(logic, fieldSpy);
 
     deathTask.prepareExecuteList();
     assertFalse(deathTask.getExecuteList().isEmpty());
@@ -54,24 +71,24 @@ public class LoopTaskTest {
   @DisplayName("Toggles cell's state")
   public void executeTest() {
     field.randomize();
-    DeathTask deathTask = new DeathTask(logic,field);
-    LifeTask lifeTask = new LifeTask(logic,field);
+    DeathTask deathTask = new DeathTask(logic, field);
+    LifeTask lifeTask = new LifeTask(logic, field);
     deathTask.prepareExecuteList();
     lifeTask.prepareExecuteList();
 
-    for (Cell cell: deathTask.getExecuteList()) {
+    for (Cell cell : deathTask.getExecuteList()) {
       assertTrue(cell.isAlive());
     }
     deathTask.execute();
-    for (Cell cell: deathTask.getExecuteList()) {
+    for (Cell cell : deathTask.getExecuteList()) {
       assertFalse(cell.isAlive());
     }
 
-    for (Cell cell: lifeTask.getExecuteList()) {
+    for (Cell cell : lifeTask.getExecuteList()) {
       assertFalse(cell.isAlive());
     }
     lifeTask.execute();
-    for (Cell cell: lifeTask.getExecuteList()) {
+    for (Cell cell : lifeTask.getExecuteList()) {
       assertTrue(cell.isAlive());
     }
   }
@@ -79,8 +96,8 @@ public class LoopTaskTest {
   @Test
   @DisplayName("Checks if there no living cells")
   public void isColonyDeadTest() {
-    DeathTask deathTask = new DeathTask(logic,field);
-    LifeTask lifeTask = new LifeTask(logic,field);
+    DeathTask deathTask = new DeathTask(logic, field);
+    LifeTask lifeTask = new LifeTask(logic, field);
 
     assertTrue(deathTask.isColonyDead());
     assertTrue(lifeTask.isColonyDead());
@@ -95,8 +112,8 @@ public class LoopTaskTest {
   @DisplayName("Tasks go through all stages")
   public void runTest() {
     field.randomize();
-    LifeTask spyLifeTask = spy(new LifeTask(logic,field));
-    DeathTask spyDeathTask = spy(new DeathTask(logic,field));
+    LifeTask spyLifeTask = spy(new LifeTask(logic, field));
+    DeathTask spyDeathTask = spy(new DeathTask(logic, field));
 
     new Thread(spyLifeTask).start();
     new Thread(spyDeathTask).start();
@@ -108,19 +125,19 @@ public class LoopTaskTest {
       e.printStackTrace();
     }
 
-    verify(spyLifeTask,atLeastOnce()).isColonyDead();
-    verify(spyDeathTask,atLeastOnce()).isColonyDead();
-    verify(spyLifeTask,atLeastOnce()).prepareExecuteList();
-    verify(spyDeathTask,atLeastOnce()).prepareExecuteList();
-    verify(spyLifeTask,atLeastOnce()).execute();
-    verify(spyDeathTask,atLeastOnce()).execute();
+    verify(spyLifeTask, atLeastOnce()).isColonyDead();
+    verify(spyDeathTask, atLeastOnce()).isColonyDead();
+    verify(spyLifeTask, atLeastOnce()).prepareExecuteList();
+    verify(spyDeathTask, atLeastOnce()).prepareExecuteList();
+    verify(spyLifeTask, atLeastOnce()).execute();
+    verify(spyDeathTask, atLeastOnce()).execute();
   }
 
   @Test
   @DisplayName("Tasks stop themselves if no more cells are alive")
   public void tasksStopWhenColonyIsDead() {
-    LifeTask lifeTask = new LifeTask(logic,field);
-    DeathTask deathTask = new DeathTask(logic,field);
+    LifeTask lifeTask = new LifeTask(logic, field);
+    DeathTask deathTask = new DeathTask(logic, field);
     Thread lifeThread = new Thread(lifeTask);
     Thread deathThread = new Thread(deathTask);
 
@@ -143,10 +160,10 @@ public class LoopTaskTest {
   @Test
   @DisplayName("Tasks stop themselves if time limit is reached")
   public void tasksStopWhenTimeLimitReached() {
-    new Configurations(20,20,2);
+    new Configurations(20, 20, 2);
     field.randomize();
-    LifeTask lifeTask = new LifeTask(logic,field);
-    DeathTask deathTask = new DeathTask(logic,field);
+    LifeTask lifeTask = new LifeTask(logic, field);
+    DeathTask deathTask = new DeathTask(logic, field);
     Thread lifeThread = new Thread(lifeTask);
     Thread deathThread = new Thread(deathTask);
     lifeThread.start();
@@ -172,9 +189,9 @@ public class LoopTaskTest {
   @Test
   @DisplayName("timeLimitNotReached() always returns true if no limit")
   public void timeLimitNotReachedNoLimitTest() {
-    new Configurations(10,10);
-    DeathTask deathTask = new DeathTask(logic,field);
-    LifeTask lifeTask = new LifeTask(logic,field);
+    new Configurations(10, 10);
+    DeathTask deathTask = new DeathTask(logic, field);
+    LifeTask lifeTask = new LifeTask(logic, field);
 
     // true at the start
     assertTrue(lifeTask.timeLimitNotReached());
@@ -191,9 +208,9 @@ public class LoopTaskTest {
   @Test
   @DisplayName("timeLimitNotReached() returns false if reached the limit")
   public void timeLimitNotReachedWithLimitTest() {
-    new Configurations(20,20,50);
-    DeathTask deathTask = new DeathTask(logic,field);
-    LifeTask lifeTask = new LifeTask(logic,field);
+    new Configurations(20, 20, 50);
+    DeathTask deathTask = new DeathTask(logic, field);
+    LifeTask lifeTask = new LifeTask(logic, field);
 
     // true while not reached the limit
     for (int i = 1; i < Configurations.get().getSteps(); i++) {
