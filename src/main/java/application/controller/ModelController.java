@@ -3,6 +3,7 @@ package application.controller;
 import application.model.Cell;
 import application.model.Field;
 import application.model.Logic;
+import com.google.inject.Inject;
 import java.util.List;
 import javafx.scene.paint.Paint;
 
@@ -13,10 +14,12 @@ public class ModelController {
 
   public ModelController() {}
 
+  @Inject
   public void setLogic(Logic logic) {
     this.logic = logic;
   }
 
+  @Inject
   public void setField(Field field) {
     this.field = field;
   }

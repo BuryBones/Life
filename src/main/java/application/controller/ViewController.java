@@ -3,6 +3,7 @@ package application.controller;
 import application.view.ButtonService;
 import application.view.ControlBar;
 import application.view.Graphics;
+import com.google.inject.Inject;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
@@ -30,6 +31,7 @@ public class ViewController {
     demandRepaint();
   };
 
+  @Inject
   public ViewController(ModelController modelController) {
     this.modelController = modelController;
   }

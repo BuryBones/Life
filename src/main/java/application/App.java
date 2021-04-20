@@ -3,12 +3,25 @@ package application;
 import application.controller.AlertsController;
 import application.controller.ModelController;
 import application.controller.ViewController;
-import application.model.Field;
 import application.model.Logic;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class App extends Application {
+
+  private final Injector injector = Guice.createInjector(new BasicModule());
+
+  @Inject
+  private ModelController modelController = injector.getInstance(ModelController.class);
+
+  @Inject
+  private ViewController viewController = injector.getInstance(ViewController.class);
+
+  @Inject
+  private Logic logic = injector.getInstance(Logic.class);
 
   @Override
   public void start(Stage stage) throws Exception {
@@ -22,12 +35,6 @@ public class App extends Application {
         AlertsController.getInstance().getInfoAlert(setupMessage).pop();
       }
     }
-    ModelController modelController = new ModelController();
-    ViewController viewController = new ViewController(modelController);
-    Logic logic = new Logic(viewController);
-    Field field = logic.initField();
-    modelController.setLogic(logic);
-    modelController.setField(field);
     viewController.startGraphics(stage);
   }
 }
