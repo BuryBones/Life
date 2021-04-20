@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 public class ViewController {
 
-  private Graphics graphics;
+  private final Graphics graphics;
   private ControlBar controlBar;
   private ModelController modelController;
 
@@ -32,14 +32,14 @@ public class ViewController {
   };
 
   @Inject
-  public ViewController(ModelController modelController) {
+  public ViewController(ModelController modelController, Graphics graphics) {
     this.modelController = modelController;
+    this.graphics = graphics;
   }
 
   public void startGraphics(Stage stage) {
-    controlBar = new ControlBar(startAction,stopAction,clearAction,randomAction);
-    graphics = new Graphics();
-    graphics.start(stage,controlBar,modelController);
+    controlBar = new ControlBar(startAction, stopAction, clearAction, randomAction);
+    graphics.start(stage, controlBar, modelController);
   }
 
   public void demandRepaint() {

@@ -4,6 +4,7 @@ import application.controller.ModelController;
 import application.controller.ViewController;
 import application.model.Field;
 import application.model.Logic;
+import application.view.Graphics;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 
@@ -15,5 +16,7 @@ public class BasicModule extends AbstractModule {
     bind(ModelController.class).in(Scopes.SINGLETON);
     bind(Logic.class).in(Scopes.SINGLETON);
     bind(Field.class).in(Scopes.SINGLETON);
+
+    bind(Graphics.class).in(Scopes.SINGLETON);
   }
 }
