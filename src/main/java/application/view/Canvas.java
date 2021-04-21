@@ -16,10 +16,12 @@ import javafx.scene.shape.Circle;
 
 public class Canvas extends Pane {
 
-  private ModelController modelController;
+  private final ModelController modelController;
+  private final ObservableList<Node> canvasChildren;
 
   public Canvas(ModelController modelController) {
     this.modelController = modelController;
+    this.canvasChildren = getChildren();
     init();
     paint();
   }
@@ -46,15 +48,15 @@ public class Canvas extends Pane {
   }
 
   public void paint() {
-    // clear children list
-    ObservableList<Node> canvasChildren = getChildren();
-    canvasChildren.removeAll(canvasChildren);
+    clearChildren();
 
     for (int i = 0; i < Configurations.get().getWidth() * Configurations.get().getHeight(); i++) {
       Circle circle = new Circle(Configurations.get().getCellSize() / 2.0f);
       circle.setFill(modelController.getCellColorProperty(i));
-      int x = ((i % Configurations.get().getWidth()) * Configurations.get().getCellSize()) + (int) circle.getRadius();
-      int y = ((i / Configurations.get().getWidth()) * Configurations.get().getCellSize()) + (int) circle.getRadius();
+      int x = ((i % Configurations.get().getWidth()) * Configurations.get().getCellSize())
+          + (int) circle.getRadius();
+      int y = ((i / Configurations.get().getWidth()) * Configurations.get().getCellSize())
+          + (int) circle.getRadius();
       int currentCellIndex = i;
       circle.setOnMouseClicked(mouseEvent -> {
         modelController.toggleCellByIndex(currentCellIndex);
@@ -66,4 +68,8 @@ public class Canvas extends Pane {
     }
   }
 
+  // TODO: rename to more meaningful (what children?)
+  private void clearChildren() {
+    canvasChildren.removeAll(canvasChildren);   // clear() produces strange lags in animation
+  }
 }

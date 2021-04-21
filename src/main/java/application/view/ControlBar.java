@@ -1,6 +1,10 @@
 package application.view;
 
 import application.Configurations;
+import application.view.button_services.ButtonService;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -13,12 +17,13 @@ public class ControlBar extends HBox {
   private Button clear;
   private Button random;
 
+  @Inject
   public ControlBar(
-      ButtonService forStart,
-      ButtonService forStop,
-      ButtonService forClear,
-      ButtonService forRandom
-      ) {
+      @Named("StartButtonAction") ButtonService forStart,
+      @Named("StopButtonAction") ButtonService forStop,
+      @Named("ClearButtonAction") ButtonService forClear,
+      @Named("RandomButtonAction") ButtonService forRandom
+  ) {
     super(2);
     init();
     setStartAction(forStart);
@@ -31,23 +36,23 @@ public class ControlBar extends HBox {
     setAlignment(Pos.CENTER);
 
     start = new Button(Configurations.get().getStartButtonText());
-    start.setPrefSize(75,30);
-    start.setPadding(new Insets(0,1,0,1));
+    start.setPrefSize(75, 30);
+    start.setPadding(new Insets(0, 1, 0, 1));
 
     stop = new Button(Configurations.get().getStopButtonText());
-    stop.setPrefSize(75,30);
-    stop.setPadding(new Insets(0,1,0,1));
+    stop.setPrefSize(75, 30);
+    stop.setPadding(new Insets(0, 1, 0, 1));
     stop.setDisable(true);  // blocked on launch
 
     clear = new Button(Configurations.get().getClearButtonText());
-    clear.setPrefSize(75,30);
-    clear.setPadding(new Insets(0,1,0,1));
+    clear.setPrefSize(75, 30);
+    clear.setPadding(new Insets(0, 1, 0, 1));
 
     random = new Button(Configurations.get().getRandomButtonText());
-    random.setPrefSize(75,30);
-    random.setPadding(new Insets(0,1,0,1));
+    random.setPrefSize(75, 30);
+    random.setPadding(new Insets(0, 1, 0, 1));
 
-    getChildren().addAll(start,stop,clear,random);
+    getChildren().addAll(start, stop, clear, random);
   }
 
   public void setStartAction(ButtonService action) {
@@ -87,6 +92,8 @@ public class ControlBar extends HBox {
   }
 
   public void unblockButtons() {
+    System.out.println("FX thread: " + Platform.isFxApplicationThread());
+
     start.setText(Configurations.get().getStartButtonText());
 
     start.setDisable(false);

@@ -1,6 +1,5 @@
 package application.controller;
 
-import application.view.ButtonService;
 import application.view.ControlBar;
 import application.view.Graphics;
 import com.google.inject.Inject;
@@ -10,36 +9,16 @@ import javafx.stage.Stage;
 public class ViewController {
 
   private final Graphics graphics;
-  private ControlBar controlBar;
-  private ModelController modelController;
-
-  private final ButtonService startAction = () -> {
-    modelController.start();
-  };
-
-  private final ButtonService stopAction = () -> {
-    modelController.stop();
-  };
-
-  private final ButtonService clearAction = () -> {
-    modelController.clear();
-    demandRepaint();
-  };
-
-  private final ButtonService randomAction = () -> {
-    modelController.random();
-    demandRepaint();
-  };
+  private final ControlBar controlBar;
 
   @Inject
-  public ViewController(ModelController modelController, Graphics graphics) {
-    this.modelController = modelController;
+  public ViewController(Graphics graphics, ControlBar controlBar) {
     this.graphics = graphics;
+    this.controlBar = controlBar;
   }
 
   public void startGraphics(Stage stage) {
-    controlBar = new ControlBar(startAction, stopAction, clearAction, randomAction);
-    graphics.start(stage, controlBar, modelController);
+    graphics.start(stage);
   }
 
   public void demandRepaint() {
@@ -60,5 +39,4 @@ public class ViewController {
   public void blockStop() {
     controlBar.blockStop();
   }
-
 }

@@ -1,26 +1,16 @@
 package application.view;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
-import application.BasicModule;
 import application.Configurations;
 import application.controller.ModelController;
-import application.controller.ViewController;
-import application.model.Field;
-import application.model.Logic;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class CanvasTest {
 
-  private final Injector injector = Guice.createInjector(new BasicModule());
-
-  Field field = injector.getInstance(Field.class);
-  ModelController modelController = injector.getInstance(ModelController.class);
-  ViewController viewController = injector.getInstance(ViewController.class);
-  Logic logic = injector.getInstance(Logic.class);
+  private final ModelController modelController = mock(ModelController.class);
 
   @Test
   @DisplayName("Paint method puts width * height cells to canvas")

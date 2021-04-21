@@ -1,4 +1,4 @@
-package application.view;
+package application.view.button_services;
 
 @FunctionalInterface
 public interface ButtonService {
