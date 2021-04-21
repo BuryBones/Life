@@ -3,7 +3,6 @@ package application;
 import application.controller.AlertsController;
 import application.controller.ModelController;
 import application.controller.ViewController;
-import application.model.Logic;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -15,13 +14,10 @@ public class App extends Application {
   private final Injector injector = Guice.createInjector(new BasicModule());
 
   @Inject
-  private ModelController modelController = injector.getInstance(ModelController.class);
+  private final ModelController modelController = injector.getInstance(ModelController.class);
 
   @Inject
-  private ViewController viewController = injector.getInstance(ViewController.class);
-
-  @Inject
-  private Logic logic = injector.getInstance(Logic.class);
+  private final ViewController viewController = injector.getInstance(ViewController.class);
 
   @Override
   public void start(Stage stage) throws Exception {

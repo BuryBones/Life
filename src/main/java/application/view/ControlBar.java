@@ -4,7 +4,6 @@ import application.Configurations;
 import application.view.button_services.ButtonService;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -92,8 +91,6 @@ public class ControlBar extends HBox {
   }
 
   public void unblockButtons() {
-    System.out.println("FX thread: " + Platform.isFxApplicationThread());
-
     start.setText(Configurations.get().getStartButtonText());
 
     start.setDisable(false);
