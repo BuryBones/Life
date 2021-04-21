@@ -11,6 +11,8 @@ import application.BasicModule;
 import application.Configurations;
 import application.controller.ModelController;
 import application.controller.ViewController;
+import application.view.ControlBar;
+import application.view.Graphics;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -39,6 +41,8 @@ public class LoopTaskTest {
       protected void configure() {
         bind(ViewController.class).toInstance(mock(ViewController.class));
         bind(ModelController.class).toInstance(mock(ModelController.class));
+        bind(Graphics.class).toInstance(mock(Graphics.class));
+        bind(ControlBar.class).toInstance(mock(ControlBar.class));
       }
     });
 

@@ -19,16 +19,12 @@ public class Logic {
   private DeathTask deathTask;
   private Thread lifeThread;
   private Thread deathThread;
-  private Field field;
-  private ViewController viewController;
+  private final Field field;
+  private final ViewController viewController;
 
   @Inject
-  public void setField(Field field) {
+  public Logic(Field field, ViewController viewController) {
     this.field = field;
-  }
-
-  @Inject
-  public void setViewController(ViewController viewController) {
     this.viewController = viewController;
   }
 

@@ -1,7 +1,6 @@
 package application;
 
 import application.controller.AlertsController;
-import application.controller.ModelController;
 import application.controller.ViewController;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
@@ -12,9 +11,6 @@ import javafx.stage.Stage;
 public class App extends Application {
 
   private final Injector injector = Guice.createInjector(new BasicModule());
-
-  @Inject
-  private final ModelController modelController = injector.getInstance(ModelController.class);
 
   @Inject
   private final ViewController viewController = injector.getInstance(ViewController.class);

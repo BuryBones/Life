@@ -11,6 +11,8 @@ import static org.mockito.Mockito.verify;
 import application.BasicModule;
 import application.Configurations;
 import application.controller.ViewController;
+import application.view.ControlBar;
+import application.view.Graphics;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -35,6 +37,8 @@ public class LogicTest {
       @Override
       protected void configure() {
         bind(ViewController.class).toInstance(mock(ViewController.class));
+        bind(Graphics.class).toInstance(mock(Graphics.class));
+        bind(ControlBar.class).toInstance(mock(ControlBar.class));
       }
     });
 

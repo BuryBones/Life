@@ -4,6 +4,7 @@ import application.controller.ModelController;
 import application.controller.ViewController;
 import application.model.Field;
 import application.model.Logic;
+import application.view.Canvas;
 import application.view.ControlBar;
 import application.view.Graphics;
 import application.view.button_services.ButtonService;
@@ -24,7 +25,7 @@ public class BasicModule extends AbstractModule {
     bind(Logic.class).in(Scopes.SINGLETON);
     bind(Field.class).in(Scopes.SINGLETON);
     bind(ControlBar.class).in(Scopes.SINGLETON);
-
+    bind(Canvas.class).in(Scopes.SINGLETON);
     bind(Graphics.class).in(Scopes.SINGLETON);
 
     bind(ButtonService.class)

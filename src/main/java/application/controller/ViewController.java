@@ -1,6 +1,5 @@
 package application.controller;
 
-import application.view.ControlBar;
 import application.view.Graphics;
 import com.google.inject.Inject;
 import javafx.application.Platform;
@@ -8,13 +7,11 @@ import javafx.stage.Stage;
 
 public class ViewController {
 
-  private final Graphics graphics;
-  private final ControlBar controlBar;
+  private Graphics graphics;
 
   @Inject
-  public ViewController(Graphics graphics, ControlBar controlBar) {
+  public void setGraphics(Graphics graphics) {
     this.graphics = graphics;
-    this.controlBar = controlBar;
   }
 
   public void startGraphics(Stage stage) {
@@ -33,10 +30,10 @@ public class ViewController {
   }
 
   public void unblockButtons() {
-    controlBar.unblockButtons();
+    graphics.unblockButtons();
   }
 
   public void blockStop() {
-    controlBar.blockStop();
+    graphics.blockStop();
   }
 }

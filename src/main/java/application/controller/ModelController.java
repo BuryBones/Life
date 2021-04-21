@@ -9,18 +9,12 @@ import javafx.scene.paint.Paint;
 
 public class ModelController {
 
-  private Logic logic;
-  private Field field;
-
-  public ModelController() {}
+  private final Logic logic;
+  private final Field field;
 
   @Inject
-  public void setLogic(Logic logic) {
+  public ModelController(Logic logic, Field field) {
     this.logic = logic;
-  }
-
-  @Inject
-  public void setField(Field field) {
     this.field = field;
   }
 

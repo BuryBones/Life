@@ -1,7 +1,6 @@
 package application.view;
 
 import application.Configurations;
-import application.controller.ModelController;
 import com.google.inject.Inject;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -14,12 +13,12 @@ import javafx.stage.Stage;
 public class Graphics {
 
   private PaintTask canvasRepaint;
-  private ModelController modelController;
   private ControlBar controlBar;
+  private Canvas canvas;
 
   @Inject
-  public void setModelController(ModelController modelController) {
-    this.modelController = modelController;
+  public void setCanvas(Canvas canvas) {
+    this.canvas = canvas;
   }
 
   @Inject
@@ -29,7 +28,6 @@ public class Graphics {
 
   public void start(Stage stage) {
     VBox root = new VBox(2);
-    Canvas canvas = new Canvas(modelController);
     canvasRepaint = new PaintTask(canvas);
     root.getChildren().addAll(canvas, controlBar);
     root.setAlignment(Pos.TOP_CENTER);
@@ -40,9 +38,18 @@ public class Graphics {
     stage.setTitle(Configurations.get().getApplicationName());
     stage.setResizable(false);
     stage.show();
+    canvas.paint();
   }
 
   public void triggerPaint() {
     Platform.runLater(new Thread(canvasRepaint));
+  }
+
+  public void unblockButtons() {
+    controlBar.unblockButtons();
+  }
+
+  public void blockStop() {
+    controlBar.blockStop();
   }
 }

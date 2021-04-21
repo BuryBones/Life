@@ -2,6 +2,7 @@ package application.view;
 
 import application.Configurations;
 import application.controller.ModelController;
+import com.google.inject.Inject;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.Background;
@@ -19,11 +20,11 @@ public class Canvas extends Pane {
   private final ModelController modelController;
   private final ObservableList<Node> canvasChildren;
 
+  @Inject
   public Canvas(ModelController modelController) {
     this.modelController = modelController;
     this.canvasChildren = getChildren();
     init();
-    paint();
   }
 
   private void init() {
