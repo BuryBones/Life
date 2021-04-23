@@ -6,7 +6,6 @@ import java.util.List;
 
 public abstract class LoopTask implements Runnable {
 
-  protected volatile boolean notStopped = true;  // 'stop' button not pressed
   protected final Logic logic;
   public final Field field;
   protected List<Cell> toExecute;
@@ -22,7 +21,7 @@ public abstract class LoopTask implements Runnable {
   public void run() {
     logic.getBarrier().register();
     try {
-      while (notStopped && timeLimitNotReached() && !isColonyDead()) {
+      while (!Thread.interrupted() && timeLimitNotReached() && !isColonyDead()) {
         prepareExecuteList();
         logic.getBarrier().arriveAndAwaitAdvance();
         execute();
@@ -32,9 +31,9 @@ public abstract class LoopTask implements Runnable {
       AlertsController.getInstance().getErrorAlert(e.getMessage()).pop();
     }
     logic.getBarrier().arriveAndDeregister();
-    if (notStopped) {
+    if (!Thread.interrupted()) {
       logic.reportTaskStop();
-      stop();
+      Thread.currentThread().interrupt();
     }
   }
 
@@ -49,10 +48,6 @@ public abstract class LoopTask implements Runnable {
 
   public void execute() {
     toExecute.forEach(Cell::toggle);
-  }
-
-  public void stop() {
-    notStopped = false;
   }
 
   public List<Cell> getExecuteList() {

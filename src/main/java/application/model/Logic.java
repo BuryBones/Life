@@ -2,30 +2,27 @@ package application.model;
 
 import application.controller.ViewController;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Phaser;
+import java.util.concurrent.ThreadFactory;
 
 public class Logic {
 
   private int count = 0;
-  private final Phaser barrier = new Phaser() {
-    @Override
-    protected boolean onAdvance(int phase, int registeredParties) {
-      barrierAction();
-      return false;
-    }
-  };
-
-  private LifeTask lifeTask;
-  private DeathTask deathTask;
-  private Thread lifeThread;
-  private Thread deathThread;
+  private Phaser barrier;
+  private ExecutorService executor;
+  private final ThreadFactory threadFactory;
   private final Field field;
   private final ViewController viewController;
 
   @Inject
-  public Logic(Field field, ViewController viewController) {
+  public Logic(Field field, ViewController viewController,
+      @Named("LoopFactory") ThreadFactory threadFactory) {
     this.field = field;
     this.viewController = viewController;
+    this.threadFactory = threadFactory;
   }
 
   public void runSimulation() {
@@ -35,19 +32,19 @@ public class Logic {
       field.randomize();
     }
 
-    lifeTask = new LifeTask(this, field);
-    deathTask = new DeathTask(this, field);
-    lifeThread = new Thread(lifeTask);
-    deathThread = new Thread(deathTask);
-    lifeThread.setDaemon(true);
-    deathThread.setDaemon(true);
-    lifeThread.start();
-    deathThread.start();
+    LifeTask lifeTask = new LifeTask(this, field);
+    DeathTask deathTask = new DeathTask(this, field);
+
+    barrier = new LoopPhaser(this);
+    executor = Executors.newFixedThreadPool(2, threadFactory);
+    executor.submit(lifeTask);
+    executor.submit(deathTask);
   }
 
   public void stopSimulation() {
-    lifeTask.stop();
-    deathTask.stop();
+    if (!executor.isShutdown()) {
+      executor.shutdownNow();
+    }
   }
 
   public void barrierAction() {
@@ -65,21 +62,5 @@ public class Logic {
 
   public void reportTaskStop() {
     viewController.demandButtonsUnblock();
-  }
-
-  public LifeTask getLifeTask() {
-    return lifeTask;
-  }
-
-  public DeathTask getDeathTask() {
-    return deathTask;
-  }
-
-  public Thread getLifeThread() {
-    return lifeThread;
-  }
-
-  public Thread getDeathThread() {
-    return deathThread;
   }
 }

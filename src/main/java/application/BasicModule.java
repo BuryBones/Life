@@ -4,6 +4,7 @@ import application.controller.ModelController;
 import application.controller.ViewController;
 import application.model.Field;
 import application.model.Logic;
+import application.model.LoopFactory;
 import application.view.Canvas;
 import application.view.ControlBar;
 import application.view.Graphics;
@@ -15,6 +16,7 @@ import application.view.button_services.StopButtonService;
 import com.google.inject.AbstractModule;
 import com.google.inject.Scopes;
 import com.google.inject.name.Names;
+import java.util.concurrent.ThreadFactory;
 
 public class BasicModule extends AbstractModule {
 
@@ -27,6 +29,11 @@ public class BasicModule extends AbstractModule {
     bind(ControlBar.class).in(Scopes.SINGLETON);
     bind(Canvas.class).in(Scopes.SINGLETON);
     bind(Graphics.class).in(Scopes.SINGLETON);
+
+    bind(ThreadFactory.class)
+        .annotatedWith(Names.named("LoopFactory"))
+        .to(LoopFactory.class)
+        .in(Scopes.SINGLETON);
 
     bind(ButtonService.class)
         .annotatedWith(Names.named("StartButtonAction"))
