@@ -6,13 +6,13 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import application.BasicModule;
 import application.Configurations;
 import application.controller.ModelController;
 import application.controller.ViewController;
 import application.view.ControlBar;
-import application.view.Graphics;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -21,14 +21,11 @@ import com.google.inject.util.Modules;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class LoopTaskTest {
 
-  private ModelController modelController;
-  private ViewController viewController;
   private Logic logic;
   private Field field;
 
@@ -41,17 +38,19 @@ public class LoopTaskTest {
       protected void configure() {
         bind(ViewController.class).toInstance(mock(ViewController.class));
         bind(ModelController.class).toInstance(mock(ModelController.class));
-        bind(Graphics.class).toInstance(mock(Graphics.class));
         bind(ControlBar.class).toInstance(mock(ControlBar.class));
+        bind(Logic.class).toInstance(mock(Logic.class));
       }
     });
 
-    Injector injector = Guice.createInjector(testModule);
+    Injector mockInjector = Guice.createInjector(testModule);
+    //    Injector injector = Guice.createInjector(new BasicModule());
 
-    field = injector.getInstance(Field.class);
-    viewController = injector.getInstance(ViewController.class);
-    modelController = injector.getInstance(ModelController.class);
-    logic = injector.getInstance(Logic.class);
+    field = mockInjector.getInstance(Field.class);
+    //    viewController = mockInjector.getInstance(ViewController.class);
+    //    modelController = mockInjector.getInstance(ModelController.class);
+    logic = mockInjector.getInstance(Logic.class);
+    //    logic = injector.getInstance(Logic.class);
   }
 
   @Test
@@ -116,6 +115,7 @@ public class LoopTaskTest {
   @Test
   @DisplayName("Tasks go through all stages")
   public void runTest() {
+    when(logic.getBarrier()).thenReturn(new LoopPhaser(logic));
     field.randomize();
     LifeTask spyLifeTask = spy(new LifeTask(logic, field));
     DeathTask spyDeathTask = spy(new DeathTask(logic, field));
@@ -162,7 +162,6 @@ public class LoopTaskTest {
     assertFalse(deathThread.isAlive());
   }
 
-  @Disabled("not yet implemented")
   @Test
   @DisplayName("Tasks stop themselves if no cells changes")
   public void tasksStopWhenColonyIsStable() {
@@ -217,43 +216,59 @@ public class LoopTaskTest {
   }
 
   @Test
-  @DisplayName("timeLimitNotReached() always returns true if no limit")
-  public void timeLimitNotReachedNoLimitTest() {
-    new Configurations(10, 10);
+  @DisplayName("timeLimitNotReached() returns true if counter less than a limit")
+  public void timeLimitNotReachedReturnsTrueIfLessThanLimit() {
+    // given
+    new Configurations(20, 20, 10);
     DeathTask deathTask = new DeathTask(logic, field);
     LifeTask lifeTask = new LifeTask(logic, field);
 
-    // true at the start
-    assertTrue(lifeTask.timeLimitNotReached());
-    assertTrue(deathTask.timeLimitNotReached());
+    when(logic.getCount()).thenReturn(1);
 
-    // true at every step
-    for (int i = 0; i <= 110; i++) {
-      logic.barrierAction();
-      assertTrue(lifeTask.timeLimitNotReached());
-      assertTrue(deathTask.timeLimitNotReached());
-    }
+    // when
+    boolean lifeTaskNotReachedLimit = lifeTask.timeLimitNotReached();
+    boolean deathTaskNotReachedLimit = deathTask.timeLimitNotReached();
+
+    // then
+    assertTrue(lifeTaskNotReachedLimit);
+    assertTrue(deathTaskNotReachedLimit);
   }
 
   @Test
-  @DisplayName("timeLimitNotReached() returns false if reached the limit")
-  public void timeLimitNotReachedWithLimitTest() {
-    new Configurations(20, 20, 50);
+  @DisplayName("timeLimitNotReached() returns false if counter equals a limit")
+  public void timeLimitNotReachedReturnsFalseIfEqualsLimit() {
+    // given
+    new Configurations(20, 20, 10);
     DeathTask deathTask = new DeathTask(logic, field);
     LifeTask lifeTask = new LifeTask(logic, field);
 
-    // true while not reached the limit
-    for (int i = 1; i < Configurations.get().getSteps(); i++) {
-      logic.barrierAction();
-      assertTrue(lifeTask.timeLimitNotReached());
-      assertTrue(deathTask.timeLimitNotReached());
-    }
+    when(logic.getCount()).thenReturn(10);
 
-    // false after reached the limit
-    for (int i = 0; i < 5; i++) {
-      logic.barrierAction();
-      assertFalse(lifeTask.timeLimitNotReached());
-      assertFalse(deathTask.timeLimitNotReached());
-    }
+    // when
+    boolean lifeTaskNotReachedLimit = lifeTask.timeLimitNotReached();
+    boolean deathTaskNotReachedLimit = deathTask.timeLimitNotReached();
+
+    // then
+    assertFalse(lifeTaskNotReachedLimit);
+    assertFalse(deathTaskNotReachedLimit);
+  }
+
+  @Test
+  @DisplayName("timeLimitNotReached() returns false if counter greater than a limit")
+  public void timeLimitNotReachedReturnsFalseIfGreaterThanLimit() {
+    // given
+    new Configurations(20, 20, 10);
+    DeathTask deathTask = new DeathTask(logic, field);
+    LifeTask lifeTask = new LifeTask(logic, field);
+
+    when(logic.getCount()).thenReturn(11);
+
+    // when
+    boolean lifeTaskNotReachedLimit = lifeTask.timeLimitNotReached();
+    boolean deathTaskNotReachedLimit = deathTask.timeLimitNotReached();
+
+    // then
+    assertFalse(lifeTaskNotReachedLimit);
+    assertFalse(deathTaskNotReachedLimit);
   }
 }

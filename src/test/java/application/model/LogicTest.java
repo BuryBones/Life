@@ -1,5 +1,6 @@
 package application.model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -18,7 +19,6 @@ import com.google.inject.util.Modules;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -47,21 +47,6 @@ public class LogicTest {
     logic = injector.getInstance(Logic.class);
   }
 
-  @Disabled("Disabled while refactoring")
-  @Test
-  @DisplayName("Initializes tasks")
-  void runSimulationInitializesTasksTest() {
-//    // given
-//    new Configurations(4, 4);
-//
-//    // when
-//    logic.runSimulation();
-//
-//    // then
-//    assertNotNull(logic.getLifeTask());
-//    assertNotNull(logic.getDeathTask());
-  }
-
   @Test
   @DisplayName("Logic demands to block buttons when reported about task stop")
   void reportTaskStopTest() {
@@ -75,36 +60,29 @@ public class LogicTest {
     verify(viewController).demandButtonsUnblock();
   }
 
-  @Disabled("Disabled while refactoring")
   @Test
-  @DisplayName("Simulation starts and stops")
-  void simulationStartAndStopTest() {
-//    // given
-//    new Configurations(30, 30);
-//    field.randomize();
-//
-//    // when
-//    logic.runSimulation();
-//
-//    Thread lifeThread = logic.getLifeThread();
-//    Thread deathThread = logic.getDeathThread();
-//
-//    // then
-//    CountDownLatch waiter = new CountDownLatch(1);
-//    try {
-//      waiter.await(100, TimeUnit.MILLISECONDS);
-//
-//      assertTrue(lifeThread.isAlive());
-//      assertTrue(deathThread.isAlive());
-//      logic.stopSimulation();
-//
-//      waiter.await(200, TimeUnit.MILLISECONDS);
-//    } catch (InterruptedException e) {
-//      e.printStackTrace();
-//    }
-//
-//    assertFalse(lifeThread.isAlive());
-//    assertFalse(deathThread.isAlive());
+  @DisplayName("Simulation starts and changes count and phaser's phase")
+  void simulationStarts() {
+    // given
+    new Configurations(30, 30);
+    field.randomize();
+
+    // check initial state
+    assertEquals(0, logic.getCount());
+
+    // when
+    logic.runSimulation();
+
+    CountDownLatch waiter = new CountDownLatch(1);
+    try {
+      waiter.await(Configurations.get().getPeriod() * 2, TimeUnit.MILLISECONDS);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+
+    // then
+    assertNotEquals(0, logic.getCount());
+    assertNotEquals(0, logic.getBarrier().getPhase());
   }
 
   @Test
