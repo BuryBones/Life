@@ -27,10 +27,7 @@ public class Logic {
 
   public void runSimulation() {
     count = 0;
-
-    if (field.numberOfCellsAlive() == 0) {
-      field.randomize();
-    }
+    populateFieldIfEmpty();
 
     LifeTask lifeTask = new LifeTask(this, field);
     DeathTask deathTask = new DeathTask(this, field);
@@ -62,5 +59,11 @@ public class Logic {
 
   public void reportTaskStop() {
     viewController.demandButtonsUnblock();
+  }
+
+  private void populateFieldIfEmpty() {
+    if (field.numberOfCellsAlive() == 0) {
+      field.randomize();
+    }
   }
 }
