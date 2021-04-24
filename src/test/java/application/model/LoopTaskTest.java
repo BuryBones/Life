@@ -3,6 +3,7 @@ package application.model;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -44,13 +45,11 @@ public class LoopTaskTest {
     });
 
     Injector mockInjector = Guice.createInjector(testModule);
-    //    Injector injector = Guice.createInjector(new BasicModule());
 
     field = mockInjector.getInstance(Field.class);
-    //    viewController = mockInjector.getInstance(ViewController.class);
-    //    modelController = mockInjector.getInstance(ModelController.class);
     logic = mockInjector.getInstance(Logic.class);
-    //    logic = injector.getInstance(Logic.class);
+    when(logic.getBarrier()).thenReturn(new LoopPhaser(logic));
+    doNothing().when(logic).reportTaskStop();
   }
 
   @Test
@@ -115,7 +114,6 @@ public class LoopTaskTest {
   @Test
   @DisplayName("Tasks go through all stages")
   public void runTest() {
-    when(logic.getBarrier()).thenReturn(new LoopPhaser(logic));
     field.randomize();
     LifeTask spyLifeTask = spy(new LifeTask(logic, field));
     DeathTask spyDeathTask = spy(new DeathTask(logic, field));
@@ -201,12 +199,11 @@ public class LoopTaskTest {
     assertTrue(lifeThread.isAlive());
     assertTrue(deathThread.isAlive());
 
+    when(logic.getCount()).thenReturn(2);
+
     CountDownLatch waiter = new CountDownLatch(1);
     try {
-      waiter.await(300, TimeUnit.MILLISECONDS);
-
-      lifeThread.join();
-      deathThread.join();
+      waiter.await(Configurations.get().getPeriod(), TimeUnit.MILLISECONDS);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
